@@ -1,0 +1,44 @@
+:root {
+  --scoreboard-box-width: 50px;
+  --scoreboard-box-height: 40px;
+  --scoreboard-title-height: 30px;
+  --scoreboard-font-size: 18px;
+  --box-square-color: #fafafa;
+}
+
+.scoreboard {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+
+.scoreboard-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.scoreboard-title {
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  width: var(--scoreboard-box-width);
+  height: var(--scoreboard-title-height);
+  font-size: var(--scoreboard-font-size);
+  font-weight: bold;
+}
+
+.scoreboard-square {
+  border: solid 1px black;
+  width: var(--scoreboard-box-width);
+  height: var(--scoreboard-box-height);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: var(--scoreboard-font-size);
+  background-color: var(--box-square-color);
+}
+
+.scoreboard-time {
+  font-size: 30px;
+  font-weight: bold;
+}

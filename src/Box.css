@@ -1,0 +1,132 @@
+:root {
+  --number-square-size: 40px;
+  --number-font-size: 20px;
+  --box-square-size: 60px;
+  --box-border-color: #000000;
+  --box-square-color: #fafafa;
+}
+
+.box {
+  display: flex;
+  margin: 0 auto;
+  /* background-color: rgb(151, 196, 235); */
+}
+
+.home-team-info {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  margin: 0 auto;
+}
+
+.home-team-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(var(--box-square-size) * 10);
+}
+
+.away-team-info {
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+  margin: 0 auto;
+}
+
+.away-team-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(var(--box-square-size) * 10);
+  writing-mode: sideways-lr;
+}
+.box-data {
+  margin: 0 auto;
+}
+
+.box-top {
+  display: flex;
+  flex-direction: column;
+}
+
+.box-side {
+  display: flex;
+  flex-direction: row;
+}
+
+.box-grid {
+  display: flex;
+  flex-direction: column;
+}
+
+.box-square-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.number-square-top {
+  /* background-color: red; */
+  border: 1px var(--box-border-color) solid;
+  width: var(--box-square-size);
+  height: var(--number-square-size);
+  align-content: center;
+}
+
+.number-square-top-row {
+  display: flex;
+  margin-left: var(--number-square-size);
+  font-size: var(--number-font-size);
+}
+
+.number-square-side {
+  /* background-color: red; */
+  border: 1px var(--box-border-color) solid;
+  width: var(--number-square-size);
+  height: var(--box-square-size);
+  align-content: center;
+}
+
+.number-square-side-column {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--number-font-size);
+}
+
+.box-square {
+  width: var(--box-square-size);
+  height: var(--box-square-size);
+  border: 1px var(--box-border-color) solid;
+  align-content: center;
+  background-color: var(--box-square-color);
+  display: flex;
+  flex-direction: column;
+}
+
+:hover.box-square {
+  background-color: rgb(250, 250, 168);
+}
+
+.box-winning {
+  background-color: rgb(255, 238, 0);
+  color: black;
+  font-weight: bold;
+  font-size: large;
+}
+
+.box-square-number {
+  font-size: 9px;
+  flex-direction: column;
+  text-align: right;
+  padding-right: 2px;
+  /* justify-content: end; */
+  /* align-items: end; */
+  /* align-content: end; */
+}
+
+.box-square-name {
+  /* background-color: beige; */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
