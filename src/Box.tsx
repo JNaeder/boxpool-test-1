@@ -32,14 +32,14 @@ export default function Box({
       <div className="box">
         <div className="home-team-info">
           <div className="home-team-logo">
-            <img src={homeTeam?.officialLogoImageSrc} width="120px" />
+            <img src={homeTeam?.officialLogoImageSrc} width="80px" />
             <h2>
               {homeTeam?.city} {homeTeam?.name}
             </h2>
           </div>
           <div className="away-team-info">
             <div className="away-team-logo">
-              <img src={awayTeam?.officialLogoImageSrc} width="120px" />
+              <img src={awayTeam?.officialLogoImageSrc} width="80px" />
               <h2>
                 {awayTeam?.city} {awayTeam?.name}
               </h2>

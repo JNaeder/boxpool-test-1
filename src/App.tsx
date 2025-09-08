@@ -8,27 +8,13 @@ import {
   type WinningScore,
 } from "./types";
 import Scoreboard from "./Scoreboard";
+import { formatDate } from "./helperFunctions";
 
 function App() {
   const [game, setGame] = useState<Game | null>(null);
   const [references, setReferences] = useState<References | null>(null);
   const [lastUpdated, setLastUpdated] = useState<string>("");
   const [quarterScores, setQuarterScores] = useState<WinningScore[]>([]);
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const estString = date.toLocaleString("en-US", {
-      timeZone: "America/New_York", // EST/EDT depending on daylight saving
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    });
-
-    return estString;
-  };
 
   useEffect(() => {
     const getData = async () => {
@@ -89,12 +75,28 @@ function App() {
 
   return (
     <>
-      <div className="top-bar">
+      <div className="top-menu-bar">
+        <div className="top-menu-bar-title">Boxpool</div>
+      </div>
+      <div className="main-grid">
+        <div className="info-grid-container">
+          <Scoreboard game={game} references={references} />
+          <p>Last Updated: {formatDate(lastUpdated)}</p>
+        </div>
+        <div className="box-grid-container">
+          <Box
+            game={game}
+            references={references}
+            quarterScores={quarterScores}
+          />
+        </div>
+      </div>
+      {/* <div className="top-bar">
         <h1>Boxpool</h1>
         <Scoreboard game={game} references={references} />
         <p>Last Updated: {formatDate(lastUpdated)}</p>
       </div>
-      <Box game={game} references={references} quarterScores={quarterScores} />
+      <Box game={game} references={references} quarterScores={quarterScores} /> */}
     </>
   );
 }
