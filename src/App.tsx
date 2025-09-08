@@ -8,13 +8,15 @@ import {
   type WinningScore,
 } from "./types";
 import Scoreboard from "./Scoreboard";
-import { formatDate } from "./helperFunctions";
+import LastUpdatedWidget from "./LastUpdatedWidget";
+import TopMenuBar from "./TopMenuBar";
 
 function App() {
-  const [game, setGame] = useState<Game | null>(null);
+  const [currentGame, setCurrentGame] = useState<Game | null>(null);
   const [references, setReferences] = useState<References | null>(null);
   const [lastUpdated, setLastUpdated] = useState<string>("");
   const [quarterScores, setQuarterScores] = useState<WinningScore[]>([]);
+  const [allGames, setAllGames] = useState<Game[]>([]);
 
   useEffect(() => {
     const getData = async () => {
@@ -32,6 +34,7 @@ function App() {
       const data = await res.json();
       setLastUpdated(data["lastUpdatedOn"]);
       setReferences(data["references"]);
+      setAllGames(data["games"]);
       const game: Game = data["games"][0];
 
       if (game.score.quarters.length > 0) {
@@ -46,7 +49,7 @@ function App() {
         );
       }
 
-      setGame(game);
+      setCurrentGame(game);
 
       const newQuarterScores = [];
       for (let i = 0; i < game.score.quarters.length; i++) {
@@ -65,7 +68,7 @@ function App() {
     getData();
   }, []);
 
-  if (!game) {
+  if (!currentGame) {
     return <h1>No Game</h1>;
   }
 
@@ -75,28 +78,20 @@ function App() {
 
   return (
     <>
-      <div className="top-menu-bar">
-        <div className="top-menu-bar-title">Boxpool</div>
-      </div>
+      <TopMenuBar allGames={allGames} setCurrentGame={setCurrentGame} />
       <div className="main-grid">
         <div className="info-grid-container">
-          <Scoreboard game={game} references={references} />
-          <p>Last Updated: {formatDate(lastUpdated)}</p>
+          <LastUpdatedWidget lastUpdated={lastUpdated} />
+          <Scoreboard game={currentGame} references={references} />
         </div>
         <div className="box-grid-container">
           <Box
-            game={game}
+            game={currentGame}
             references={references}
             quarterScores={quarterScores}
           />
         </div>
       </div>
-      {/* <div className="top-bar">
-        <h1>Boxpool</h1>
-        <Scoreboard game={game} references={references} />
-        <p>Last Updated: {formatDate(lastUpdated)}</p>
-      </div>
-      <Box game={game} references={references} quarterScores={quarterScores} /> */}
     </>
   );
 }

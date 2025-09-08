@@ -25,6 +25,7 @@ export default function CountdownTimer({ targetDate }: { targetDate: string }) {
 
   return (
     <div>
+      <span>Starts in: </span>
       <span>{timeLeft.days}d </span>
       <span>{timeLeft.hours}h </span>
       <span>{timeLeft.minutes}m </span>

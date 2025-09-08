@@ -68,67 +68,70 @@ export default function Scoreboard({
   };
   return (
     <>
-      <div className="scoreboard">
-        {/* <div>{getCurrentQuater()}</div> */}
-        <div className="scoreboard-row">
-          <div className="scoreboard-title"></div>
-          <div className="scoreboard-title">1</div>
-          <div className="scoreboard-title">2</div>
-          <div className="scoreboard-title">3</div>
-          <div className="scoreboard-title">4</div>
-          <div className="scoreboard-title">Total</div>
+      {" "}
+      <div className="scoreboard-container">
+        <div className="scoreboard">
+          {/* <div>{getCurrentQuater()}</div> */}
+          <div className="scoreboard-row">
+            <div className="scoreboard-title"></div>
+            <div className="scoreboard-title">1</div>
+            <div className="scoreboard-title">2</div>
+            <div className="scoreboard-title">3</div>
+            <div className="scoreboard-title">4</div>
+            <div className="scoreboard-title">Total</div>
+          </div>
+          <div className="scoreboard-row">
+            <div
+              className="scoreboard-square"
+              style={{
+                backgroundColor: awayTeam?.teamColoursHex[0],
+                color: "white",
+              }}
+            >
+              {game.schedule.awayTeam.abbreviation}
+            </div>
+            <div className="scoreboard-square">
+              {game.score.quarters[0]?.awayScore}
+            </div>
+            <div className="scoreboard-square">
+              {game.score.quarters[1]?.awayScore}
+            </div>
+            <div className="scoreboard-square">
+              {game.score.quarters[2]?.awayScore}
+            </div>
+            <div className="scoreboard-square">
+              {game.score.quarters[3]?.awayScore}
+            </div>
+            <div className="scoreboard-square">{game.score.awayScoreTotal}</div>
+          </div>
+          <div className="scoreboard-row">
+            <div
+              className="scoreboard-square"
+              style={{
+                backgroundColor: homeTeam?.teamColoursHex[0],
+                color: "white",
+              }}
+            >
+              {game.schedule.homeTeam.abbreviation}
+            </div>
+            <div className="scoreboard-square">
+              {game.score.quarters[0]?.homeScore}
+            </div>
+            <div className="scoreboard-square">
+              {game.score.quarters[1]?.homeScore}
+            </div>
+            <div className="scoreboard-square">
+              {game.score.quarters[2]?.homeScore}
+            </div>
+            <div className="scoreboard-square">
+              {game.score.quarters[3]?.homeScore}
+            </div>
+            <div className="scoreboard-square">{game.score.homeScoreTotal}</div>
+          </div>
         </div>
-        <div className="scoreboard-row">
-          <div
-            className="scoreboard-square"
-            style={{
-              backgroundColor: awayTeam?.teamColoursHex[0],
-              color: "white",
-            }}
-          >
-            {game.schedule.awayTeam.abbreviation}
-          </div>
-          <div className="scoreboard-square">
-            {game.score.quarters[0]?.awayScore}
-          </div>
-          <div className="scoreboard-square">
-            {game.score.quarters[1]?.awayScore}
-          </div>
-          <div className="scoreboard-square">
-            {game.score.quarters[2]?.awayScore}
-          </div>
-          <div className="scoreboard-square">
-            {game.score.quarters[3]?.awayScore}
-          </div>
-          <div className="scoreboard-square">{game.score.awayScoreTotal}</div>
-        </div>
-        <div className="scoreboard-row">
-          <div
-            className="scoreboard-square"
-            style={{
-              backgroundColor: homeTeam?.teamColoursHex[0],
-              color: "white",
-            }}
-          >
-            {game.schedule.homeTeam.abbreviation}
-          </div>
-          <div className="scoreboard-square">
-            {game.score.quarters[0]?.homeScore}
-          </div>
-          <div className="scoreboard-square">
-            {game.score.quarters[1]?.homeScore}
-          </div>
-          <div className="scoreboard-square">
-            {game.score.quarters[2]?.homeScore}
-          </div>
-          <div className="scoreboard-square">
-            {game.score.quarters[3]?.homeScore}
-          </div>
-          <div className="scoreboard-square">{game.score.homeScoreTotal}</div>
-        </div>
+        <div className="scoreboard-time">{getCurrentQuater()}</div>
+        <div className="scoreboard-time">{getTimeRemaining()}</div>
       </div>
-      <div className="scoreboard-time">{getCurrentQuater()}</div>
-      <div className="scoreboard-time">{getTimeRemaining()}</div>
     </>
   );
 }

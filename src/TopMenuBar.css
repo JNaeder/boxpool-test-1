@@ -1,0 +1,20 @@
+.top-menu-bar-container {
+  background-color: black;
+  color: white;
+  height: 50px;
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.top-menu-bar-title {
+  font-size: 35px;
+}
+
+.game-controls {
+  display: flex;
+  flex-direction: row;
+}
