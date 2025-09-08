@@ -3,7 +3,7 @@ export default function NumberSquare({
   number,
 }: {
   option: "top" | "side";
-  number: string;
+  number: number;
 }) {
   return <div className={`number-square-${option}`}>{number}</div>;
 }

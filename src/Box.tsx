@@ -1,23 +1,23 @@
 import BoxSquare from "./BoxSquare";
 import NumberSquare from "./NumberSquare";
 import { namesMatrix } from "./data";
-import type { Game, References, Team } from "./types";
+import type { Game, References, Team, WinningScore } from "./types";
 import "./Box.css";
 
-const topRowNumbers = ["1", "9", "2", "0", "7", "3", "4", "6", "5", "8"];
-const sideRowNumbers = ["3", "5", "9", "0", "7", "1", "6", "2", "4", "8"];
+const topRowNumbers = [9, 1, 2, 0, 7, 3, 4, 6, 5, 8];
+const sideRowNumbers = [3, 5, 9, 0, 7, 1, 6, 2, 4, 8];
 
 export default function Box({
   game,
   references,
+  quarterScores,
 }: {
   game: Game;
   references: References;
+  quarterScores: WinningScore[];
 }) {
-  //   console.log(game);
-  //   console.log(references);
-  const homeTeamScore: string = String(game.score.homeScoreTotal);
-  const awayTeamScore: string = String(game.score.awayScoreTotal);
+  // const homeTeamScore: string = String(game.score.homeScoreTotal);
+  // const awayTeamScore: string = String(game.score.awayScoreTotal);
 
   const homeTeam: Team | undefined = references.teamReferences.find(
     (team) => team.id == game.schedule.homeTeam.id
@@ -78,10 +78,11 @@ export default function Box({
                             key={i + j}
                             name={name}
                             boxNumber={10 * i + j + 1}
-                            isWinning={
-                              homeTeamScore.at(-1) == topRowNumbers[j] &&
-                              awayTeamScore.at(-1) == sideRowNumbers[i]
-                            }
+                            winningNumbers={{
+                              homeScore: topRowNumbers[j],
+                              awayScore: sideRowNumbers[i],
+                            }}
+                            quarterScores={quarterScores}
                           />
                         ))}
                       </div>
