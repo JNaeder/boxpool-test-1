@@ -51,3 +51,23 @@ export type Winners = {
   gameScore3rdQuater: WinningScore | null;
   gameScoreFinal: WinningScore | null;
 };
+
+export type PrizeAmount = {
+  FirstQuarter: number;
+  SecondQuarter: number;
+  ThirdQuarter: number;
+  Final: number;
+};
+
+export type Boxpool = {
+  id: number;
+  game: Game;
+  boxNumbers: {
+    homeBoxNumbers: number[];
+    awayBoxNumbers: number[];
+  };
+  prizeNumbers: {
+    gameScore: PrizeAmount;
+  };
+  boxNames: {};
+};

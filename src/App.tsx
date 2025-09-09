@@ -1,21 +1,16 @@
 import { useState, useEffect } from "react";
 import Box from "./components/Box/Box";
-import {
-  type Game,
-  type Quarter,
-  type References,
-  type WinningScore,
-} from "./types";
+import type { Game, References } from "./types";
 import Scoreboard from "./components/Scoreboard/Scoreboard";
 import LastUpdatedWidget from "./components/LastUpdatedWidget";
 import TopMenuBar from "./components/TopMenuBar";
+import Prizeboard from "./components/Prizeboard/Prizeboard";
 
 function App() {
-  const [currentGame, setCurrentGame] = useState<Game | null>(null);
   const [references, setReferences] = useState<References | null>(null);
   const [lastUpdated, setLastUpdated] = useState<string>("");
-  const [quarterScores, setQuarterScores] = useState<WinningScore[]>([]);
   const [allGames, setAllGames] = useState<Game[]>([]);
+  const [currentGameIndex, setCurrentGameIndex] = useState<number>(0);
 
   useEffect(() => {
     const getData = async () => {
@@ -31,43 +26,16 @@ function App() {
       });
 
       const data = await res.json();
+      console.log(data);
       setLastUpdated(data["lastUpdatedOn"]);
       setReferences(data["references"]);
       setAllGames(data["games"]);
-      const game: Game = data["games"][0];
-
-      if (game.score.quarters.length > 0) {
-        game.score.homeScoreTotal = game.score.quarters.reduce(
-          (accumulator: number, currentValue: Quarter) =>
-            accumulator + currentValue.homeScore,
-          0
-        );
-        game.score.awayScoreTotal = game.score.quarters.reduce(
-          (sum: number, quater: Quarter) => sum + quater.awayScore,
-          0
-        );
-      }
-
-      setCurrentGame(game);
-
-      const newQuarterScores = [];
-      for (let i = 0; i < game.score.quarters.length; i++) {
-        const homeScore = game.score.quarters
-          .slice(0, i + 1)
-          .reduce((sum, quarter: Quarter) => sum + quarter.homeScore, 0);
-        const awayScore = game.score.quarters
-          .slice(0, i + 1)
-          .reduce((sum, quarter: Quarter) => sum + quarter.awayScore, 0);
-
-        newQuarterScores.push({ homeScore: homeScore, awayScore: awayScore });
-      }
-      setQuarterScores(newQuarterScores);
     };
 
     getData();
   }, []);
 
-  if (!currentGame) {
+  if (allGames.length == 0) {
     return <h1>No Game</h1>;
   }
 
@@ -77,18 +45,22 @@ function App() {
 
   return (
     <>
-      <TopMenuBar allGames={allGames} setCurrentGame={setCurrentGame} />
+      <TopMenuBar
+        allGames={allGames}
+        currentGameIndex={currentGameIndex}
+        setCurrentGameIndex={setCurrentGameIndex}
+      />
       <div className="flex justify-center w-screen h-screen">
         <div className="flex flex-col w-[50%] p-2 border-r-4">
           <LastUpdatedWidget lastUpdated={lastUpdated} />
-          <Scoreboard game={currentGame} references={references} />
+          <Scoreboard
+            game={allGames[currentGameIndex]}
+            references={references}
+          />
+          <Prizeboard />
         </div>
         <div className="w-full p-2">
-          <Box
-            game={currentGame}
-            references={references}
-            quarterScores={quarterScores}
-          />
+          <Box game={allGames[currentGameIndex]} references={references} />
         </div>
       </div>
     </>

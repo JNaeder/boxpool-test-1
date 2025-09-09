@@ -67,8 +67,7 @@ export default function Scoreboard({
   };
   return (
     <>
-      {" "}
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center mb-4">
         <div className="flex flex-col">
           <div className="flex">
             <ScoreboardTitleBox text="" />
@@ -83,10 +82,10 @@ export default function Scoreboard({
               text={game.schedule.awayTeam.abbreviation}
               color={awayTeam?.teamColoursHex[0]}
             />
-            <ScoreboardSquareBox text={game.score.quarters[0].awayScore} />
-            <ScoreboardSquareBox text={game.score.quarters[1].awayScore} />
-            <ScoreboardSquareBox text={game.score.quarters[2].awayScore} />
-            <ScoreboardSquareBox text={game.score.quarters[3].awayScore} />
+            <ScoreboardSquareBox text={game.score.quarters[0]?.awayScore} />
+            <ScoreboardSquareBox text={game.score.quarters[1]?.awayScore} />
+            <ScoreboardSquareBox text={game.score.quarters[2]?.awayScore} />
+            <ScoreboardSquareBox text={game.score.quarters[3]?.awayScore} />
             <ScoreboardSquareBox text={game.score.awayScoreTotal} />
           </div>
           <div className="flex">
@@ -94,15 +93,17 @@ export default function Scoreboard({
               text={game.schedule.homeTeam.abbreviation}
               color={homeTeam?.teamColoursHex[0]}
             />
-            <ScoreboardSquareBox text={game.score.quarters[0].homeScore} />
-            <ScoreboardSquareBox text={game.score.quarters[1].homeScore} />
-            <ScoreboardSquareBox text={game.score.quarters[2].homeScore} />
-            <ScoreboardSquareBox text={game.score.quarters[3].homeScore} />
+            <ScoreboardSquareBox text={game.score.quarters[0]?.homeScore} />
+            <ScoreboardSquareBox text={game.score.quarters[1]?.homeScore} />
+            <ScoreboardSquareBox text={game.score.quarters[2]?.homeScore} />
+            <ScoreboardSquareBox text={game.score.quarters[3]?.homeScore} />
             <ScoreboardSquareBox text={game.score.homeScoreTotal} />
           </div>
         </div>
-        <div className="font-bold text-3xl">{getCurrentQuater()}</div>
-        <div className="font-bold text-3xl">{getTimeRemaining()}</div>
+        <div className="mt-3">
+          <div className="font-bold text-3xl">{getTimeRemaining()}</div>
+          <div className="font-bold text-3xl">{getCurrentQuater()}</div>
+        </div>
       </div>
     </>
   );

@@ -1,4 +1,4 @@
-import type { WinningScore } from "./types";
+import type { WinningScore } from "../../types";
 
 export default function BoxSquare({
   name,

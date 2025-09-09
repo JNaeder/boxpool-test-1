@@ -1,7 +1,13 @@
 import BoxSquare from "./BoxSquare";
 import NumberSquare from "./NumberSquare";
 import { namesMatrix } from "../../data";
-import type { Game, References, Team, WinningScore } from "../../types";
+import type {
+  Game,
+  References,
+  Team,
+  WinningScore,
+  Quarter,
+} from "../../types";
 
 const topRowNumbers = [9, 1, 2, 0, 7, 3, 4, 6, 5, 8];
 const sideRowNumbers = [3, 5, 9, 0, 7, 1, 6, 2, 4, 8];
@@ -9,11 +15,9 @@ const sideRowNumbers = [3, 5, 9, 0, 7, 1, 6, 2, 4, 8];
 export default function Box({
   game,
   references,
-  quarterScores,
 }: {
   game: Game;
   references: References;
-  quarterScores: WinningScore[];
 }) {
   const homeTeam: Team | undefined = references.teamReferences.find(
     (team) => team.id == game.schedule.homeTeam.id
@@ -22,6 +26,30 @@ export default function Box({
   const awayTeam: Team | undefined = references.teamReferences.find(
     (team) => team.id == game.schedule.awayTeam.id
   );
+
+  if (game.score.quarters.length > 0) {
+    game.score.homeScoreTotal = game.score.quarters.reduce(
+      (accumulator: number, currentValue: Quarter) =>
+        accumulator + currentValue.homeScore,
+      0
+    );
+    game.score.awayScoreTotal = game.score.quarters.reduce(
+      (sum: number, quater: Quarter) => sum + quater.awayScore,
+      0
+    );
+  }
+
+  const quarterScores: WinningScore[] = [];
+  for (let i = 0; i < game.score.quarters.length; i++) {
+    const homeScore = game.score.quarters
+      .slice(0, i + 1)
+      .reduce((sum, quarter: Quarter) => sum + quarter.homeScore, 0);
+    const awayScore = game.score.quarters
+      .slice(0, i + 1)
+      .reduce((sum, quarter: Quarter) => sum + quarter.awayScore, 0);
+
+    quarterScores.push({ homeScore: homeScore, awayScore: awayScore });
+  }
 
   return (
     <>
