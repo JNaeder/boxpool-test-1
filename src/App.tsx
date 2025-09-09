@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import "./App.css";
 import Box from "./Box";
 import {
   type Game,
@@ -79,12 +78,12 @@ function App() {
   return (
     <>
       <TopMenuBar allGames={allGames} setCurrentGame={setCurrentGame} />
-      <div className="main-grid">
-        <div className="info-grid-container">
+      <div className="flex justify-center w-screen h-screen">
+        <div className="flex flex-col w-[50%] p-2 border-r-4">
           <LastUpdatedWidget lastUpdated={lastUpdated} />
           <Scoreboard game={currentGame} references={references} />
         </div>
-        <div className="box-grid-container">
+        <div className="w-full p-2">
           <Box
             game={currentGame}
             references={references}

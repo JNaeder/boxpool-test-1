@@ -29,23 +29,23 @@ export default function Box({
 
   return (
     <>
-      <div className="box">
-        <div className="home-team-info">
+      <div className="flex">
+        <div className="flex flex-col items-end">
           <div className="home-team-logo">
             <img src={homeTeam?.officialLogoImageSrc} width="80px" />
             <h2>
               {homeTeam?.city} {homeTeam?.name}
             </h2>
           </div>
-          <div className="away-team-info">
+          <div className="flex items-end">
             <div className="away-team-logo">
               <img src={awayTeam?.officialLogoImageSrc} width="80px" />
               <h2>
                 {awayTeam?.city} {awayTeam?.name}
               </h2>
             </div>
-            <div className="box-data">
-              <div className="box-top">
+            <div>
+              <div className="flex flex-col">
                 <div
                   className="number-square-top-row"
                   style={{
@@ -57,7 +57,7 @@ export default function Box({
                     <NumberSquare key={i} option="top" number={number} />
                   ))}
                 </div>
-                <div className="box-side">
+                <div className="flex">
                   <div
                     className="number-square-side-column"
                     style={{
@@ -70,9 +70,9 @@ export default function Box({
                     ))}
                   </div>
 
-                  <div className="box-grid">
+                  <div className="flex flex-col">
                     {namesMatrix.map((_, i) => (
-                      <div className="box-square-row" key={i}>
+                      <div className="flex" key={i}>
                         {namesMatrix[i].map((name, j) => (
                           <BoxSquare
                             key={i + j}

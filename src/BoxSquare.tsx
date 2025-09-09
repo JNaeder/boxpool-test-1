@@ -38,17 +38,20 @@ export default function BoxSquare({
   return (
     <div
       className={[
-        "box-square",
-        firstScoreWin && "box-first-winning",
-        secondScoreWin && "box-second-winning",
-        thirdScoreWin && "box-third-winning",
-        finalScoreWin && "box-final-winning",
+        "w-box h-box border-1 bg-white flex flex-col",
+        "hover:!bg-amber-200",
+        firstScoreWin && "!bg-blue-400 font-bold",
+        secondScoreWin && "!bg-green-400 font-bold",
+        thirdScoreWin && "!bg-yellow-400 font-bold",
+        finalScoreWin && "!bg-red-400 font-bold",
       ]
         .filter(Boolean)
         .join(" ")}
     >
-      <div className="box-square-number">{boxNumber}</div>
-      <div className="box-square-name">{name}</div>
+      <div className="text-[9px] flex flex-col text-right pr-0.5">
+        {boxNumber}
+      </div>
+      <div className="flex justify-center">{name}</div>
     </div>
   );
 }

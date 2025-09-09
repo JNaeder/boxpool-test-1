@@ -9,8 +9,6 @@ export default function Scoreboard({
   game: Game;
   references: References;
 }) {
-  // console.log(game);
-
   const homeTeam: Team | undefined = references.teamReferences.find(
     (team) => team.id == game.schedule.homeTeam.id
   );
@@ -69,10 +67,10 @@ export default function Scoreboard({
   return (
     <>
       {" "}
-      <div className="scoreboard-container">
-        <div className="scoreboard">
+      <div className="flex flex-col items-center">
+        <div className="flex flex-col">
           {/* <div>{getCurrentQuater()}</div> */}
-          <div className="scoreboard-row">
+          <div className="flex">
             <div className="scoreboard-title"></div>
             <div className="scoreboard-title">1</div>
             <div className="scoreboard-title">2</div>
@@ -80,7 +78,7 @@ export default function Scoreboard({
             <div className="scoreboard-title">4</div>
             <div className="scoreboard-title">Total</div>
           </div>
-          <div className="scoreboard-row">
+          <div className="flex">
             <div
               className="scoreboard-square"
               style={{
@@ -104,7 +102,7 @@ export default function Scoreboard({
             </div>
             <div className="scoreboard-square">{game.score.awayScoreTotal}</div>
           </div>
-          <div className="scoreboard-row">
+          <div className="flex">
             <div
               className="scoreboard-square"
               style={{
@@ -129,8 +127,8 @@ export default function Scoreboard({
             <div className="scoreboard-square">{game.score.homeScoreTotal}</div>
           </div>
         </div>
-        <div className="scoreboard-time">{getCurrentQuater()}</div>
-        <div className="scoreboard-time">{getTimeRemaining()}</div>
+        <div className="font-bold text-3xl">{getCurrentQuater()}</div>
+        <div className="font-bold text-3xl">{getTimeRemaining()}</div>
       </div>
     </>
   );

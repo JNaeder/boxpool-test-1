@@ -1,5 +1,3 @@
-import "./LastUpdatedWidget.css";
-
 export default function LastUpdatedWidget({
   lastUpdated,
 }: {
@@ -22,6 +20,8 @@ export default function LastUpdatedWidget({
   const formatedDate = formatDate(lastUpdated);
 
   return (
-    <div className="last-updated-container">Last Updated: {formatedDate}</div>
+    <div className="bg-black text-white font-bold p-2 rounded-2xl flex justify-center mb-4">
+      Last Updated: {formatedDate}
+    </div>
   );
 }

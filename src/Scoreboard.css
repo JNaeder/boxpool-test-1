@@ -6,22 +6,6 @@
   --box-square-color: #fafafa;
 }
 
-.scoreboard-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.scoreboard {
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
-}
-
-.scoreboard-row {
-  display: flex;
-  flex-direction: row;
-}
-
 .scoreboard-title {
   display: flex;
   justify-content: center;
@@ -41,9 +25,4 @@
   align-items: center;
   font-size: var(--scoreboard-font-size);
   background-color: var(--box-square-color);
-}
-
-.scoreboard-time {
-  font-size: 30px;
-  font-weight: bold;
 }
