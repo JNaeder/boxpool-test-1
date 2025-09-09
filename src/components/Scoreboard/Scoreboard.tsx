@@ -1,6 +1,7 @@
-import type { Game, References, Team } from "./types";
-import "./Scoreboard.css";
+import type { Game, References, Team } from "../../types";
 import CountdownTimer from "./CountdownTimer";
+import ScoreboardTitleBox from "./ScoreboardTitleBox";
+import ScoreboardSquareBox from "./ScoreboardSquareBox";
 
 export default function Scoreboard({
   game,
@@ -69,62 +70,35 @@ export default function Scoreboard({
       {" "}
       <div className="flex flex-col items-center">
         <div className="flex flex-col">
-          {/* <div>{getCurrentQuater()}</div> */}
           <div className="flex">
-            <div className="scoreboard-title"></div>
-            <div className="scoreboard-title">1</div>
-            <div className="scoreboard-title">2</div>
-            <div className="scoreboard-title">3</div>
-            <div className="scoreboard-title">4</div>
-            <div className="scoreboard-title">Total</div>
+            <ScoreboardTitleBox text="" />
+            <ScoreboardTitleBox text="1" />
+            <ScoreboardTitleBox text="2" />
+            <ScoreboardTitleBox text="3" />
+            <ScoreboardTitleBox text="4" />
+            <ScoreboardTitleBox text="Total" />
           </div>
           <div className="flex">
-            <div
-              className="scoreboard-square"
-              style={{
-                backgroundColor: awayTeam?.teamColoursHex[0],
-                color: "white",
-              }}
-            >
-              {game.schedule.awayTeam.abbreviation}
-            </div>
-            <div className="scoreboard-square">
-              {game.score.quarters[0]?.awayScore}
-            </div>
-            <div className="scoreboard-square">
-              {game.score.quarters[1]?.awayScore}
-            </div>
-            <div className="scoreboard-square">
-              {game.score.quarters[2]?.awayScore}
-            </div>
-            <div className="scoreboard-square">
-              {game.score.quarters[3]?.awayScore}
-            </div>
-            <div className="scoreboard-square">{game.score.awayScoreTotal}</div>
+            <ScoreboardSquareBox
+              text={game.schedule.awayTeam.abbreviation}
+              color={awayTeam?.teamColoursHex[0]}
+            />
+            <ScoreboardSquareBox text={game.score.quarters[0].awayScore} />
+            <ScoreboardSquareBox text={game.score.quarters[1].awayScore} />
+            <ScoreboardSquareBox text={game.score.quarters[2].awayScore} />
+            <ScoreboardSquareBox text={game.score.quarters[3].awayScore} />
+            <ScoreboardSquareBox text={game.score.awayScoreTotal} />
           </div>
           <div className="flex">
-            <div
-              className="scoreboard-square"
-              style={{
-                backgroundColor: homeTeam?.teamColoursHex[0],
-                color: "white",
-              }}
-            >
-              {game.schedule.homeTeam.abbreviation}
-            </div>
-            <div className="scoreboard-square">
-              {game.score.quarters[0]?.homeScore}
-            </div>
-            <div className="scoreboard-square">
-              {game.score.quarters[1]?.homeScore}
-            </div>
-            <div className="scoreboard-square">
-              {game.score.quarters[2]?.homeScore}
-            </div>
-            <div className="scoreboard-square">
-              {game.score.quarters[3]?.homeScore}
-            </div>
-            <div className="scoreboard-square">{game.score.homeScoreTotal}</div>
+            <ScoreboardSquareBox
+              text={game.schedule.homeTeam.abbreviation}
+              color={homeTeam?.teamColoursHex[0]}
+            />
+            <ScoreboardSquareBox text={game.score.quarters[0].homeScore} />
+            <ScoreboardSquareBox text={game.score.quarters[1].homeScore} />
+            <ScoreboardSquareBox text={game.score.quarters[2].homeScore} />
+            <ScoreboardSquareBox text={game.score.quarters[3].homeScore} />
+            <ScoreboardSquareBox text={game.score.homeScoreTotal} />
           </div>
         </div>
         <div className="font-bold text-3xl">{getCurrentQuater()}</div>

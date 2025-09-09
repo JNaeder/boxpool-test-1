@@ -11,4 +11,8 @@
 @theme {
   --spacing-box: 60px;
   --spacing-number-box: 40px;
+  --color-box-border: black;
+  --color-box-bg: rgb(255, 255, 255);
+  --spacing-score-box-width: 50px;
+  --spacing-score-box-height: 40px;
 }

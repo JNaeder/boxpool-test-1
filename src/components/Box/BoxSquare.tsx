@@ -38,7 +38,7 @@ export default function BoxSquare({
   return (
     <div
       className={[
-        "w-box h-box border-1 bg-white flex flex-col",
+        "w-box h-box border-1 bg-box-bg flex flex-col",
         "hover:!bg-amber-200",
         firstScoreWin && "!bg-blue-400 font-bold",
         secondScoreWin && "!bg-green-400 font-bold",

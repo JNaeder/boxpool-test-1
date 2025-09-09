@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
-import Box from "./Box";
+import Box from "./components/Box/Box";
 import {
   type Game,
   type Quarter,
   type References,
   type WinningScore,
 } from "./types";
-import Scoreboard from "./Scoreboard";
-import LastUpdatedWidget from "./LastUpdatedWidget";
-import TopMenuBar from "./TopMenuBar";
+import Scoreboard from "./components/Scoreboard/Scoreboard";
+import LastUpdatedWidget from "./components/LastUpdatedWidget";
+import TopMenuBar from "./components/TopMenuBar";
 
 function App() {
   const [currentGame, setCurrentGame] = useState<Game | null>(null);

@@ -1,8 +1,7 @@
 import BoxSquare from "./BoxSquare";
 import NumberSquare from "./NumberSquare";
-import { namesMatrix } from "./data";
-import type { Game, References, Team, WinningScore } from "./types";
-import "./Box.css";
+import { namesMatrix } from "../../data";
+import type { Game, References, Team, WinningScore } from "../../types";
 
 const topRowNumbers = [9, 1, 2, 0, 7, 3, 4, 6, 5, 8];
 const sideRowNumbers = [3, 5, 9, 0, 7, 1, 6, 2, 4, 8];
@@ -16,9 +15,6 @@ export default function Box({
   references: References;
   quarterScores: WinningScore[];
 }) {
-  // const homeTeamScore: string = String(game.score.homeScoreTotal);
-  // const awayTeamScore: string = String(game.score.awayScoreTotal);
-
   const homeTeam: Team | undefined = references.teamReferences.find(
     (team) => team.id == game.schedule.homeTeam.id
   );
@@ -31,23 +27,23 @@ export default function Box({
     <>
       <div className="flex">
         <div className="flex flex-col items-end">
-          <div className="home-team-logo">
+          <div className="flex justify-center items-center 300 w-[calc(10*var(--spacing-box))]">
             <img src={homeTeam?.officialLogoImageSrc} width="80px" />
-            <h2>
+            <div className="font-bold text-4xl">
               {homeTeam?.city} {homeTeam?.name}
-            </h2>
+            </div>
           </div>
           <div className="flex items-end">
-            <div className="away-team-logo">
+            <div className="flex justify-center items-center [writing-mode:sideways-lr] h-[calc(10*var(--spacing-box))]">
               <img src={awayTeam?.officialLogoImageSrc} width="80px" />
-              <h2>
+              <div className="font-bold text-4xl">
                 {awayTeam?.city} {awayTeam?.name}
-              </h2>
+              </div>
             </div>
             <div>
               <div className="flex flex-col">
                 <div
-                  className="number-square-top-row"
+                  className="flex ml-number-box text-xl"
                   style={{
                     backgroundColor: homeTeam?.teamColoursHex[0],
                     color: "white",
@@ -59,7 +55,7 @@ export default function Box({
                 </div>
                 <div className="flex">
                   <div
-                    className="number-square-side-column"
+                    className="flex flex-col text-xl"
                     style={{
                       backgroundColor: awayTeam?.teamColoursHex[0],
                       color: "white",
