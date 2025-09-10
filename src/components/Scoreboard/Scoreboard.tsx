@@ -1,69 +1,24 @@
-import type { Game, References, Team } from "../../types";
+import { teamData } from "../../data";
+import type { Game, Team } from "../../types";
 import CountdownTimer from "./CountdownTimer";
 import ScoreboardTitleBox from "./ScoreboardTitleBox";
 import ScoreboardSquareBox from "./ScoreboardSquareBox";
 
-export default function Scoreboard({
-  game,
-  references,
-}: {
-  game: Game;
-  references: References;
-}) {
-  const homeTeam: Team | undefined = references.teamReferences.find(
-    (team) => team.id == game.schedule.homeTeam.id
+export default function Scoreboard({ game }: { game: Game }) {
+  const homeTeam: Team | undefined = teamData.find(
+    (team) => team.TeamID === game.HomeTeamID
   );
 
-  const awayTeam: Team | undefined = references.teamReferences.find(
-    (team) => team.id == game.schedule.awayTeam.id
+  const awayTeam: Team | undefined = teamData.find(
+    (team) => team.TeamID === game.AwayTeamID
   );
 
   const getCurrentQuater = (): React.ReactNode | string => {
-    if (game.schedule.playedStatus === "UNPLAYED") {
-      return <CountdownTimer targetDate={game.schedule.startTime} />;
-    } else if (
-      game.schedule.playedStatus === "COMPLETED" ||
-      game.schedule.playedStatus == "COMPLETED_PENDING_REVIEW"
-    ) {
-      return "Final";
-    } else if (game.score.currentQuarter) {
-      switch (game.score.currentQuarter) {
-        case 1:
-          return "1st Quarter";
-        case 2:
-          return "2nd Quarter";
-        case 3:
-          return "3rd Quarter";
-        case 4:
-          return "4th Quarter";
-        default:
-          return "";
-      }
-    } else if (game.score.currentIntermission) {
-      switch (game.score.currentIntermission) {
-        case 1:
-          return "End 1";
-        case 2:
-          return "Halftime";
-        case 3:
-          return "End 3";
-        case 4:
-          return "Final";
-        default:
-          return "";
-      }
+    if (game.Status === "Scheduled") {
+      return <CountdownTimer targetDate={game.Date} />;
     } else {
-      return "";
+      return game.QuarterDescription;
     }
-  };
-  const getTimeRemaining = (): string => {
-    if (!game.score.currentQuarterSecondsRemaining) {
-      return "";
-    }
-    const total_sec = game.score.currentQuarterSecondsRemaining;
-    const minutes = Math.floor(total_sec / 60);
-    const seconds = total_sec % 60;
-    return String(minutes) + ":" + String(seconds).padStart(2, "0");
   };
   return (
     <>
@@ -79,29 +34,32 @@ export default function Scoreboard({
           </div>
           <div className="flex">
             <ScoreboardSquareBox
-              text={game.schedule.awayTeam.abbreviation}
-              color={awayTeam?.teamColoursHex[0]}
+              text={game.AwayTeam}
+              color={
+                awayTeam?.PrimaryColor ? `#${awayTeam.PrimaryColor}` : "black"
+              }
             />
-            <ScoreboardSquareBox text={game.score.quarters[0]?.awayScore} />
-            <ScoreboardSquareBox text={game.score.quarters[1]?.awayScore} />
-            <ScoreboardSquareBox text={game.score.quarters[2]?.awayScore} />
-            <ScoreboardSquareBox text={game.score.quarters[3]?.awayScore} />
-            <ScoreboardSquareBox text={game.score.awayScoreTotal} />
+            <ScoreboardSquareBox text={game.AwayScoreQuarter1} />
+            <ScoreboardSquareBox text={game.AwayScoreQuarter2} />
+            <ScoreboardSquareBox text={game.AwayScoreQuarter3} />
+            <ScoreboardSquareBox text={game.AwayScoreQuarter4} />
+            <ScoreboardSquareBox text={game.AwayScore} />
           </div>
           <div className="flex">
             <ScoreboardSquareBox
-              text={game.schedule.homeTeam.abbreviation}
-              color={homeTeam?.teamColoursHex[0]}
+              text={game.HomeTeam}
+              color={
+                homeTeam?.PrimaryColor ? `#${homeTeam.PrimaryColor}` : "black"
+              }
             />
-            <ScoreboardSquareBox text={game.score.quarters[0]?.homeScore} />
-            <ScoreboardSquareBox text={game.score.quarters[1]?.homeScore} />
-            <ScoreboardSquareBox text={game.score.quarters[2]?.homeScore} />
-            <ScoreboardSquareBox text={game.score.quarters[3]?.homeScore} />
-            <ScoreboardSquareBox text={game.score.homeScoreTotal} />
+            <ScoreboardSquareBox text={game.HomeScoreQuarter1} />
+            <ScoreboardSquareBox text={game.HomeScoreQuarter2} />
+            <ScoreboardSquareBox text={game.HomeScoreQuarter3} />
+            <ScoreboardSquareBox text={game.HomeScoreQuarter4} />
+            <ScoreboardSquareBox text={game.HomeScore} />
           </div>
         </div>
         <div className="mt-3">
-          <div className="font-bold text-3xl">{getTimeRemaining()}</div>
           <div className="font-bold text-3xl">{getCurrentQuater()}</div>
         </div>
       </div>

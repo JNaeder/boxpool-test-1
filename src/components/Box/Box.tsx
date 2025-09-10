@@ -1,79 +1,55 @@
+import { teamData } from "../../data";
 import BoxSquare from "./BoxSquare";
 import NumberSquare from "./NumberSquare";
 import { namesMatrix } from "../../data";
-import type {
-  Game,
-  References,
-  Team,
-  WinningScore,
-  Quarter,
-} from "../../types";
+import type { Game, Team, WinningScore } from "../../types";
 
 const topRowNumbers = [9, 1, 2, 0, 7, 3, 4, 6, 5, 8];
 const sideRowNumbers = [3, 5, 9, 0, 7, 1, 6, 2, 4, 8];
 
-export default function Box({
-  game,
-  references,
-}: {
-  game: Game;
-  references: References;
-}) {
-  const homeTeam: Team | undefined = references.teamReferences.find(
-    (team) => team.id == game.schedule.homeTeam.id
+export default function Box({ game }: { game: Game }) {
+  const homeTeam: Team | undefined = teamData.find(
+    (team) => team.TeamID === game.HomeTeamID
   );
 
-  const awayTeam: Team | undefined = references.teamReferences.find(
-    (team) => team.id == game.schedule.awayTeam.id
+  const awayTeam: Team | undefined = teamData.find(
+    (team) => team.TeamID === game.AwayTeamID
   );
-
-  if (game.score.quarters.length > 0) {
-    game.score.homeScoreTotal = game.score.quarters.reduce(
-      (accumulator: number, currentValue: Quarter) =>
-        accumulator + currentValue.homeScore,
-      0
-    );
-    game.score.awayScoreTotal = game.score.quarters.reduce(
-      (sum: number, quater: Quarter) => sum + quater.awayScore,
-      0
-    );
-  }
 
   const quarterScores: WinningScore[] = [];
-  for (let i = 0; i < game.score.quarters.length; i++) {
-    const homeScore = game.score.quarters
-      .slice(0, i + 1)
-      .reduce((sum, quarter: Quarter) => sum + quarter.homeScore, 0);
-    const awayScore = game.score.quarters
-      .slice(0, i + 1)
-      .reduce((sum, quarter: Quarter) => sum + quarter.awayScore, 0);
-
-    quarterScores.push({ homeScore: homeScore, awayScore: awayScore });
+  for (let i = 0; i < 4; i++) {
+    const homeScore = game[`HomeScoreQuarter${i + 1}` as keyof Game] as number;
+    const awayScore = game[`AwayScoreQuarter${i + 1}` as keyof Game] as number;
+    quarterScores.push({ homeScore, awayScore });
   }
 
   return (
     <>
-      <div className="flex">
+      <div className="flex justify-center">
         <div className="flex flex-col items-end">
           <div className="flex justify-center items-center 300 w-[calc(10*var(--spacing-box))]">
-            <img src={homeTeam?.officialLogoImageSrc} width="80px" />
-            <div className="font-bold text-4xl">
-              {homeTeam?.city} {homeTeam?.name}
-            </div>
+            <img
+              src={homeTeam?.WikipediaLogoUrl ?? undefined}
+              className="h-20"
+            />
+            <div className="font-bold text-4xl">{homeTeam?.FullName}</div>
           </div>
           <div className="flex items-end">
             <div className="flex justify-center items-center [writing-mode:sideways-lr] h-[calc(10*var(--spacing-box))]">
-              <img src={awayTeam?.officialLogoImageSrc} width="80px" />
-              <div className="font-bold text-4xl">
-                {awayTeam?.city} {awayTeam?.name}
-              </div>
+              <img
+                src={awayTeam?.WikipediaLogoUrl ?? undefined}
+                className="h-20"
+              />
+              <div className="font-bold text-4xl">{awayTeam?.FullName}</div>
             </div>
             <div>
               <div className="flex flex-col">
                 <div
                   className="flex ml-number-box text-xl"
                   style={{
-                    backgroundColor: homeTeam?.teamColoursHex[0],
+                    backgroundColor: homeTeam?.PrimaryColor
+                      ? `#${homeTeam.PrimaryColor}`
+                      : "black",
                     color: "white",
                   }}
                 >
@@ -85,7 +61,9 @@ export default function Box({
                   <div
                     className="flex flex-col text-xl"
                     style={{
-                      backgroundColor: awayTeam?.teamColoursHex[0],
+                      backgroundColor: awayTeam?.PrimaryColor
+                        ? `#${awayTeam.PrimaryColor}`
+                        : "black",
                       color: "white",
                     }}
                   >

@@ -1,43 +1,44 @@
-export type Quarter = {
-  quaterNumber: number;
-  awayScore: number;
-  homeScore: number;
+export type User = {
+  id: number;
+  name: string;
+  email: string;
 };
 
 export type Game = {
-  schedule: {
-    startTime: string;
-    playedStatus: string;
-    awayTeam: {
-      id: number;
-      abbreviation: string;
-    };
-    homeTeam: {
-      id: number;
-      abbreviation: string;
-    };
-  };
-  score: {
-    homeScoreTotal: number | null;
-    awayScoreTotal: number | null;
-    currentQuarterSecondsRemaining: number | null;
-    quarters: Quarter[];
-    currentQuarter: number | null;
-    currentIntermission: number | null;
-  };
+  AwayScore: number;
+  AwayScoreQuarter1: number;
+  AwayScoreQuarter2: number;
+  AwayScoreQuarter3: number;
+  AwayScoreQuarter4: number;
+  AwayTeam: string;
+  AwayTeamID: number;
+  Closed: boolean;
+  Date: string;
+  GameKey: string;
+  GlobalGameID: number;
+  HomeScore: number;
+  HomeScoreQuarter1: number;
+  HomeScoreQuarter2: number;
+  HomeScoreQuarter3: number;
+  HomeScoreQuarter4: number;
+  HomeTeam: string;
+  HomeTeamID: number;
+  LastUpdated: string;
+  Quarter: string;
+  QuarterDescription: string;
+  Status: string;
 };
 
 export type Team = {
-  abbreviation: string;
-  city: string;
-  id: number;
-  name: string;
-  teamColoursHex: string[];
-  officialLogoImageSrc: string;
-};
-
-export type References = {
-  teamReferences: Team[];
+  TeamID: number;
+  City: string;
+  Name: string;
+  FullName: string;
+  PrimaryColor: string | null;
+  SecondaryColor: string | null;
+  TertiaryColor: string | null;
+  QuaternaryColor: string | null;
+  WikipediaLogoUrl: string | null;
 };
 
 export type WinningScore = {
@@ -61,6 +62,7 @@ export type PrizeAmount = {
 
 export type Boxpool = {
   id: number;
+  user: User;
   game: Game;
   boxNumbers: {
     homeBoxNumbers: number[];
@@ -68,6 +70,9 @@ export type Boxpool = {
   };
   prizeNumbers: {
     gameScore: PrizeAmount;
+    plusTwo: PrizeAmount | null;
+    plusFive: PrizeAmount | null;
+    reverse: PrizeAmount | null;
   };
   boxNames: {};
 };
