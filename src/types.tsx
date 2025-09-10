@@ -26,7 +26,14 @@ export type Game = {
   LastUpdated: string;
   Quarter: string;
   QuarterDescription: string;
+  Has1stQuarterStarted: boolean;
+  Has2ndQuarterStarted: boolean;
+  Has3rdQuarterStarted: boolean;
+  Has4thQuarterStarted: boolean;
   Status: string;
+  LastPlay: string;
+  TimeRemaining: string;
+  Possession: string;
 };
 
 export type Team = {

@@ -1,5 +1,3 @@
-import axios from "axios";
-
 export const getSportsFeedData = async () => {
   const url = `${
     import.meta.env.VITE_SPORTSFEED_API_URL
@@ -30,15 +28,25 @@ export const getSportsDataIOData = async () => {
   return data;
 };
 
-export const getSportsPlayByPlay = async () => {
-  const url =
-    "https://replay.sportsdata.io/api/v3/nfl/pbp/json/playbyplay/19039?key=aa2adedec59b4b1481504f81c7efdc41";
+export const getSportsPlayByPlay = async (playNumber: number) => {
+  const url = `${
+    import.meta.env.VITE_SPORTSDATA_API_URL
+  }/v3/nfl/scores/JSON/SimulatedScores/${playNumber}?key=${
+    import.meta.env.VITE_SPORTSDATA_API_KEY
+  }`;
 
-  console.log(url);
   const res = await fetch(url, {
     method: "GET",
   });
 
+  const data = await res.json();
+  return data;
+};
+
+export const testSportsData = async () => {
+  const url = `https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard`;
+
+  const res = await fetch(url);
   const data = await res.json();
   return data;
 };

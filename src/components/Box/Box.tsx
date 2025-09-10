@@ -25,7 +25,7 @@ export default function Box({ game }: { game: Game }) {
 
   return (
     <>
-      <div className="flex justify-center">
+      <div className="flex ml-10">
         <div className="flex flex-col items-end">
           <div className="flex justify-center items-center 300 w-[calc(10*var(--spacing-box))]">
             <img
@@ -77,6 +77,7 @@ export default function Box({ game }: { game: Game }) {
                       <div className="flex" key={i}>
                         {namesMatrix[i].map((name, j) => (
                           <BoxSquare
+                            game={game}
                             key={i + j}
                             name={name}
                             boxNumber={10 * i + j + 1}

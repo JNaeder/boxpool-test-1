@@ -17,7 +17,7 @@ export default function Scoreboard({ game }: { game: Game }) {
     if (game.Status === "Scheduled") {
       return <CountdownTimer targetDate={game.Date} />;
     } else {
-      return game.QuarterDescription;
+      return `${game.QuarterDescription} Quarter`;
     }
   };
   return (
@@ -59,8 +59,10 @@ export default function Scoreboard({ game }: { game: Game }) {
             <ScoreboardSquareBox text={game.HomeScore} />
           </div>
         </div>
-        <div className="mt-3">
+        <div className="mt-3 flex flex-col justify-center items-center ">
           <div className="font-bold text-3xl">{getCurrentQuater()}</div>
+          <div className="text-xl">{game.TimeRemaining}</div>
+          <div className="w-3/4 text-center">{game.LastPlay}</div>
         </div>
       </div>
     </>
