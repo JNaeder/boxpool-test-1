@@ -13,40 +13,73 @@ export default function BoxSquare({
   quarterScores: WinningScore[];
   period: number;
 }) {
-  const firstScoreWin =
-    period >= 1
-      ? quarterScores[0].homeScore % 10 === winningNumbers.homeScore &&
-        quarterScores[0].awayScore % 10 === winningNumbers.awayScore
-      : false;
+  type ColorState = {
+    color: string;
+    state: boolean;
+  };
+  const winColorStates: ColorState[] = [
+    {
+      color: "blue-400",
+      state:
+        period >= 1
+          ? quarterScores[0].homeScore % 10 === winningNumbers.homeScore &&
+            quarterScores[0].awayScore % 10 === winningNumbers.awayScore
+          : false,
+    },
+    {
+      color: "green-400",
+      state:
+        period >= 2
+          ? quarterScores[1].homeScore % 10 === winningNumbers.homeScore &&
+            quarterScores[1].awayScore % 10 === winningNumbers.awayScore
+          : false,
+    },
+    {
+      color: "yellow-400",
+      state:
+        period >= 3
+          ? quarterScores[2].homeScore % 10 === winningNumbers.homeScore &&
+            quarterScores[2].awayScore % 10 === winningNumbers.awayScore
+          : false,
+    },
+    {
+      color: "red-400",
+      state:
+        period >= 4
+          ? quarterScores[3].homeScore % 10 === winningNumbers.homeScore &&
+            quarterScores[3].awayScore % 10 === winningNumbers.awayScore
+          : false,
+    },
+  ];
 
-  const secondScoreWin =
-    period >= 2
-      ? quarterScores[1].homeScore % 10 === winningNumbers.homeScore &&
-        quarterScores[1].awayScore % 10 === winningNumbers.awayScore
-      : false;
+  const winners = winColorStates.filter((state) => state.state);
 
-  const thirdScoreWin =
-    period >= 3
-      ? quarterScores[2].homeScore % 10 === winningNumbers.homeScore &&
-        quarterScores[2].awayScore % 10 === winningNumbers.awayScore
-      : false;
+  if (winners.length > 0) {
+    console.log(winners);
+  }
 
-  const finalScoreWin =
-    period >= 4
-      ? quarterScores[3].homeScore % 10 === winningNumbers.homeScore &&
-        quarterScores[3].awayScore % 10 === winningNumbers.awayScore
-      : false;
+  const getColorString = (): string => {
+    if (winners.length == 1) {
+      return `!bg-${winners[0].color} font-bold`;
+    } else if (winners.length == 2) {
+      return `bg-linear-to-br from-${winners[0].color} from-50% to-${winners[1].color} to-50% font-bold`;
+    } else {
+      return "";
+    }
+  };
 
   return (
     <div
       className={[
         "w-box h-box border-1 bg-box-bg flex flex-col",
-        "hover:!bg-amber-200",
-        // "bg-linear-to-r from-red-400",
-        firstScoreWin && "!bg-blue-400 font-bold",
-        secondScoreWin && "!bg-green-400 font-bold",
-        thirdScoreWin && "!bg-yellow-400 font-bold",
-        finalScoreWin && "!bg-red-400 font-bold",
+        "hover:bg-amber-200",
+        getColorString(),
+        // "w-box h-box border-1 bg-box-bg flex flex-col hover:bg-amber-200 bg-linear-to-br from-blue-400 from-50% to-green-400 to-50% font-bold",
+        // "bg-linear-to-r from-green-400 from-50% to-red-400 to-50%",
+        // firstScoreWin && "!bg-blue-400 font-bold",
+        // secondScoreWin && "!bg-green-400 font-bold",
+        // thirdScoreWin && "!bg-yellow-400 font-bold",
+        // finalScoreWin && "!bg-red-400 font-bold",
       ]
         .filter(Boolean)
         .join(" ")}
@@ -58,8 +91,3 @@ export default function BoxSquare({
     </div>
   );
 }
-
-// isWinning={
-//                               homeTeamScore.at(-1) == topRowNumbers[j] &&
-//                               awayTeamScore.at(-1) == sideRowNumbers[i]
-//                             }
