@@ -4,49 +4,82 @@ export type User = {
   email: string;
 };
 
-export type Game = {
-  AwayScore: number;
-  AwayScoreQuarter1: number;
-  AwayScoreQuarter2: number;
-  AwayScoreQuarter3: number;
-  AwayScoreQuarter4: number;
-  AwayTeam: string;
-  AwayTeamID: number;
-  Closed: boolean;
-  Date: string;
-  GameKey: string;
-  GlobalGameID: number;
-  HomeScore: number;
-  HomeScoreQuarter1: number;
-  HomeScoreQuarter2: number;
-  HomeScoreQuarter3: number;
-  HomeScoreQuarter4: number;
-  HomeTeam: string;
-  HomeTeamID: number;
-  LastUpdated: string;
-  Quarter: string;
-  QuarterDescription: string;
-  Has1stQuarterStarted: boolean;
-  Has2ndQuarterStarted: boolean;
-  Has3rdQuarterStarted: boolean;
-  Has4thQuarterStarted: boolean;
-  Status: string;
-  LastPlay: string;
-  TimeRemaining: string;
-  Possession: string;
+export type Competition = {
+  date: string;
+  competitors: Competitor[];
+};
+
+export type LineScore = {
+  value: number;
+  period: number;
+  dislayValue: string;
+};
+
+export type Competitor = {
+  homeAway: string;
+  team: Team;
+  score: string;
+  linescores: LineScore[] | null;
+  winner: boolean;
 };
 
 export type Team = {
-  TeamID: number;
-  City: string;
-  Name: string;
-  FullName: string;
-  PrimaryColor: string | null;
-  SecondaryColor: string | null;
-  TertiaryColor: string | null;
-  QuaternaryColor: string | null;
-  WikipediaLogoUrl: string | null;
+  abbreviation: string;
+  color: string;
+  alternateColor: string;
+  displayName: string;
+  location: string;
+  logo: string;
+  name: string;
 };
+
+export type StatusType = {
+  name: string;
+  completed: boolean;
+  description: string;
+  detail: string;
+};
+
+export type Game = {
+  competitions: Competition[];
+  status: {
+    displayClock: string;
+    period: number;
+    type: StatusType;
+  };
+};
+
+// export type Game = {
+//   AwayScore: number;
+//   AwayScoreQuarter1: number;
+//   AwayScoreQuarter2: number;
+//   AwayScoreQuarter3: number;
+//   AwayScoreQuarter4: number;
+//   AwayTeam: string;
+//   AwayTeamID: number;
+//   Closed: boolean;
+//   Date: string;
+//   GameKey: string;
+//   GlobalGameID: number;
+//   HomeScore: number;
+//   HomeScoreQuarter1: number;
+//   HomeScoreQuarter2: number;
+//   HomeScoreQuarter3: number;
+//   HomeScoreQuarter4: number;
+//   HomeTeam: string;
+//   HomeTeamID: number;
+//   LastUpdated: string;
+//   Quarter: string;
+//   QuarterDescription: string;
+//   Has1stQuarterStarted: boolean;
+//   Has2ndQuarterStarted: boolean;
+//   Has3rdQuarterStarted: boolean;
+//   Has4thQuarterStarted: boolean;
+//   Status: string;
+//   LastPlay: string;
+//   TimeRemaining: string;
+//   Possession: string;
+// };
 
 export type WinningScore = {
   homeScore: number;

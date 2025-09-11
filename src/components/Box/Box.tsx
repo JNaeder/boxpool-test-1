@@ -1,26 +1,37 @@
-import { teamData } from "../../data";
 import BoxSquare from "./BoxSquare";
 import NumberSquare from "./NumberSquare";
 import { namesMatrix } from "../../data";
-import type { Game, Team, WinningScore } from "../../types";
+import type { Game, WinningScore, Competition, Competitor } from "../../types";
 
 const topRowNumbers = [9, 1, 2, 0, 7, 3, 4, 6, 5, 8];
 const sideRowNumbers = [3, 5, 9, 0, 7, 1, 6, 2, 4, 8];
 
 export default function Box({ game }: { game: Game }) {
-  const homeTeam: Team | undefined = teamData.find(
-    (team) => team.TeamID === game.HomeTeamID
+  const competition: Competition = game.competitions[0];
+  const competitors: Competitor[] = competition.competitors;
+
+  const homeTeam: Competitor | undefined = competitors.find(
+    (competitor) => competitor.homeAway === "home"
   );
 
-  const awayTeam: Team | undefined = teamData.find(
-    (team) => team.TeamID === game.AwayTeamID
+  const awayTeam: Competitor | undefined = competitors.find(
+    (competitor) => competitor.homeAway === "away"
   );
 
   const quarterScores: WinningScore[] = [];
   for (let i = 0; i < 4; i++) {
-    const homeScore = game[`HomeScoreQuarter${i + 1}` as keyof Game] as number;
-    const awayScore = game[`AwayScoreQuarter${i + 1}` as keyof Game] as number;
-    quarterScores.push({ homeScore, awayScore });
+    const homeScore = homeTeam?.linescores
+      ?.slice(0, i + 1)
+      .reduce((acc, score) => acc + score.value, 0);
+    const awayScore = awayTeam?.linescores
+      ?.slice(0, i + 1)
+      .reduce((acc, score) => acc + score.value, 0);
+    // const homeScore = game[`HomeScoreQuarter${i + 1}` as keyof Game] as number;
+    // const awayScore = game[`AwayScoreQuarter${i + 1}` as keyof Game] as number;
+    quarterScores.push({
+      homeScore: homeScore ?? 0,
+      awayScore: awayScore ?? 0,
+    });
   }
 
   return (
@@ -28,28 +39,24 @@ export default function Box({ game }: { game: Game }) {
       <div className="flex ml-10">
         <div className="flex flex-col items-end">
           <div className="flex justify-center items-center 300 w-[calc(10*var(--spacing-box))]">
-            <img
-              src={homeTeam?.WikipediaLogoUrl ?? undefined}
-              className="h-20"
-            />
-            <div className="font-bold text-4xl">{homeTeam?.FullName}</div>
+            <img src={homeTeam?.team.logo} className="h-20" />
+            <div className="font-bold text-4xl">
+              {homeTeam?.team.displayName}
+            </div>
           </div>
           <div className="flex items-end">
             <div className="flex justify-center items-center [writing-mode:sideways-lr] h-[calc(10*var(--spacing-box))]">
-              <img
-                src={awayTeam?.WikipediaLogoUrl ?? undefined}
-                className="h-20"
-              />
-              <div className="font-bold text-4xl">{awayTeam?.FullName}</div>
+              <img src={awayTeam?.team.logo ?? undefined} className="h-20" />
+              <div className="font-bold text-4xl">
+                {awayTeam?.team.displayName}
+              </div>
             </div>
             <div>
               <div className="flex flex-col">
                 <div
                   className="flex ml-number-box text-xl"
                   style={{
-                    backgroundColor: homeTeam?.PrimaryColor
-                      ? `#${homeTeam.PrimaryColor}`
-                      : "black",
+                    backgroundColor: `#${homeTeam?.team.color}`,
                     color: "white",
                   }}
                 >
@@ -61,9 +68,7 @@ export default function Box({ game }: { game: Game }) {
                   <div
                     className="flex flex-col text-xl"
                     style={{
-                      backgroundColor: awayTeam?.PrimaryColor
-                        ? `#${awayTeam.PrimaryColor}`
-                        : "black",
+                      backgroundColor: `#${awayTeam?.team.color}`,
                       color: "white",
                     }}
                   >
@@ -77,7 +82,6 @@ export default function Box({ game }: { game: Game }) {
                       <div className="flex" key={i}>
                         {namesMatrix[i].map((name, j) => (
                           <BoxSquare
-                            game={game}
                             key={i + j}
                             name={name}
                             boxNumber={10 * i + j + 1}
