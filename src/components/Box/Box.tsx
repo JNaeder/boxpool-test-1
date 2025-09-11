@@ -90,6 +90,7 @@ export default function Box({ game }: { game: Game }) {
                               awayScore: sideRowNumbers[i],
                             }}
                             quarterScores={quarterScores}
+                            period={game.status.period}
                           />
                         ))}
                       </div>

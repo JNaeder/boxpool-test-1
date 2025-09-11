@@ -5,32 +5,34 @@ export default function BoxSquare({
   boxNumber,
   winningNumbers,
   quarterScores,
+  period,
 }: {
   name?: string;
   boxNumber: number;
   winningNumbers: WinningScore;
   quarterScores: WinningScore[];
+  period: number;
 }) {
   const firstScoreWin =
-    quarterScores.length >= 1
+    period >= 1
       ? quarterScores[0].homeScore % 10 === winningNumbers.homeScore &&
         quarterScores[0].awayScore % 10 === winningNumbers.awayScore
       : false;
 
   const secondScoreWin =
-    quarterScores.length >= 2
+    period >= 2
       ? quarterScores[1].homeScore % 10 === winningNumbers.homeScore &&
         quarterScores[1].awayScore % 10 === winningNumbers.awayScore
       : false;
 
   const thirdScoreWin =
-    quarterScores.length >= 3
+    period >= 3
       ? quarterScores[2].homeScore % 10 === winningNumbers.homeScore &&
         quarterScores[2].awayScore % 10 === winningNumbers.awayScore
       : false;
 
   const finalScoreWin =
-    quarterScores.length >= 4
+    period >= 4
       ? quarterScores[3].homeScore % 10 === winningNumbers.homeScore &&
         quarterScores[3].awayScore % 10 === winningNumbers.awayScore
       : false;
@@ -40,6 +42,7 @@ export default function BoxSquare({
       className={[
         "w-box h-box border-1 bg-box-bg flex flex-col",
         "hover:!bg-amber-200",
+        // "bg-linear-to-r from-red-400",
         firstScoreWin && "!bg-blue-400 font-bold",
         secondScoreWin && "!bg-green-400 font-bold",
         thirdScoreWin && "!bg-yellow-400 font-bold",

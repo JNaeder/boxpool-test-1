@@ -16,6 +16,8 @@ export default function CountdownTimer({ targetDate }: { targetDate: string }) {
   const [timeLeft, setTimeLeft] = useState(calcTimeLeft());
 
   useEffect(() => {
+    setTimeLeft(calcTimeLeft());
+
     const timer = setInterval(() => {
       setTimeLeft(calcTimeLeft());
     }, 1000);

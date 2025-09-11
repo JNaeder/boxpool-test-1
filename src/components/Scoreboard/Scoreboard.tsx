@@ -1,4 +1,3 @@
-import { teamData } from "../../data";
 import type { Game, Competition, Competitor } from "../../types";
 import CountdownTimer from "./CountdownTimer";
 import ScoreboardTitleBox from "./ScoreboardTitleBox";
@@ -16,13 +15,21 @@ export default function Scoreboard({ game }: { game: Game }) {
     (competitor) => competitor.homeAway === "away"
   );
 
-  // const getCurrentQuater = (): React.ReactNode | string => {
-  //   if (game.Status === "Scheduled") {
-  //     return <CountdownTimer targetDate={game.Date} />;
-  //   } else {
-  //     return `${game.QuarterDescription} Quarter`;
-  //   }
-  // };
+  const getCurrentQuater = (): React.ReactNode | string => {
+    if (game.status.type.name === "STATUS_SCHEDULED") {
+      return (
+        <div className="flex flex-col justify-center items-center">
+          <div className="text-xl">{game.competitions[0].date}</div>
+          <div className="text-2xl font-bold">
+            <CountdownTimer targetDate={game.competitions[0].date} />
+          </div>
+        </div>
+      );
+    } else {
+      return game.status.type.description;
+    }
+  };
+
   return (
     <>
       <div className="flex flex-col items-center mb-4">
@@ -40,28 +47,42 @@ export default function Scoreboard({ game }: { game: Game }) {
               text={awayTeam ? awayTeam?.team.abbreviation : ""}
               color={`#${awayTeam?.team.color}`}
             />
-            <ScoreboardSquareBox text={awayTeam?.linescores?.[0]?.value ?? 0} />
-            <ScoreboardSquareBox text={awayTeam?.linescores?.[1]?.value ?? 0} />
-            <ScoreboardSquareBox text={awayTeam?.linescores?.[2]?.value ?? 0} />
-            <ScoreboardSquareBox text={awayTeam?.linescores?.[3]?.value ?? 0} />
-            <ScoreboardSquareBox text={awayTeam?.score ?? 0} />
+            <ScoreboardSquareBox
+              text={awayTeam?.linescores?.[0]?.value ?? null}
+            />
+            <ScoreboardSquareBox
+              text={awayTeam?.linescores?.[1]?.value ?? null}
+            />
+            <ScoreboardSquareBox
+              text={awayTeam?.linescores?.[2]?.value ?? null}
+            />
+            <ScoreboardSquareBox
+              text={awayTeam?.linescores?.[3]?.value ?? null}
+            />
+            <ScoreboardSquareBox text={awayTeam?.score ?? null} />
           </div>
           <div className="flex">
             <ScoreboardSquareBox
               text={homeTeam ? homeTeam?.team.abbreviation : ""}
               color={`#${homeTeam?.team.color}`}
             />
-            <ScoreboardSquareBox text={homeTeam?.linescores?.[0].value ?? 0} />
-            <ScoreboardSquareBox text={homeTeam?.linescores?.[1].value ?? 0} />
-            <ScoreboardSquareBox text={homeTeam?.linescores?.[2].value ?? 0} />
-            <ScoreboardSquareBox text={homeTeam?.linescores?.[3].value ?? 0} />
-            <ScoreboardSquareBox text={homeTeam?.score ?? 0} />
+            <ScoreboardSquareBox
+              text={homeTeam?.linescores?.[0].value ?? null}
+            />
+            <ScoreboardSquareBox
+              text={homeTeam?.linescores?.[1].value ?? null}
+            />
+            <ScoreboardSquareBox
+              text={homeTeam?.linescores?.[2].value ?? null}
+            />
+            <ScoreboardSquareBox
+              text={homeTeam?.linescores?.[3].value ?? null}
+            />
+            <ScoreboardSquareBox text={homeTeam?.score ?? null} />
           </div>
         </div>
         <div className="mt-3 flex flex-col justify-center items-center ">
-          <div className="font-bold text-3xl">
-            {game.status.type.description}
-          </div>
+          {getCurrentQuater()}
           {/* <div className="text-xl">{game.TimeRemaining}</div>
           <div className="w-3/4 text-center">{game.LastPlay}</div> */}
         </div>
