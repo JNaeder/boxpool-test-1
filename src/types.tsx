@@ -80,10 +80,10 @@ export type Winners = {
 };
 
 export type PrizeAmount = {
-  FirstQuarter: number;
-  SecondQuarter: number;
-  ThirdQuarter: number;
-  Final: number;
+  FirstQuarter: string;
+  SecondQuarter: string;
+  ThirdQuarter: string;
+  Final: string;
 };
 
 export type User = {

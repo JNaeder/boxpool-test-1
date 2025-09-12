@@ -1,6 +1,7 @@
+import type { Boxpool } from "@/types";
 import PrizeboardSquareBox from "./PrizeboardSquareBox";
 
-export default function Prizeboard() {
+export default function Prizeboard({ boxpoolData }: { boxpoolData: Boxpool }) {
   return (
     <div className="ml-auto mr-auto flex">
       <div>
@@ -10,10 +11,16 @@ export default function Prizeboard() {
         <PrizeboardSquareBox text="Final" color="red" />
       </div>
       <div>
-        <PrizeboardSquareBox text="5000" />
-        <PrizeboardSquareBox text="15000" />
-        <PrizeboardSquareBox text="5000" />
-        <PrizeboardSquareBox text="50000" />
+        <PrizeboardSquareBox
+          text={boxpoolData.prizeNumbers.gameScore.FirstQuarter}
+        />
+        <PrizeboardSquareBox
+          text={boxpoolData.prizeNumbers.gameScore.SecondQuarter}
+        />
+        <PrizeboardSquareBox
+          text={boxpoolData.prizeNumbers.gameScore.SecondQuarter}
+        />
+        <PrizeboardSquareBox text={boxpoolData.prizeNumbers.gameScore.Final} />
       </div>
     </div>
   );

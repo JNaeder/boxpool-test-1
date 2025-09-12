@@ -3,10 +3,13 @@ import NumberSquare from "./NumberSquare";
 import { namesMatrix } from "../../data";
 import type { Game, WinningScore, Competition, Competitor } from "../../types";
 
-const topRowNumbers = [9, 1, 2, 7, 0, 3, 4, 6, 5, 8];
-const sideRowNumbers = [3, 5, 9, 0, 7, 1, 6, 2, 4, 8];
-
-export default function Box({ game }: { game: Game }) {
+export default function Box({
+  game,
+  rowNumbers,
+}: {
+  game: Game;
+  rowNumbers: { homeBoxNumbers: number[]; awayBoxNumbers: number[] };
+}) {
   const competition: Competition = game.competitions[0];
   const competitors: Competitor[] = competition.competitors;
 
@@ -60,7 +63,7 @@ export default function Box({ game }: { game: Game }) {
                     color: "white",
                   }}
                 >
-                  {topRowNumbers.map((number, i) => (
+                  {rowNumbers.homeBoxNumbers.map((number, i) => (
                     <NumberSquare key={i} option="top" number={number} />
                   ))}
                 </div>
@@ -72,7 +75,7 @@ export default function Box({ game }: { game: Game }) {
                       color: "white",
                     }}
                   >
-                    {sideRowNumbers.map((number, i) => (
+                    {rowNumbers.awayBoxNumbers.map((number, i) => (
                       <NumberSquare key={i} option="side" number={number} />
                     ))}
                   </div>
@@ -86,8 +89,8 @@ export default function Box({ game }: { game: Game }) {
                             name={name}
                             boxNumber={10 * i + j + 1}
                             winningNumbers={{
-                              homeScore: topRowNumbers[j],
-                              awayScore: sideRowNumbers[i],
+                              homeScore: rowNumbers.homeBoxNumbers[j],
+                              awayScore: rowNumbers.awayBoxNumbers[i],
                             }}
                             quarterScores={quarterScores}
                             period={game.status?.period}

@@ -25,14 +25,14 @@ export default function BoxPoolPage({ boxpoolData }: { boxpoolData: Boxpool }) {
     <>
       <div className="flex justify-center w-screen h-screen">
         <div className="flex flex-col w-[50%] p-2 border-r-4">
-          {/* <LastUpdatedWidget
-              lastUpdated={allGames[currentGameIndex].LastUpdated}
-            /> */}
           <Scoreboard game={currentGameSummary.header} />
-          <Prizeboard />
+          <Prizeboard boxpoolData={boxpoolData} />
         </div>
         <div className="w-full p-2">
-          <Box game={currentGameSummary.header} />
+          <Box
+            game={currentGameSummary.header}
+            rowNumbers={boxpoolData.boxNumbers}
+          />
         </div>
       </div>
     </>
