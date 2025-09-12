@@ -44,7 +44,7 @@ export const getSportsPlayByPlay = async (playNumber: number) => {
 };
 
 export const testSportsData = async () => {
-  const url = `https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=2025&week=1&limit=16`;
+  const url = `https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=2025&week=2&limit=16`;
 
   const res = await fetch(url);
   const data = await res.json();

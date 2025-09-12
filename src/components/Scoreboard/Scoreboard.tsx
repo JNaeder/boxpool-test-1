@@ -26,7 +26,7 @@ export default function Scoreboard({ game }: { game: Game }) {
         </div>
       );
     } else {
-      return game.status.type.description;
+      return game.status.type.detail;
     }
   };
 
@@ -51,13 +51,25 @@ export default function Scoreboard({ game }: { game: Game }) {
               text={awayTeam?.linescores?.[0]?.value ?? null}
             />
             <ScoreboardSquareBox
-              text={awayTeam?.linescores?.[1]?.value ?? null}
+              text={
+                awayTeam?.linescores && awayTeam?.linescores?.length > 1
+                  ? awayTeam?.linescores?.[1]?.value
+                  : null
+              }
             />
             <ScoreboardSquareBox
-              text={awayTeam?.linescores?.[2]?.value ?? null}
+              text={
+                awayTeam?.linescores && awayTeam?.linescores?.length > 2
+                  ? awayTeam?.linescores?.[2]?.value
+                  : null
+              }
             />
             <ScoreboardSquareBox
-              text={awayTeam?.linescores?.[3]?.value ?? null}
+              text={
+                awayTeam?.linescores && awayTeam?.linescores?.length > 3
+                  ? awayTeam?.linescores?.[3]?.value
+                  : null
+              }
             />
             <ScoreboardSquareBox text={awayTeam?.score ?? null} />
           </div>
@@ -70,13 +82,25 @@ export default function Scoreboard({ game }: { game: Game }) {
               text={homeTeam?.linescores?.[0].value ?? null}
             />
             <ScoreboardSquareBox
-              text={homeTeam?.linescores?.[1].value ?? null}
+              text={
+                homeTeam?.linescores && homeTeam?.linescores?.length > 1
+                  ? homeTeam?.linescores?.[1]?.value
+                  : null
+              }
             />
             <ScoreboardSquareBox
-              text={homeTeam?.linescores?.[2].value ?? null}
+              text={
+                homeTeam?.linescores && homeTeam?.linescores?.length > 2
+                  ? homeTeam?.linescores?.[2]?.value
+                  : null
+              }
             />
             <ScoreboardSquareBox
-              text={homeTeam?.linescores?.[3].value ?? null}
+              text={
+                homeTeam?.linescores && homeTeam?.linescores?.length > 3
+                  ? homeTeam?.linescores?.[3]?.value
+                  : null
+              }
             />
             <ScoreboardSquareBox text={homeTeam?.score ?? null} />
           </div>

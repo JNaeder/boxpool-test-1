@@ -2,7 +2,7 @@ export default function ScoreboardSquareBox({
   text,
   color = "white",
 }: {
-  text: string | number | null;
+  text: string | number | null | undefined;
   color?: string;
 }) {
   return (

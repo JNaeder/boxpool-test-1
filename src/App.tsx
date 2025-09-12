@@ -13,7 +13,7 @@ function App() {
   useEffect(() => {
     const getData = async () => {
       const data = await testSportsData();
-      // console.log(data["events"][0]);
+      console.log(data["events"][0]);
       setAllGames(data["events"]);
     };
 
