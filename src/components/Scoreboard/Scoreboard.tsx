@@ -26,7 +26,23 @@ export default function Scoreboard({ game }: { game: Game }) {
         </div>
       );
     } else {
-      return game.status.type.detail;
+      return (
+        <div className="flex flex-col justify-center items-center">
+          <div className="text-2xl">{game.status.type.detail}</div>
+          {game.status.type.completed ? (
+            ""
+          ) : (
+            <>
+              <div className="bg-black text-white p-2 m-2 rounded-2xl">
+                {game.competitions[0].situation?.downDistanceText}
+              </div>
+              <div className=" w-3/4 text-center rounded-2xl p-2">
+                {game.competitions[0].situation?.lastPlay.text}
+              </div>
+            </>
+          )}
+        </div>
+      );
     }
   };
 
@@ -36,10 +52,10 @@ export default function Scoreboard({ game }: { game: Game }) {
         <div className="flex flex-col">
           <div className="flex">
             <ScoreboardTitleBox text="" />
-            <ScoreboardTitleBox text="1" />
-            <ScoreboardTitleBox text="2" />
-            <ScoreboardTitleBox text="3" />
-            <ScoreboardTitleBox text="4" />
+            <ScoreboardTitleBox text="Q1" />
+            <ScoreboardTitleBox text="Q2" />
+            <ScoreboardTitleBox text="Q3" />
+            <ScoreboardTitleBox text="Q4" />
             <ScoreboardTitleBox text="Total" />
           </div>
           <div className="flex">
@@ -107,8 +123,6 @@ export default function Scoreboard({ game }: { game: Game }) {
         </div>
         <div className="mt-3 flex flex-col justify-center items-center ">
           {getCurrentQuater()}
-          {/* <div className="text-xl">{game.TimeRemaining}</div>
-          <div className="w-3/4 text-center">{game.LastPlay}</div> */}
         </div>
       </div>
     </>

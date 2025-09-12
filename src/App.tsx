@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
 import { testSportsData } from "./apiFunctions";
-import Box from "./components/Box/Box";
 import type { Game } from "./types";
-import Scoreboard from "./components/Scoreboard/Scoreboard";
 import TopMenuBar from "./components/TopMenuBar";
-import Prizeboard from "./components/Prizeboard/Prizeboard";
+import BoxPoolPage from "./components/BoxPoolPage";
 
 function App() {
   const [allGames, setAllGames] = useState<Game[]>([]);
@@ -13,6 +11,7 @@ function App() {
   useEffect(() => {
     const getData = async () => {
       const data = await testSportsData();
+      // const data = savedTestData();
       console.log(data["events"][0]);
       setAllGames(data["events"]);
     };
@@ -31,18 +30,7 @@ function App() {
         currentGameIndex={currentGameIndex}
         setCurrentGameIndex={setCurrentGameIndex}
       />
-      <div className="flex justify-center w-screen h-screen">
-        <div className="flex flex-col w-[50%] p-2 border-r-4">
-          {/* <LastUpdatedWidget
-            lastUpdated={allGames[currentGameIndex].LastUpdated}
-          /> */}
-          <Scoreboard game={allGames[currentGameIndex]} />
-          <Prizeboard />
-        </div>
-        <div className="w-full p-2">
-          <Box game={allGames[currentGameIndex]} />
-        </div>
-      </div>
+      <BoxPoolPage allGames={allGames} currentGameIndex={currentGameIndex} />
     </>
   );
 }

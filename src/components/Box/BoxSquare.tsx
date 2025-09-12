@@ -54,9 +54,9 @@ export default function BoxSquare({
 
   const winners = winColorStates.filter((state) => state.state);
 
-  if (winners.length > 0) {
-    console.log(winners);
-  }
+  // if (winners.length > 0) {
+  //   console.log(winners);
+  // }
 
   const getColorString = (): string => {
     if (winners.length == 1) {
