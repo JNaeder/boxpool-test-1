@@ -1,7 +1,15 @@
 import testData from "./savedJSONData/Test1.json";
 
-export const testSportsData = async () => {
-  const url = `https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=2025&week=2`;
+export const getWeekScoreboard = async (weekNumber: number) => {
+  const url = `https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=2025&week=${weekNumber}`;
+
+  const res = await fetch(url);
+  const data = await res.json();
+  return data;
+};
+
+export const getGameSummary = async (eventId: string) => {
+  const url = `https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=${eventId}`;
 
   const res = await fetch(url);
   const data = await res.json();

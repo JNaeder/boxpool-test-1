@@ -21,7 +21,7 @@ export default function GameSelection({
   return (
     <>
       <div className="flex gap-2 items-center">
-        <Button onClick={prevGame} disabled={currentGameIndex == 0}>
+        {/* <Button onClick={prevGame} disabled={currentGameIndex == 0}>
           <ChevronLeft />
         </Button>
         <div>
@@ -32,7 +32,7 @@ export default function GameSelection({
           disabled={currentGameIndex === allGames.length - 1}
         >
           <ChevronRight />
-        </Button>
+        </Button> */}
       </div>
     </>
   );

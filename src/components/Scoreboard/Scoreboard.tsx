@@ -16,7 +16,7 @@ export default function Scoreboard({ game }: { game: Game }) {
   );
 
   const getCurrentQuater = (): React.ReactNode | string => {
-    if (game.status.type.name === "STATUS_SCHEDULED") {
+    if (competition.status.type.name === "STATUS_SCHEDULED") {
       return (
         <div className="flex flex-col justify-center items-center">
           <div className="text-xl">{game.competitions[0].date}</div>
@@ -28,8 +28,8 @@ export default function Scoreboard({ game }: { game: Game }) {
     } else {
       return (
         <div className="flex flex-col justify-center items-center">
-          <div className="text-2xl">{game.status.type.detail}</div>
-          {game.status.type.completed ? (
+          <div className="text-2xl">{competition.status.type.detail}</div>
+          {competition.status.type.completed ? (
             ""
           ) : (
             <>
@@ -64,26 +64,26 @@ export default function Scoreboard({ game }: { game: Game }) {
               color={`#${awayTeam?.team.color}`}
             />
             <ScoreboardSquareBox
-              text={awayTeam?.linescores?.[0]?.value ?? null}
+              text={awayTeam?.linescores?.[0]?.displayValue ?? null}
             />
             <ScoreboardSquareBox
               text={
                 awayTeam?.linescores && awayTeam?.linescores?.length > 1
-                  ? awayTeam?.linescores?.[1]?.value
+                  ? awayTeam?.linescores?.[1]?.displayValue
                   : null
               }
             />
             <ScoreboardSquareBox
               text={
                 awayTeam?.linescores && awayTeam?.linescores?.length > 2
-                  ? awayTeam?.linescores?.[2]?.value
+                  ? awayTeam?.linescores?.[2]?.displayValue
                   : null
               }
             />
             <ScoreboardSquareBox
               text={
                 awayTeam?.linescores && awayTeam?.linescores?.length > 3
-                  ? awayTeam?.linescores?.[3]?.value
+                  ? awayTeam?.linescores?.[3]?.displayValue
                   : null
               }
             />
@@ -95,26 +95,26 @@ export default function Scoreboard({ game }: { game: Game }) {
               color={`#${homeTeam?.team.color}`}
             />
             <ScoreboardSquareBox
-              text={homeTeam?.linescores?.[0].value ?? null}
+              text={homeTeam?.linescores?.[0].displayValue ?? null}
             />
             <ScoreboardSquareBox
               text={
                 homeTeam?.linescores && homeTeam?.linescores?.length > 1
-                  ? homeTeam?.linescores?.[1]?.value
+                  ? homeTeam?.linescores?.[1]?.displayValue
                   : null
               }
             />
             <ScoreboardSquareBox
               text={
                 homeTeam?.linescores && homeTeam?.linescores?.length > 2
-                  ? homeTeam?.linescores?.[2]?.value
+                  ? homeTeam?.linescores?.[2]?.displayValue
                   : null
               }
             />
             <ScoreboardSquareBox
               text={
                 homeTeam?.linescores && homeTeam?.linescores?.length > 3
-                  ? homeTeam?.linescores?.[3]?.value
+                  ? homeTeam?.linescores?.[3]?.displayValue
                   : null
               }
             />

@@ -6,12 +6,14 @@ export default function BoxSquare({
   winningNumbers,
   quarterScores,
   period,
+  completed,
 }: {
   name?: string;
   boxNumber: number;
   winningNumbers: WinningScore;
   quarterScores: WinningScore[];
-  period: number;
+  period: number | undefined;
+  completed: boolean;
 }) {
   type ColorState = {
     color: string;
@@ -21,7 +23,7 @@ export default function BoxSquare({
     {
       color: "blue-400",
       state:
-        period >= 1
+        (period ?? 0) >= 1 || completed
           ? quarterScores[0].homeScore % 10 === winningNumbers.homeScore &&
             quarterScores[0].awayScore % 10 === winningNumbers.awayScore
           : false,
@@ -29,7 +31,7 @@ export default function BoxSquare({
     {
       color: "green-400",
       state:
-        period >= 2
+        (period ?? 0) >= 2 || completed
           ? quarterScores[1].homeScore % 10 === winningNumbers.homeScore &&
             quarterScores[1].awayScore % 10 === winningNumbers.awayScore
           : false,
@@ -37,7 +39,7 @@ export default function BoxSquare({
     {
       color: "yellow-400",
       state:
-        period >= 3
+        (period ?? 0) >= 3 || completed
           ? quarterScores[2].homeScore % 10 === winningNumbers.homeScore &&
             quarterScores[2].awayScore % 10 === winningNumbers.awayScore
           : false,
@@ -45,7 +47,7 @@ export default function BoxSquare({
     {
       color: "red-400",
       state:
-        period >= 4
+        (period ?? 0) >= 4 || completed
           ? quarterScores[3].homeScore % 10 === winningNumbers.homeScore &&
             quarterScores[3].awayScore % 10 === winningNumbers.awayScore
           : false,
@@ -67,6 +69,8 @@ export default function BoxSquare({
       return "";
     }
   };
+
+  // console.log(quarterScores, winningNumbers);
 
   return (
     <div

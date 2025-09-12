@@ -13,12 +13,11 @@ export type Competition = {
   date: string;
   competitors: Competitor[];
   situation: Situation | null;
+  status: { type: StatusType };
 };
 
 export type LineScore = {
-  value: number;
-  period: number;
-  dislayValue: string;
+  displayValue: string;
 };
 
 export type Competitor = {
@@ -29,6 +28,13 @@ export type Competitor = {
   winner: boolean;
 };
 
+export type TeamLogo = {
+  href: string;
+  height: number;
+  width: number;
+  alt: string;
+};
+
 export type Team = {
   abbreviation: string;
   color: string;
@@ -36,6 +42,7 @@ export type Team = {
   displayName: string;
   location: string;
   logo: string;
+  logos: TeamLogo[];
   name: string;
 };
 
@@ -46,6 +53,10 @@ export type StatusType = {
   detail: string;
 };
 
+export type GameSummary = {
+  header: Game;
+};
+
 export type Game = {
   id: string;
   competitions: Competition[];
@@ -53,7 +64,7 @@ export type Game = {
     displayClock: string;
     period: number;
     type: StatusType;
-  };
+  } | null;
 };
 
 export type WinningScore = {

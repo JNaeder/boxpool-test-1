@@ -1,36 +1,39 @@
-import { useState, useEffect } from "react";
-import { testSportsData } from "./apiFunctions";
-import type { Game } from "./types";
+// import { useState } from "react";
+// import { getWeekScoreboard, getGameSummary } from "./apiFunctions";
+import { boxpoolData } from "./fakeDB";
+// import type { Game } from "./types";
 import TopMenuBar from "./components/TopMenuBar";
 import BoxPoolPage from "./components/BoxPoolPage";
 
 function App() {
-  const [allGames, setAllGames] = useState<Game[]>([]);
-  const [currentGameIndex, setCurrentGameIndex] = useState<number>(0);
+  // const [allGames, setAllGames] = useState<Game[]>([]);
+  // const [currentGameIndex, setCurrentGameIndex] = useState<number>(0);
+  // const [currentGameSummary, setCurrentGameSummary] =
+  //   useState<GameSummary | null>(null);
 
-  useEffect(() => {
-    const getData = async () => {
-      const data = await testSportsData();
-      // const data = savedTestData();
-      console.log(data["events"][0]);
-      setAllGames(data["events"]);
-    };
+  // useEffect(() => {
+  //   const getData = async () => {
+  //     const data = await getWeekScoreboard(2);
+  //     const allGames = data["events"];
+  //     setAllGames(allGames);
+  //     const currentGame: Game = allGames[0];
 
-    getData();
-  }, []);
+  //     const gameSummary = await getGameSummary(currentGame.id);
+  //     console.log(gameSummary);
+  //     setCurrentGameSummary(gameSummary);
+  //   };
 
-  if (allGames.length == 0) {
-    return <h1>No Game</h1>;
-  }
+  //   getData();
+  // }, []);
+
+  // if (allGames.length == 0) {
+  //   return <h1>No Game</h1>;
+  // }
 
   return (
     <>
-      <TopMenuBar
-        allGames={allGames}
-        currentGameIndex={currentGameIndex}
-        setCurrentGameIndex={setCurrentGameIndex}
-      />
-      <BoxPoolPage allGames={allGames} currentGameIndex={currentGameIndex} />
+      <TopMenuBar />
+      <BoxPoolPage boxpoolData={boxpoolData} />
     </>
   );
 }
