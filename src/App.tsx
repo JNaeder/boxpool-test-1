@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { getWeekScoreboard } from "./apiFunctions";
+// import { getWeekScoreboard } from "./apiFunctions";
 import { boxpoolData } from "./fakeDB";
 // import type { Game } from "./types";
 import TopMenuBar from "./components/TopMenuBar";
@@ -13,8 +13,14 @@ function App() {
 
   useEffect(() => {
     const getData = async () => {
-      const data = await getWeekScoreboard(1);
-      console.log(data);
+      // const data = await getWeekScoreboard(2);
+      // console.log(data);
+      // const games = data["events"];
+      // const gameIds = [];
+      // for (let i = 0; i < games.length; i++) {
+      //   gameIds.push(games[i].id);
+      // }
+      // console.log(gameIds);
       // const allGames = data["events"];
       // setAllGames(allGames);
       // const currentGame: Game = allGames[0];

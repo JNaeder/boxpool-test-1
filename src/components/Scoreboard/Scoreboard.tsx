@@ -19,7 +19,9 @@ export default function Scoreboard({ game }: { game: Game }) {
     if (competition.status.type.name === "STATUS_SCHEDULED") {
       return (
         <div className="flex flex-col justify-center items-center">
-          <div className="text-xl">{game.competitions[0].date}</div>
+          <div className="text-xl">
+            {game.competitions[0].status.type.detail}
+          </div>
           <div className="text-2xl font-bold">
             <CountdownTimer targetDate={game.competitions[0].date} />
           </div>

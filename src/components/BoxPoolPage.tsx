@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { getGameSummary } from "../apiFunctions";
 import Scoreboard from "./Scoreboard/Scoreboard";
 import Prizeboard from "./Prizeboard/Prizeboard";
-import ScoringPlays from "./ScoringPlays";
+import ScoringPlays from "./ScoringPlays/ScoringPlays";
 import Box from "./Box/Box";
 import type { Boxpool, GameSummary } from "@/types";
 
@@ -26,8 +26,8 @@ export default function BoxPoolPage({ boxpoolData }: { boxpoolData: Boxpool }) {
     <>
       <div className="flex justify-center w-screen h-screen">
         <div className="flex flex-col w-[50%] p-2 border-r-4">
-          <Scoreboard game={currentGameSummary.header} />
           <Prizeboard boxpoolData={boxpoolData} />
+          <Scoreboard game={currentGameSummary.header} />
           <ScoringPlays gameSummary={currentGameSummary} />
         </div>
         <div className="w-full p-2">

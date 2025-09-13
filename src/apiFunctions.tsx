@@ -2,6 +2,8 @@ import testData from "./savedJSONData/Test1.json";
 
 export const getWeekScoreboard = async (weekNumber: number) => {
   const url = `https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=2025&week=${weekNumber}`;
+  // const url =
+  //   "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard?dates=2054&seasontype=3&week=1";
 
   const res = await fetch(url);
   const data = await res.json();

@@ -1,4 +1,4 @@
-import type { ScoringPlay, Team } from "./types";
+import type { ScoringPlay, Team } from "../../types";
 
 export default function ScoringPlayItem({
   scoringPlay,
@@ -13,15 +13,16 @@ export default function ScoringPlayItem({
     <>
       <div>
         <div
-          className={`flex justify-center items-center gap-2 rounded-2xl`}
+          className={`flex justify-center items-center gap-2 rounded-2xl mb-2`}
           style={{ backgroundColor: `#${scoringTeam.color}`, color: "white" }}
         >
           <img src={scoringPlay.team.logo} width={30} />
           <div>{scoringPlay.scoringType.displayName}</div>
           <div>{scoringPlay.clock.displayValue}</div>
+          <div></div>
         </div>
         <div>
-          <div className="text-sm">{scoringPlay.text}</div>
+          <div className="text-sm ">{scoringPlay.text}</div>
         </div>
       </div>
     </>
