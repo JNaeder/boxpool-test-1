@@ -21,6 +21,7 @@ export type LineScore = {
 };
 
 export type Competitor = {
+  id: string;
   homeAway: string;
   team: Team;
   score: string;
@@ -36,6 +37,7 @@ export type TeamLogo = {
 };
 
 export type Team = {
+  id: string;
   abbreviation: string;
   color: string;
   alternateColor: string;
@@ -53,8 +55,27 @@ export type StatusType = {
   detail: string;
 };
 
+export type ScoringPlay = {
+  period: { number: number };
+  team: Team;
+  text: string;
+  clock: { displayValue: String; value: number };
+  scoringType: {
+    name: string;
+    displayName: string;
+    abbreviation: string;
+  };
+  awayScore: number;
+  homeScore: number;
+  type: {
+    abbreviation: string;
+    text: string;
+  };
+};
+
 export type GameSummary = {
   header: Game;
+  scoringPlays: ScoringPlay[];
 };
 
 export type Game = {
@@ -92,13 +113,6 @@ export type User = {
   email: string;
 };
 
-export type Box = {
-  id: number;
-  boxNumber: number;
-  name: string;
-  image: string;
-};
-
 export type Boxpool = {
   id: number;
   user: User;
@@ -113,5 +127,12 @@ export type Boxpool = {
     plusFive: PrizeAmount | null;
     reverse: PrizeAmount | null;
   };
-  boxes: Box[];
+  boxes: Boxes;
+};
+
+export type Boxes = {
+  [boxNumber: number]: {
+    name: string;
+    image?: string;
+  };
 };

@@ -1,5 +1,5 @@
-// import { useState } from "react";
-// import { getWeekScoreboard, getGameSummary } from "./apiFunctions";
+import { useEffect } from "react";
+import { getWeekScoreboard } from "./apiFunctions";
 import { boxpoolData } from "./fakeDB";
 // import type { Game } from "./types";
 import TopMenuBar from "./components/TopMenuBar";
@@ -11,20 +11,20 @@ function App() {
   // const [currentGameSummary, setCurrentGameSummary] =
   //   useState<GameSummary | null>(null);
 
-  // useEffect(() => {
-  //   const getData = async () => {
-  //     const data = await getWeekScoreboard(2);
-  //     const allGames = data["events"];
-  //     setAllGames(allGames);
-  //     const currentGame: Game = allGames[0];
+  useEffect(() => {
+    const getData = async () => {
+      const data = await getWeekScoreboard(1);
+      console.log(data);
+      // const allGames = data["events"];
+      // setAllGames(allGames);
+      // const currentGame: Game = allGames[0];
+      // const gameSummary = await getGameSummary(currentGame.id);
+      // console.log(gameSummary);
+      // setCurrentGameSummary(gameSummary);
+    };
 
-  //     const gameSummary = await getGameSummary(currentGame.id);
-  //     console.log(gameSummary);
-  //     setCurrentGameSummary(gameSummary);
-  //   };
-
-  //   getData();
-  // }, []);
+    getData();
+  }, []);
 
   // if (allGames.length == 0) {
   //   return <h1>No Game</h1>;

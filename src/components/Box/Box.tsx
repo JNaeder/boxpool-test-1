@@ -1,17 +1,27 @@
 import BoxSquare from "./BoxSquare";
 import NumberSquare from "./NumberSquare";
-import { namesMatrix } from "../../data";
-import type { Game, WinningScore, Competition, Competitor } from "../../types";
+import type {
+  Game,
+  WinningScore,
+  Competition,
+  Competitor,
+  Boxpool,
+} from "../../types";
 
 export default function Box({
   game,
-  rowNumbers,
+  boxpoolData,
 }: {
   game: Game;
-  rowNumbers: { homeBoxNumbers: number[]; awayBoxNumbers: number[] };
+  boxpoolData: Boxpool;
 }) {
   const competition: Competition = game.competitions[0];
   const competitors: Competitor[] = competition.competitors;
+  const rowNumbers = {
+    homeBoxNumbers: boxpoolData.boxNumbers.homeBoxNumbers,
+    awayBoxNumbers: boxpoolData.boxNumbers.awayBoxNumbers,
+  };
+  const boxes = boxpoolData.boxes;
 
   // console.log(game);
 
@@ -80,13 +90,33 @@ export default function Box({
                     ))}
                   </div>
 
-                  <div className="flex flex-col">
+                  {/* <div className="flex flex-col">
                     {namesMatrix.map((_, i) => (
                       <div className="flex" key={i}>
                         {namesMatrix[i].map((name, j) => (
                           <BoxSquare
                             key={i + j}
                             name={name}
+                            boxNumber={10 * i + j + 1}
+                            winningNumbers={{
+                              homeScore: rowNumbers.homeBoxNumbers[j],
+                              awayScore: rowNumbers.awayBoxNumbers[i],
+                            }}
+                            quarterScores={quarterScores}
+                            period={game.status?.period}
+                            completed={competition.status.type.completed}
+                          />
+                        ))}
+                      </div>
+                    ))}
+                  </div> */}
+                  <div className="flex flex-col">
+                    {[...Array(10)].map((_, i) => (
+                      <div className="flex" key={i}>
+                        {[...Array(10)].map((_, j) => (
+                          <BoxSquare
+                            key={i + j}
+                            name={boxes[10 * i + j + 1]?.name ?? ""}
                             boxNumber={10 * i + j + 1}
                             winningNumbers={{
                               homeScore: rowNumbers.homeBoxNumbers[j],

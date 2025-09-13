@@ -91,7 +91,7 @@ export default function BoxSquare({
       <div className="text-[9px] flex flex-col text-right pr-0.5">
         {boxNumber}
       </div>
-      <div className="flex justify-center">{name}</div>
+      <div className="flex justify-center text-sm">{name}</div>
     </div>
   );
 }
