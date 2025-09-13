@@ -1,45 +1,89 @@
-import { useEffect } from "react";
-// import { getWeekScoreboard } from "./apiFunctions";
-import { boxpoolData } from "./fakeDB";
-// import type { Game } from "./types";
+import { useEffect, useState } from "react";
+import type { Boxpool, User } from "./types";
 import TopMenuBar from "./components/TopMenuBar";
 import BoxPoolPage from "./components/BoxPoolPage";
+import HomePage from "./components/HomePage";
+import DashboardPage from "./components/Dashboard/DashboardPage";
+// import { boxpoolData } from "./fakeDB";
+import { initializeApp } from "firebase/app";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  query,
+  where,
+  // addDoc,
+} from "firebase/firestore";
+
+import { BrowserRouter, Routes, Route } from "react-router";
 
 function App() {
-  // const [allGames, setAllGames] = useState<Game[]>([]);
-  // const [currentGameIndex, setCurrentGameIndex] = useState<number>(0);
-  // const [currentGameSummary, setCurrentGameSummary] =
-  //   useState<GameSummary | null>(null);
+  const firebaseConfig = {
+    apiKey: "AIzaSyABQ0sYuFtyyryx_Tt0vENSiBJomHdpPEo",
+    authDomain: "boxpool-cf6d8.firebaseapp.com",
+    projectId: "boxpool-cf6d8",
+    storageBucket: "boxpool-cf6d8.firebasestorage.app",
+    messagingSenderId: "710308673241",
+    appId: "1:710308673241:web:67e9269630da76f9b2b0c8",
+    measurementId: "G-S4R1S19RGZ",
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [allBoxPools, setAllBoxPools] = useState<Boxpool[]>([]);
 
   useEffect(() => {
-    const getData = async () => {
-      // const data = await getWeekScoreboard(2);
-      // console.log(data);
-      // const games = data["events"];
-      // const gameIds = [];
-      // for (let i = 0; i < games.length; i++) {
-      //   gameIds.push(games[i].id);
-      // }
-      // console.log(gameIds);
-      // const allGames = data["events"];
-      // setAllGames(allGames);
-      // const currentGame: Game = allGames[0];
-      // const gameSummary = await getGameSummary(currentGame.id);
-      // console.log(gameSummary);
-      // setCurrentGameSummary(gameSummary);
+    const getAllUserBoxPoolData = async () => {
+      if (!currentUser) return;
+      const q = query(
+        collection(db, "boxpools"),
+        where("userId", "==", currentUser.uid)
+      );
+
+      const querySnapshot = await getDocs(q);
+      const boxpoolsArray = querySnapshot.docs.map((doc) => {
+        return { id: doc.id, ...doc.data() } as Boxpool;
+      });
+      setAllBoxPools(boxpoolsArray);
     };
 
-    getData();
-  }, []);
+    // Get Current Logged In User
+    onAuthStateChanged(auth, (currentUser) => {
+      setCurrentUser(currentUser);
+    });
 
-  // if (allGames.length == 0) {
-  //   return <h1>No Game</h1>;
-  // }
+    getAllUserBoxPoolData();
+
+    // const addData = async () => {
+    //   const boxpoolDB = collection(db, "boxpools");
+    //   const docRef = await addDoc(boxpoolDB, boxpoolData);
+    //   console.log(docRef);
+    // };
+
+    // addData();
+  }, [currentUser]);
 
   return (
     <>
-      <TopMenuBar />
-      <BoxPoolPage boxpoolData={boxpoolData} />
+      <BrowserRouter>
+        <TopMenuBar
+          currentUser={currentUser}
+          setCurrentUser={setCurrentUser}
+          auth={auth}
+        />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route
+            path="/dashboard"
+            element={<DashboardPage allBoxpools={allBoxPools} />}
+          />
+          <Route path="box/:boxId" element={<BoxPoolPage db={db} />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }

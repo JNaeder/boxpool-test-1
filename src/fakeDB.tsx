@@ -1,14 +1,16 @@
 import type { Boxpool, User } from "./types";
 
 export const testUser: User = {
-  id: 1,
-  name: "John Naeder",
+  uid: "XUPZigS5FFRrFrZpnCYthWCng1V2",
+  displayName: null,
   email: "madhead324@gmail.com",
+  emailVerified: false,
+  photoURL: null,
 };
 
 // Games
 const gameIds = {
-  1: [
+  week1: [
     "401772510",
     "401772714",
     "401772830",
@@ -26,7 +28,7 @@ const gameIds = {
     "401772918",
     "401772810",
   ],
-  2: [
+  week2: [
     "401772936",
     "401772725",
     "401772834",
@@ -48,20 +50,19 @@ const gameIds = {
 };
 
 export const boxpoolData: Boxpool = {
-  id: 1,
-  user: testUser,
-  // eventId: gameIds[2][10],
-  eventId: gameIds.superBowls[0],
+  name: "Some random 2025 Game",
+  userId: "RgRG0EGiFDWJ6SqC0YNZMKp85Vb2",
+  eventId: gameIds.week2[4],
   boxNumbers: {
     homeBoxNumbers: [1, 9, 2, 0, 7, 3, 4, 6, 5, 8],
     awayBoxNumbers: [3, 5, 9, 0, 7, 1, 6, 2, 4, 8],
   },
   prizeNumbers: {
     gameScore: {
-      FirstQuarter: "5000",
-      SecondQuarter: "15000",
-      ThirdQuarter: "5000",
-      Final: "50000",
+      firstQuarter: "5000",
+      secondQuarter: "15000",
+      thirdQuarter: "5000",
+      final: "50000",
     },
     plusTwo: null,
     plusFive: null,

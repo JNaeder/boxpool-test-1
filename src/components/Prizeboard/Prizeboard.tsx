@@ -12,15 +12,15 @@ export default function Prizeboard({ boxpoolData }: { boxpoolData: Boxpool }) {
       </div>
       <div>
         <PrizeboardSquareBox
-          text={boxpoolData.prizeNumbers.gameScore.FirstQuarter}
+          text={boxpoolData.prizeNumbers.gameScore.firstQuarter}
         />
         <PrizeboardSquareBox
-          text={boxpoolData.prizeNumbers.gameScore.SecondQuarter}
+          text={boxpoolData.prizeNumbers.gameScore.secondQuarter}
         />
         <PrizeboardSquareBox
-          text={boxpoolData.prizeNumbers.gameScore.SecondQuarter}
+          text={boxpoolData.prizeNumbers.gameScore.thirdQuarter}
         />
-        <PrizeboardSquareBox text={boxpoolData.prizeNumbers.gameScore.Final} />
+        <PrizeboardSquareBox text={boxpoolData.prizeNumbers.gameScore.final} />
       </div>
     </div>
   );

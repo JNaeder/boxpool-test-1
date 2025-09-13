@@ -89,27 +89,6 @@ export default function Box({
                       <NumberSquare key={i} option="side" number={number} />
                     ))}
                   </div>
-
-                  {/* <div className="flex flex-col">
-                    {namesMatrix.map((_, i) => (
-                      <div className="flex" key={i}>
-                        {namesMatrix[i].map((name, j) => (
-                          <BoxSquare
-                            key={i + j}
-                            name={name}
-                            boxNumber={10 * i + j + 1}
-                            winningNumbers={{
-                              homeScore: rowNumbers.homeBoxNumbers[j],
-                              awayScore: rowNumbers.awayBoxNumbers[i],
-                            }}
-                            quarterScores={quarterScores}
-                            period={game.status?.period}
-                            completed={competition.status.type.completed}
-                          />
-                        ))}
-                      </div>
-                    ))}
-                  </div> */}
                   <div className="flex flex-col">
                     {[...Array(10)].map((_, i) => (
                       <div className="flex" key={i}>

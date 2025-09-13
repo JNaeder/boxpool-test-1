@@ -101,21 +101,24 @@ export type Winners = {
 };
 
 export type PrizeAmount = {
-  FirstQuarter: string;
-  SecondQuarter: string;
-  ThirdQuarter: string;
-  Final: string;
+  firstQuarter: string;
+  secondQuarter: string;
+  thirdQuarter: string;
+  final: string;
 };
 
 export type User = {
-  id: number;
-  name: string;
-  email: string;
+  uid: string;
+  displayName: string | null;
+  email: string | null;
+  emailVerified: boolean;
+  photoURL: string | null;
 };
 
 export type Boxpool = {
-  id: number;
-  user: User;
+  id?: string;
+  name: string;
+  userId: string;
   eventId: string;
   boxNumbers: {
     homeBoxNumbers: number[];
