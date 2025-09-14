@@ -133,9 +133,14 @@ export type Boxpool = {
   boxes: Boxes;
 };
 
+export type Box = {
+  name: string;
+  image: string;
+  boxNumber: number;
+  font: string;
+  fontSize: number;
+};
+
 export type Boxes = {
-  [boxNumber: number]: {
-    name: string;
-    image?: string;
-  };
+  [boxNumber: number]: Box;
 };

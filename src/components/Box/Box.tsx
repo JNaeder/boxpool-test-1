@@ -9,11 +9,15 @@ import type {
 } from "../../types";
 
 export default function Box({
+  isEditing,
   game,
   boxpoolData,
+  editBoxData,
 }: {
+  isEditing: boolean;
   game: Game;
   boxpoolData: Boxpool;
+  editBoxData: Function;
 }) {
   const competition: Competition = game.competitions[0];
   const competitors: Competitor[] = competition.competitors;
@@ -22,8 +26,6 @@ export default function Box({
     awayBoxNumbers: boxpoolData.boxNumbers.awayBoxNumbers,
   };
   const boxes = boxpoolData.boxes;
-
-  // console.log(game);
 
   const homeTeam: Competitor | undefined = competitors.find(
     (competitor) => competitor.homeAway === "home"
@@ -92,20 +94,25 @@ export default function Box({
                   <div className="flex flex-col">
                     {[...Array(10)].map((_, i) => (
                       <div className="flex" key={i}>
-                        {[...Array(10)].map((_, j) => (
-                          <BoxSquare
-                            key={i + j}
-                            name={boxes[10 * i + j + 1]?.name ?? ""}
-                            boxNumber={10 * i + j + 1}
-                            winningNumbers={{
-                              homeScore: rowNumbers.homeBoxNumbers[j],
-                              awayScore: rowNumbers.awayBoxNumbers[i],
-                            }}
-                            quarterScores={quarterScores}
-                            period={game.status?.period}
-                            completed={competition.status.type.completed}
-                          />
-                        ))}
+                        {[...Array(10)].map((_, j) => {
+                          const boxNumber = 10 * i + j + 1;
+                          return (
+                            <BoxSquare
+                              key={boxNumber}
+                              box={boxes[boxNumber] ?? ""}
+                              boxNumber={boxNumber}
+                              winningNumbers={{
+                                homeScore: rowNumbers.homeBoxNumbers[j],
+                                awayScore: rowNumbers.awayBoxNumbers[i],
+                              }}
+                              quarterScores={quarterScores}
+                              period={game.status?.period}
+                              completed={competition.status.type.completed}
+                              isEditing={isEditing}
+                              editBoxData={editBoxData}
+                            />
+                          );
+                        })}
                       </div>
                     ))}
                   </div>

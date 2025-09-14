@@ -50,6 +50,10 @@
   --color-box-bg: rgb(255, 255, 255);
   --spacing-score-box-width: 50px;
   --spacing-score-box-height: 40px;
+
+  --font-asset: "Asset", cursive;
+  --font-bungee-shade: "Bungee Shade", sans-serif;
+  --font-rye: "Rye";
 }
 
 @theme inline {

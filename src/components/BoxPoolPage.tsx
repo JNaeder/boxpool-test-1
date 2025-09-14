@@ -7,13 +7,16 @@ import Box from "./Box/Box";
 import { Spinner } from "./ui/shadcn-io/spinner";
 import type { Boxpool, GameSummary } from "@/types";
 import { useParams } from "react-router";
-import { type Firestore, doc, getDoc } from "firebase/firestore";
+import { type Firestore, doc, getDoc, setDoc } from "firebase/firestore";
+import BoxEditMenu from "./BoxEditMenu";
 
 type BoxPoolParams = { boxId: string };
 
 export default function BoxPoolPage({ db }: { db: Firestore }) {
-  const data = useParams() as BoxPoolParams;
+  const paramsData = useParams() as BoxPoolParams;
+  let tempBoxData: Boxpool | null = null;
 
+  const [isEditing, setIsEditing] = useState<boolean>(false);
   const [currentGameSummary, setCurrentGameSummary] =
     useState<GameSummary | null>(null);
   const [currentBoxpoolData, setCurrentBoxpoolData] = useState<Boxpool | null>(
@@ -22,11 +25,12 @@ export default function BoxPoolPage({ db }: { db: Firestore }) {
 
   useEffect(() => {
     const getData = async () => {
-      const docRef = doc(db, "boxpools", data.boxId);
+      const docRef = doc(db, "boxpools", paramsData.boxId);
       const docData = await getDoc(docRef);
       if (docData.exists()) {
         const data = docData.data() as Boxpool;
         setCurrentBoxpoolData(data);
+        tempBoxData = { ...data } as Boxpool;
         const gameSummary = await getGameSummary(data.eventId);
         setCurrentGameSummary(gameSummary);
       }
@@ -43,6 +47,24 @@ export default function BoxPoolPage({ db }: { db: Firestore }) {
       </>
     );
 
+  const editBoxData = (boxNumber: number, key: string, value: string) => {
+    if (!tempBoxData) return;
+
+    // const tempBoxData = { ...currentBoxpoolData };
+    tempBoxData.boxes[boxNumber] = {
+      ...tempBoxData.boxes[boxNumber],
+      [key]: value,
+    };
+    // setCurrentBoxpoolData(boxData);
+  };
+
+  const writeBoxDataToDB = async () => {
+    console.log(tempBoxData);
+    const docRef = doc(db, "boxpools", paramsData.boxId);
+    await setDoc(docRef, tempBoxData);
+    console.log("Wrote data to", paramsData.boxId);
+  };
+
   return (
     <>
       <div className="flex justify-center w-screen h-screen">
@@ -51,10 +73,17 @@ export default function BoxPoolPage({ db }: { db: Firestore }) {
           <Scoreboard game={currentGameSummary.header} />
           <ScoringPlays gameSummary={currentGameSummary} />
         </div>
-        <div className="w-full p-2">
+        <div className="w-full p-2 flex flex-col  items-center">
+          <BoxEditMenu
+            isEditing={isEditing}
+            setIsEditing={setIsEditing}
+            writeBoxDataToDB={writeBoxDataToDB}
+          />
           <Box
+            isEditing={isEditing}
             game={currentGameSummary.header}
             boxpoolData={currentBoxpoolData}
+            editBoxData={editBoxData}
           />
         </div>
       </div>
