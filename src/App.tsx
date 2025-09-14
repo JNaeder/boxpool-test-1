@@ -13,8 +13,8 @@ import {
   getDocs,
   query,
   where,
-  // addDoc,
 } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 import { BrowserRouter, Routes, Route } from "react-router";
 
@@ -32,6 +32,7 @@ function App() {
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
+  const storage = getStorage(app);
 
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [allBoxPools, setAllBoxPools] = useState<Boxpool[]>([]);
@@ -81,7 +82,10 @@ function App() {
             path="/dashboard"
             element={<DashboardPage allBoxpools={allBoxPools} />}
           />
-          <Route path="box/:boxId" element={<BoxPoolPage db={db} />} />
+          <Route
+            path="box/:boxId"
+            element={<BoxPoolPage db={db} storage={storage} />}
+          />
         </Routes>
       </BrowserRouter>
     </>

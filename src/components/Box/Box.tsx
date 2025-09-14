@@ -7,13 +7,16 @@ import type {
   Competitor,
   Boxpool,
 } from "../../types";
+import type { FirebaseStorage } from "firebase/storage";
 
 export default function Box({
+  storage,
   isEditing,
   game,
   boxpoolData,
   editBoxData,
 }: {
+  storage: FirebaseStorage;
   isEditing: boolean;
   game: Game;
   boxpoolData: Boxpool;
@@ -98,6 +101,7 @@ export default function Box({
                           const boxNumber = 10 * i + j + 1;
                           return (
                             <BoxSquare
+                              storage={storage}
                               key={boxNumber}
                               box={boxes[boxNumber] ?? ""}
                               boxNumber={boxNumber}
@@ -110,6 +114,7 @@ export default function Box({
                               completed={competition.status.type.completed}
                               isEditing={isEditing}
                               editBoxData={editBoxData}
+                              userId={boxpoolData.userId}
                             />
                           );
                         })}

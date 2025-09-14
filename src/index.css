@@ -54,6 +54,8 @@
   --font-asset: "Asset", cursive;
   --font-bungee-shade: "Bungee Shade", sans-serif;
   --font-rye: "Rye";
+  --font-ultra: "Ultra";
+  --font-knewave: "Knewave";
 }
 
 @theme inline {

@@ -134,11 +134,11 @@ export type Boxpool = {
 };
 
 export type Box = {
-  name: string;
-  image: string;
-  boxNumber: number;
-  font: string;
-  fontSize: number;
+  name?: string;
+  image?: string;
+  boxNumber?: number;
+  font?: string;
+  fontSize?: number;
 };
 
 export type Boxes = {

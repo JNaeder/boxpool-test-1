@@ -8,13 +8,19 @@ import { Spinner } from "./ui/shadcn-io/spinner";
 import type { Boxpool, GameSummary } from "@/types";
 import { useParams } from "react-router";
 import { type Firestore, doc, getDoc, setDoc } from "firebase/firestore";
+import { type FirebaseStorage } from "firebase/storage";
 import BoxEditMenu from "./BoxEditMenu";
 
 type BoxPoolParams = { boxId: string };
 
-export default function BoxPoolPage({ db }: { db: Firestore }) {
+export default function BoxPoolPage({
+  db,
+  storage,
+}: {
+  db: Firestore;
+  storage: FirebaseStorage;
+}) {
   const paramsData = useParams() as BoxPoolParams;
-  let tempBoxData: Boxpool | null = null;
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [currentGameSummary, setCurrentGameSummary] =
@@ -30,7 +36,6 @@ export default function BoxPoolPage({ db }: { db: Firestore }) {
       if (docData.exists()) {
         const data = docData.data() as Boxpool;
         setCurrentBoxpoolData(data);
-        tempBoxData = { ...data } as Boxpool;
         const gameSummary = await getGameSummary(data.eventId);
         setCurrentGameSummary(gameSummary);
       }
@@ -47,21 +52,20 @@ export default function BoxPoolPage({ db }: { db: Firestore }) {
       </>
     );
 
-  const editBoxData = (boxNumber: number, key: string, value: string) => {
-    if (!tempBoxData) return;
-
-    // const tempBoxData = { ...currentBoxpoolData };
-    tempBoxData.boxes[boxNumber] = {
-      ...tempBoxData.boxes[boxNumber],
-      [key]: value,
+  const editBoxData = (boxNumber: number, newData: Object) => {
+    const boxData = { ...currentBoxpoolData };
+    boxData.boxes[boxNumber] = {
+      ...boxData.boxes[boxNumber],
+      ...newData,
     };
+
+    console.log(boxData);
     // setCurrentBoxpoolData(boxData);
   };
 
   const writeBoxDataToDB = async () => {
-    console.log(tempBoxData);
     const docRef = doc(db, "boxpools", paramsData.boxId);
-    await setDoc(docRef, tempBoxData);
+    await setDoc(docRef, currentBoxpoolData);
     console.log("Wrote data to", paramsData.boxId);
   };
 
@@ -80,6 +84,7 @@ export default function BoxPoolPage({ db }: { db: Firestore }) {
             writeBoxDataToDB={writeBoxDataToDB}
           />
           <Box
+            storage={storage}
             isEditing={isEditing}
             game={currentGameSummary.header}
             boxpoolData={currentBoxpoolData}

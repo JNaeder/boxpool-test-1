@@ -1,23 +1,16 @@
 import { useState } from "react";
 import type { WinningScore, Box } from "../../types";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import { Button } from "../ui/button";
-import { Trash2 } from "lucide-react";
+import { Popover, PopoverTrigger } from "@/components/ui/popover";
+import BoxEditPopUp from "./BoxEditPopUp";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  type FirebaseStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+} from "firebase/storage";
 
 export default function BoxSquare({
+  storage,
   box,
   boxNumber,
   winningNumbers,
@@ -26,7 +19,9 @@ export default function BoxSquare({
   completed,
   isEditing,
   editBoxData,
+  userId,
 }: {
+  storage: FirebaseStorage;
   box: Box;
   boxNumber: number;
   winningNumbers: WinningScore;
@@ -35,10 +30,13 @@ export default function BoxSquare({
   completed: boolean;
   isEditing: boolean;
   editBoxData: Function;
+  userId: string;
 }) {
   const [boxName, setBoxName] = useState<string>(box.name ?? "");
   const [boxFont, setBoxFont] = useState<string>(box.font ?? "normal");
   const [boxFontSize, setBoxFontSize] = useState<number>(box.fontSize ?? 14);
+  const [boxImage, setBoxImage] = useState<File | undefined>();
+  const [boxImageURL, setBoxImageURL] = useState<string>("");
   const [popoverOpen, setPopoverOpen] = useState<boolean>(false);
 
   type ColorState = {
@@ -82,10 +80,6 @@ export default function BoxSquare({
 
   const winners = winColorStates.filter((state) => state.state);
 
-  // if (winners.length > 0) {
-  //   console.log(winners);
-  // }
-
   const getColorString = (): string => {
     if (winners.length == 1) {
       return `!bg-${winners[0].color} font-bold`;
@@ -96,7 +90,19 @@ export default function BoxSquare({
     }
   };
 
-  // console.log(quarterScores, winningNumbers);
+  const uploadImage = async () => {
+    if (!boxImage) return;
+    try {
+      const imageRef = ref(storage, `boxesImages/${userId}/${boxImage.name}`);
+      const snapshot = await uploadBytes(imageRef, boxImage);
+      const imageURL = await getDownloadURL(snapshot.ref);
+      console.log(imageURL);
+      setBoxImageURL(imageURL);
+      // Close the PopUp thing
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
+  };
 
   return (
     <Popover
@@ -108,7 +114,7 @@ export default function BoxSquare({
       <PopoverTrigger asChild>
         <div
           className={[
-            "w-box h-box border-1 bg-box-bg flex flex-col",
+            "w-box h-box border-1 bg-box-bg flex flex-col relative",
             isEditing ? "hover:bg-amber-200" : "",
             popoverOpen ? "border-red-500 border-4 !bg-amber-200" : "",
             getColorString(),
@@ -122,89 +128,39 @@ export default function BoxSquare({
             .filter(Boolean)
             .join(" ")}
         >
-          <div className="flex justify-between">
-            <div className="text-[10px] flex flex-col text-right pr-1 w-full">
-              {boxNumber}
-            </div>
+          <div className="absolute top-0  right-0.5 text-[9px] z-10">
+            {boxNumber}
           </div>
-          <div
-            className={`flex justify-center h-full items-start text-center font-${boxFont}`}
-            style={{ fontSize: boxFontSize }}
-          >
-            {boxName}
-          </div>
+          {box.image || boxImageURL ? (
+            <img
+              src={box.image ?? boxImageURL}
+              className="flex justify-center items-center m-auto w-box"
+            />
+          ) : (
+            <>
+              <div
+                className={`flex justify-center h-full items-center text-center font-${boxFont}`}
+                style={{ fontSize: boxFontSize }}
+              >
+                {boxName}
+              </div>
+            </>
+          )}
         </div>
       </PopoverTrigger>
-      <PopoverContent>
-        <div className="flex flex-col">
-          <div className="font-bold text-lg text-center">Box #{boxNumber}</div>
-          <Label htmlFor="boxName" className="mb-1">
-            Name:
-          </Label>
-          <Input
-            id="boxName"
-            type="text"
-            value={boxName}
-            maxLength={20}
-            onChange={(e) => {
-              setBoxName(e.target.value);
-              editBoxData(boxNumber, "name", e.target.value);
-            }}
-          />
-          <Label htmlFor="fontSelect" className="mb-1">
-            Font:
-          </Label>
-          <Select
-            name="fontSelect"
-            value={boxFont}
-            onValueChange={(e) => {
-              setBoxFont(e);
-              editBoxData(boxNumber, "font", e);
-            }}
-          >
-            <SelectTrigger className="w-full mb-1">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="normal" className="font-normal">
-                Normal
-              </SelectItem>
-              <SelectItem value="mono" className="font-mono">
-                Mono
-              </SelectItem>
-              <SelectItem value="sans" className="font-sans">
-                Sans
-              </SelectItem>
-              <SelectItem value="asset" className="font-asset">
-                Asset
-              </SelectItem>
-              <SelectItem value="bungee-shade" className="font-bungee-shade">
-                Bungee Shade
-              </SelectItem>
-              <SelectItem value="rye" className="font-rye">
-                Rye
-              </SelectItem>
-            </SelectContent>
-          </Select>
-          <Label htmlFor="fontSize" className="mb-1">
-            Font Size:
-          </Label>
-          <Input
-            id="fontSize"
-            type="number"
-            value={boxFontSize}
-            onChange={(e) => {
-              setBoxFontSize(Number(e.target.value));
-              editBoxData(boxNumber, "fontSize", Number(e.target.value));
-            }}
-          />
-          {/* <Button onClick={editBox}>Enter</Button> */}
-          <Button variant={"destructive"}>
-            <Trash2 />
-            Clear
-          </Button>
-        </div>
-      </PopoverContent>
+      <BoxEditPopUp
+        boxNumber={boxNumber}
+        editBoxData={editBoxData}
+        boxFont={boxFont}
+        setBoxFont={setBoxFont}
+        boxName={boxName}
+        setBoxName={setBoxName}
+        boxFontSize={boxFontSize}
+        setBoxFontSize={setBoxFontSize}
+        setBoxImage={setBoxImage}
+        boxImageURL={boxImageURL}
+        uploadImage={uploadImage}
+      />
     </Popover>
   );
 }
