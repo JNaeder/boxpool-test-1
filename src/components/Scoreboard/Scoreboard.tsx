@@ -32,18 +32,6 @@ export default function Scoreboard({ game }: { game: Game }) {
       return (
         <div className="flex flex-col justify-center items-center">
           <div className="text-2xl">{competition.status.type.detail}</div>
-          {competition.status.type.completed ? (
-            ""
-          ) : (
-            <>
-              {/* <div className="bg-black text-white p-2 m-2 rounded-2xl">
-                {game.competitions[0].situation?.downDistanceText}
-              </div>
-              <div className=" w-3/4 text-center rounded-2xl p-2">
-                {game.competitions[0].situation?.lastPlay.text}
-              </div> */}
-            </>
-          )}
         </div>
       );
     }

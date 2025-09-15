@@ -1,5 +1,6 @@
 import type { Game, Competitor } from "@/types";
 import { RadioGroupItem } from "@/components/ui/radio-group";
+import { formatDate } from "@/helperFunctions";
 
 export default function GameIcon({ game }: { game: Game }) {
   const competitors = game.competitions[0].competitors;
@@ -11,14 +12,14 @@ export default function GameIcon({ game }: { game: Game }) {
     (competitor) => competitor.homeAway === "away"
   );
 
-  const formatDate = (dateString: string) => {
-    const newDate = new Date(dateString);
-    const formatted = newDate.toLocaleString("en-US", {
-      dateStyle: "short",
-      timeStyle: "short",
-    });
-    return formatted;
-  };
+  // const formatDate = (dateString: string) => {
+  //   const newDate = new Date(dateString);
+  //   const formatted = newDate.toLocaleString("en-US", {
+  //     dateStyle: "short",
+  //     timeStyle: "short",
+  //   });
+  //   return formatted;
+  // };
 
   return (
     <div className="bg-white text-black flex justify-center items-center rounded-lg">

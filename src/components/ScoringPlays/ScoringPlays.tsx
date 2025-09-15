@@ -14,10 +14,6 @@ export default function ScoringPlays({
 }) {
   if (!gameSummary.scoringPlays) return <></>;
 
-  // console.log(gameSummary.scoringPlays);
-  // TODO: Also Check if game has started, but there are no scoring plays
-  // TODO: Make it so it scrolling if it's too long
-
   const quaterNames: Record<number, string> = {
     1: "1st Quarter",
     2: "2nd Quarter",
@@ -49,7 +45,7 @@ export default function ScoringPlays({
         <div className="bg-black text-white w-full text-center text-2xl p-1 px-5 rounded-lg">
           Scoring Plays
         </div>
-        <div className=" flex flex-col items-center w-full m-auto justify-start mt-3 border-2 p-3 rounded-lg bg-white max-h-96 overflow-auto">
+        <div className=" flex flex-col items-center w-full m-auto justify-start mt-3 border-2 p-3 rounded-lg bg-white max-h-80 overflow-auto">
           <Accordion type="multiple" className="w-full text-center">
             {allQuarterPlays.map((quarterPlay, i) => {
               return (

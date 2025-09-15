@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { getGameSummary } from "../../apiFunctions";
+import { formatDate } from "@/helperFunctions";
 import Scoreboard from "../Scoreboard/Scoreboard";
 import Prizeboard from "../Prizeboard/Prizeboard";
 import ScoringPlays from "../ScoringPlays/ScoringPlays";
@@ -88,11 +89,15 @@ export default function BoxPoolPage({
     // console.log("Wrote data to", paramsData.boxId);
   };
 
+  console.log(currentGameSummary);
+
   return (
     <>
       <div className="flex justify-center bg-neutral-100 w-screen h-[calc(100vh-50px)]">
         <div className="flex flex-col w-[50%] p-2 border-r-4">
-          <div>{currentGameSummary.header.date}</div>
+          <div className="bg-black text-white text-center mb-3 w-fit mx-auto py-1 px-5 rounded-lg">
+            {formatDate(currentGameSummary.header.competitions[0].date)}
+          </div>
           <Prizeboard boxpoolData={currentBoxpoolData} />
           <Scoreboard game={currentGameSummary.header} />
           <ScoringPlays gameSummary={currentGameSummary} />
