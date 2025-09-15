@@ -7,11 +7,7 @@ import DashboardPage from "./components/Dashboard/DashboardPage";
 // import { blankBoxpoolData } from "./fakeDB";
 import { getAnalytics, setUserId, logEvent } from "firebase/analytics";
 import { initializeApp } from "firebase/app";
-import {
-  getAuth,
-  onAuthStateChanged,
-  sendEmailVerification,
-} from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {
   getFirestore,
   collection,
@@ -66,7 +62,6 @@ function App() {
     // Get Current Logged In User
     onAuthStateChanged(auth, (currentUser) => {
       if (currentUser && !currentUser.emailVerified) {
-        sendEmailVerification(currentUser, { url: "google.com" });
       }
       setCurrentUser(currentUser);
       setUserId(analytics, currentUser?.uid ?? null);

@@ -1,9 +1,19 @@
 import { useState, useEffect } from "react";
 
+type TimeLeft = {
+  days?: number;
+  hours?: number;
+  minutes?: number;
+  seconds?: number;
+  message?: string;
+};
+
 export default function CountdownTimer({ targetDate }: { targetDate: string }) {
-  const calcTimeLeft = () => {
+  // const [timeDifference, setTimeDifference] = useState<number>(999);
+
+  const calcTimeLeft = (): TimeLeft => {
     const difference = +new Date(targetDate) - +new Date();
-    if (difference <= 0) return {};
+    if (difference <= 0) return { message: "Starting Soon" };
 
     return {
       days: Math.floor(difference / (1000 * 60 * 60 * 24)),
@@ -13,7 +23,7 @@ export default function CountdownTimer({ targetDate }: { targetDate: string }) {
     };
   };
 
-  const [timeLeft, setTimeLeft] = useState(calcTimeLeft());
+  const [timeLeft, setTimeLeft] = useState<TimeLeft>(calcTimeLeft());
 
   useEffect(() => {
     setTimeLeft(calcTimeLeft());
@@ -26,12 +36,22 @@ export default function CountdownTimer({ targetDate }: { targetDate: string }) {
   }, [targetDate]);
 
   return (
-    <div>
-      <span>Starts in: </span>
-      <span>{timeLeft.days}d </span>
-      <span>{timeLeft.hours}h </span>
-      <span>{timeLeft.minutes}m </span>
-      <span>{timeLeft.seconds}s</span>
-    </div>
+    <>
+      {timeLeft.message ? (
+        <>
+          <div>{timeLeft.message}</div>
+        </>
+      ) : (
+        <>
+          <div>
+            <span>Starts in: </span>
+            <span>{timeLeft.days}d </span>
+            <span>{timeLeft.hours}h </span>
+            <span>{timeLeft.minutes}m </span>
+            <span>{timeLeft.seconds}s</span>
+          </div>
+        </>
+      )}
+    </>
   );
 }
