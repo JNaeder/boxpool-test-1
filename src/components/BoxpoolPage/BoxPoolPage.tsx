@@ -96,18 +96,20 @@ export default function BoxPoolPage({
           <div className="bg-black text-white text-center mb-3 w-fit mx-auto py-1 px-5 rounded-lg">
             {formatDate(currentGameSummary.header.competitions[0].date)}
           </div>
-          <Prizeboard boxpoolData={currentBoxpoolData} />
           <Scoreboard game={currentGameSummary.header} />
           <ScoringPlays gameSummary={currentGameSummary} />
         </div>
         <div className="w-full flex flex-col  items-center">
-          <BoxEditMenu
-            isEditing={isEditing}
-            setIsEditing={setIsEditing}
-            writeBoxDataToDB={writeBoxDataToDB}
-            updateEventId={updateEventId}
-            setCurrentEventId={setCurrentEventId}
-          />
+          <div className="flex mt-2">
+            <Prizeboard boxpoolData={currentBoxpoolData} />
+            <BoxEditMenu
+              isEditing={isEditing}
+              setIsEditing={setIsEditing}
+              writeBoxDataToDB={writeBoxDataToDB}
+              updateEventId={updateEventId}
+              setCurrentEventId={setCurrentEventId}
+            />
+          </div>
           <Box
             storage={storage}
             isEditing={isEditing}

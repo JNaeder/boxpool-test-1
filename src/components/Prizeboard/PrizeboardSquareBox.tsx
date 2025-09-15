@@ -17,7 +17,7 @@ export default function PrizeboardSquareBox({
           : color === "yellow"
           ? "bg-yellow-400"
           : "bg-white"
-      } w-[100px] h-[30px] border-black border flex justify-center items-center`}
+      } w-[100px] h-[20px] border-black border flex justify-center items-center text-sm`}
     >
       {text}
     </div>
