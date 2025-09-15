@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import type { Boxpool, User } from "./types";
 import TopMenuBar from "./components/TopMenuBar";
-import BoxPoolPage from "./components/BoxPoolPage";
+import BoxPoolPage from "./components/BoxpoolPage/BoxPoolPage";
 import HomePage from "./components/HomePage";
 import DashboardPage from "./components/Dashboard/DashboardPage";
-// import { boxpoolData } from "./fakeDB";
+// import { blankBoxpoolData } from "./fakeDB";
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {
@@ -13,6 +13,7 @@ import {
   getDocs,
   query,
   where,
+  // addDoc,
 } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
@@ -61,7 +62,7 @@ function App() {
 
     // const addData = async () => {
     //   const boxpoolDB = collection(db, "boxpools");
-    //   const docRef = await addDoc(boxpoolDB, boxpoolData);
+    //   const docRef = await addDoc(boxpoolDB, blankBoxpoolData);
     //   console.log(docRef);
     // };
 

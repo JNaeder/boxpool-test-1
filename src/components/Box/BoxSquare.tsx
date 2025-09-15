@@ -33,11 +33,37 @@ export default function BoxSquare({
   userId: string;
 }) {
   const [boxName, setBoxName] = useState<string>(box.name ?? "");
-  const [boxFont, setBoxFont] = useState<string>(box.font ?? "normal");
+  const [boxFont, setBoxFont] = useState<string>(box.font ?? "Arial");
   const [boxFontSize, setBoxFontSize] = useState<number>(box.fontSize ?? 14);
   const [boxImage, setBoxImage] = useState<File | undefined>();
   const [boxImageURL, setBoxImageURL] = useState<string>("");
   const [popoverOpen, setPopoverOpen] = useState<boolean>(false);
+
+  const BG: Record<string, string> = {
+    red: "!bg-red-400",
+    blue: "!bg-blue-400",
+    green: "!bg-green-400",
+    yellow: "!bg-yellow-400",
+  };
+
+  const FROM: Record<string, string> = {
+    red: "from-red-400",
+    blue: "from-blue-400",
+    green: "from-green-400",
+    yellow: "from-yellow-400",
+  };
+  const TO: Record<string, string> = {
+    red: "to-red-400",
+    blue: "to-blue-400",
+    green: "to-green-400",
+    yellow: "to-yellow-400",
+  };
+  const VIA: Record<string, string> = {
+    red: "via-red-400",
+    blue: "via-blue-400",
+    green: "via-green-400",
+    yellow: "via-yellow-400",
+  };
 
   type ColorState = {
     color: string;
@@ -45,7 +71,7 @@ export default function BoxSquare({
   };
   const winColorStates: ColorState[] = [
     {
-      color: "blue-400",
+      color: "blue",
       state:
         (period ?? 0) >= 1 || completed
           ? quarterScores[0].homeScore % 10 === winningNumbers.homeScore &&
@@ -53,7 +79,7 @@ export default function BoxSquare({
           : false,
     },
     {
-      color: "green-400",
+      color: "green",
       state:
         (period ?? 0) >= 2 || completed
           ? quarterScores[1].homeScore % 10 === winningNumbers.homeScore &&
@@ -61,7 +87,7 @@ export default function BoxSquare({
           : false,
     },
     {
-      color: "yellow-400",
+      color: "yellow",
       state:
         (period ?? 0) >= 3 || completed
           ? quarterScores[2].homeScore % 10 === winningNumbers.homeScore &&
@@ -69,7 +95,7 @@ export default function BoxSquare({
           : false,
     },
     {
-      color: "red-400",
+      color: "red",
       state:
         (period ?? 0) >= 4 || completed
           ? quarterScores[3].homeScore % 10 === winningNumbers.homeScore &&
@@ -81,10 +107,36 @@ export default function BoxSquare({
   const winners = winColorStates.filter((state) => state.state);
 
   const getColorString = (): string => {
-    if (winners.length == 1) {
-      return `!bg-${winners[0].color} font-bold`;
-    } else if (winners.length == 2) {
-      return `bg-linear-to-br from-${winners[0].color} from-50% to-${winners[1].color} to-50% font-bold`;
+    if (winners.length === 1) {
+      return [BG[winners[0].color], "font-bold"].filter(Boolean).join(" ");
+    } else if (winners.length === 2) {
+      return [
+        "bg-gradient-to-br",
+        FROM[winners[0].color],
+        "from-[50%]",
+        TO[winners[1].color],
+        "to-[50%]",
+        "font-bold",
+      ]
+        .filter(Boolean)
+        .join(" ");
+    } else if (winners.length === 3) {
+      return [
+        "bg-gradient-to-br",
+        FROM[winners[0].color],
+        "from-[33%]",
+        VIA[winners[1].color],
+        "via-[33%]",
+        VIA[winners[1].color],
+        "via-[33%]",
+        VIA[winners[1].color],
+        "via-[66%]",
+        TO[winners[2].color],
+        "to-[66%]",
+        "font-bold",
+      ]
+        .filter(Boolean)
+        .join(" ");
     } else {
       return "";
     }
@@ -93,15 +145,30 @@ export default function BoxSquare({
   const uploadImage = async () => {
     if (!boxImage) return;
     try {
-      const imageRef = ref(storage, `boxesImages/${userId}/${boxImage.name}`);
+      const imageRef = ref(
+        storage,
+        `boxesImages/${userId}/${boxImage.name}-${crypto.randomUUID()}`
+      );
       const snapshot = await uploadBytes(imageRef, boxImage);
       const imageURL = await getDownloadURL(snapshot.ref);
       console.log(imageURL);
       setBoxImageURL(imageURL);
-      // Close the PopUp thing
+      setPopoverOpen(false);
+      writeBoxData(imageURL);
     } catch (error) {
       console.error("Error uploading image:", error);
     }
+  };
+
+  const writeBoxData = (imageURL?: string) => {
+    const newData = {
+      ...(boxName && { name: boxName }),
+      ...(boxFont && { font: boxFont }),
+      ...(boxFontSize && { fontSize: boxFontSize }),
+      ...((boxImageURL || imageURL) && { image: boxImageURL || imageURL }),
+    };
+    console.log("Editing Box", boxNumber, newData);
+    editBoxData(boxNumber, newData);
   };
 
   return (
@@ -116,14 +183,8 @@ export default function BoxSquare({
           className={[
             "w-box h-box border-1 bg-box-bg flex flex-col relative",
             isEditing ? "hover:bg-amber-200" : "",
-            popoverOpen ? "border-red-500 border-4 !bg-amber-200" : "",
+            popoverOpen ? " !bg-amber-200" : "",
             getColorString(),
-            // "w-box h-box border-1 bg-box-bg flex flex-col hover:bg-amber-200 bg-linear-to-br from-blue-400 from-50% to-green-400 to-50% font-bold",
-            // "bg-linear-to-r from-green-400 from-50% to-red-400 to-50%",
-            // firstScoreWin && "!bg-blue-400 font-bold",
-            // secondScoreWin && "!bg-green-400 font-bold",
-            // thirdScoreWin && "!bg-yellow-400 font-bold",
-            // finalScoreWin && "!bg-red-400 font-bold",
           ]
             .filter(Boolean)
             .join(" ")}
@@ -139,8 +200,11 @@ export default function BoxSquare({
           ) : (
             <>
               <div
-                className={`flex justify-center h-full items-center text-center font-${boxFont}`}
-                style={{ fontSize: boxFontSize }}
+                className={`flex justify-center h-full items-center text-center`}
+                style={{
+                  fontSize: boxFontSize,
+                  fontFamily: `${boxFont}`,
+                }}
               >
                 {boxName}
               </div>
@@ -150,7 +214,6 @@ export default function BoxSquare({
       </PopoverTrigger>
       <BoxEditPopUp
         boxNumber={boxNumber}
-        editBoxData={editBoxData}
         boxFont={boxFont}
         setBoxFont={setBoxFont}
         boxName={boxName}
@@ -158,8 +221,8 @@ export default function BoxSquare({
         boxFontSize={boxFontSize}
         setBoxFontSize={setBoxFontSize}
         setBoxImage={setBoxImage}
-        boxImageURL={boxImageURL}
         uploadImage={uploadImage}
+        writeBoxData={writeBoxData}
       />
     </Popover>
   );

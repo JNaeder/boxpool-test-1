@@ -171,3 +171,25 @@ export const boxpoolData: Boxpool = {
     100: { name: "Wyatt" },
   },
 };
+
+export const blankBoxpoolData = {
+  name: "Some Random Week 1 Game",
+  userId: "XUPZigS5FFRrFrZpnCYthWCng1V2",
+  eventId: gameIds.week1[4],
+  boxNumbers: {
+    homeBoxNumbers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
+    awayBoxNumbers: [0, 9, 8, 7, 6, 5, 4, 3, 2, 1],
+  },
+  prizeNumbers: {
+    gameScore: {
+      firstQuarter: "0",
+      secondQuarter: "0",
+      thirdQuarter: "0",
+      final: "0",
+    },
+    plusTwo: null,
+    plusFive: null,
+    reverse: null,
+  },
+  boxes: {},
+};

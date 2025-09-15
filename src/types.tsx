@@ -13,7 +13,11 @@ export type Competition = {
   date: string;
   competitors: Competitor[];
   situation: Situation | null;
-  status: { type: StatusType };
+  status: {
+    displayClock: string;
+    period?: number;
+    type: StatusType;
+  };
 };
 
 export type LineScore = {
@@ -27,6 +31,7 @@ export type Competitor = {
   score: string;
   linescores: LineScore[] | null;
   winner: boolean;
+  possession?: boolean;
 };
 
 export type TeamLogo = {
@@ -81,6 +86,8 @@ export type GameSummary = {
 export type Game = {
   id: string;
   competitions: Competition[];
+  date: string;
+  shortName: string;
   status: {
     displayClock: string;
     period: number;

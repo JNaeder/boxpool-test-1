@@ -1,13 +1,19 @@
 import { useState, useEffect } from "react";
-import { getGameSummary } from "../apiFunctions";
-import Scoreboard from "./Scoreboard/Scoreboard";
-import Prizeboard from "./Prizeboard/Prizeboard";
-import ScoringPlays from "./ScoringPlays/ScoringPlays";
-import Box from "./Box/Box";
-import { Spinner } from "./ui/shadcn-io/spinner";
+import { getGameSummary } from "../../apiFunctions";
+import Scoreboard from "../Scoreboard/Scoreboard";
+import Prizeboard from "../Prizeboard/Prizeboard";
+import ScoringPlays from "../ScoringPlays/ScoringPlays";
+import Box from "../Box/Box";
+import { Spinner } from "../ui/shadcn-io/spinner";
 import type { Boxpool, GameSummary } from "@/types";
 import { useParams } from "react-router";
-import { type Firestore, doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  type Firestore,
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { type FirebaseStorage } from "firebase/storage";
 import BoxEditMenu from "./BoxEditMenu";
 
@@ -36,8 +42,9 @@ export default function BoxPoolPage({
       if (docData.exists()) {
         const data = docData.data() as Boxpool;
         setCurrentBoxpoolData(data);
-        const gameSummary = await getGameSummary(data.eventId);
+        const gameSummary: GameSummary = await getGameSummary(data.eventId);
         setCurrentGameSummary(gameSummary);
+        // console.log(gameSummary);
       }
     };
     getData();
@@ -58,30 +65,35 @@ export default function BoxPoolPage({
       ...boxData.boxes[boxNumber],
       ...newData,
     };
+    // console.log(boxData);
+    setCurrentBoxpoolData(boxData);
+  };
 
-    console.log(boxData);
-    // setCurrentBoxpoolData(boxData);
+  const updateEventId = async (newEventId: number) => {
+    const docRef = doc(db, "boxpools", paramsData.boxId);
+    await updateDoc(docRef, { eventId: newEventId });
   };
 
   const writeBoxDataToDB = async () => {
     const docRef = doc(db, "boxpools", paramsData.boxId);
     await setDoc(docRef, currentBoxpoolData);
-    console.log("Wrote data to", paramsData.boxId);
+    // console.log("Wrote data to", paramsData.boxId);
   };
 
   return (
     <>
-      <div className="flex justify-center w-screen h-screen">
+      <div className="flex justify-center bg-neutral-100 w-screen h-[calc(100vh-50px)]">
         <div className="flex flex-col w-[50%] p-2 border-r-4">
           <Prizeboard boxpoolData={currentBoxpoolData} />
           <Scoreboard game={currentGameSummary.header} />
           <ScoringPlays gameSummary={currentGameSummary} />
         </div>
-        <div className="w-full p-2 flex flex-col  items-center">
+        <div className="w-full flex flex-col  items-center">
           <BoxEditMenu
             isEditing={isEditing}
             setIsEditing={setIsEditing}
             writeBoxDataToDB={writeBoxDataToDB}
+            updateEventId={updateEventId}
           />
           <Box
             storage={storage}

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 
+// TODO: If timer is at 0, say somethign like "starting soon" or something like that
 export default function CountdownTimer({ targetDate }: { targetDate: string }) {
   const calcTimeLeft = () => {
     const difference = +new Date(targetDate) - +new Date();

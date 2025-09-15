@@ -39,7 +39,10 @@ export default function Box({
   );
 
   const quarterScores: WinningScore[] = [];
-  for (let i = 0; i < 4; i++) {
+
+  const periodLength: number = competition.status.period ?? 4;
+
+  for (let i = 0; i < periodLength; i++) {
     const homeScore = homeTeam?.linescores
       ?.slice(0, i + 1)
       .reduce((acc, score) => acc + Number(score.displayValue), 0);
@@ -110,7 +113,7 @@ export default function Box({
                                 awayScore: rowNumbers.awayBoxNumbers[i],
                               }}
                               quarterScores={quarterScores}
-                              period={game.status?.period}
+                              period={competition.status.period}
                               completed={competition.status.type.completed}
                               isEditing={isEditing}
                               editBoxData={editBoxData}

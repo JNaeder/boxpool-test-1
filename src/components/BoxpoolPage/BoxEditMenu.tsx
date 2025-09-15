@@ -1,21 +1,24 @@
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { Pencil, Save } from "lucide-react";
+import ChooseGameMenu from "./ChooseGameMenu";
 
 export default function BoxEditMenu({
   isEditing,
   setIsEditing,
   writeBoxDataToDB,
+  updateEventId,
 }: {
   isEditing: boolean;
   setIsEditing: Function;
   writeBoxDataToDB: Function;
+  updateEventId: Function;
 }) {
   const updateIsEditing = (newState: boolean) => {
     setIsEditing(newState);
   };
 
   return (
-    <div>
+    <div className="bg-neutral-400 w-full flex justify-center p-2 space-x-3">
       <div>
         {isEditing ? (
           <>
@@ -38,6 +41,7 @@ export default function BoxEditMenu({
           </>
         )}
       </div>
+      <ChooseGameMenu updateEventId={updateEventId} />
     </div>
   );
 }

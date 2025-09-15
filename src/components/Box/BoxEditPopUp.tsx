@@ -15,7 +15,6 @@ import { fontVariables } from "@/data";
 
 export default function BoxEditPopUp({
   boxNumber,
-  editBoxData,
   boxName,
   setBoxName,
   boxFont,
@@ -23,11 +22,10 @@ export default function BoxEditPopUp({
   boxFontSize,
   setBoxFontSize,
   setBoxImage,
-  boxImageURL,
   uploadImage,
+  writeBoxData,
 }: {
   boxNumber: number;
-  editBoxData: Function;
   boxName: string;
   setBoxName: Function;
   boxFont: string;
@@ -35,22 +33,11 @@ export default function BoxEditPopUp({
   boxFontSize: number;
   setBoxFontSize: Function;
   setBoxImage: Function;
-  boxImageURL: string;
   uploadImage: Function;
+  writeBoxData: Function;
 }) {
   return (
-    <PopoverContent
-      onInteractOutside={() => {
-        const newData = {
-          ...(boxName && { name: boxName }),
-          ...(boxFont && { font: boxFont }),
-          ...(boxFontSize && { fontSize: boxFontSize }),
-          ...(boxImageURL && { image: boxImageURL }),
-        };
-        console.log("Editing Box", boxNumber, newData);
-        editBoxData(boxNumber, newData);
-      }}
-    >
+    <PopoverContent onInteractOutside={() => writeBoxData()}>
       <Tabs defaultValue="text">
         <TabsList>
           <TabsTrigger value="text">Text</TabsTrigger>
@@ -78,6 +65,7 @@ export default function BoxEditPopUp({
             </Label>
             <Select
               name="fontSelect"
+              // defaultValue="Arial"
               value={boxFont}
               onValueChange={(e) => {
                 setBoxFont(e);
@@ -91,7 +79,7 @@ export default function BoxEditPopUp({
                   return (
                     <SelectItem
                       value={font.name}
-                      className={`font-${font.name}`}
+                      style={{ fontFamily: `${font.name}` }}
                       key={i}
                     >
                       {font.displayName}
@@ -107,6 +95,7 @@ export default function BoxEditPopUp({
               id="fontSize"
               type="number"
               value={boxFontSize}
+              // defaultValue={14}
               onChange={(e) => {
                 setBoxFontSize(Number(e.target.value));
               }}

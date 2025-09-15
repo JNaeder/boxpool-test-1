@@ -4,11 +4,15 @@ type Font = {
 };
 
 export const fontVariables: Font[] = [
-  { name: "normal", displayName: "Normal" },
-  { name: "mono", displayName: "Mono" },
-  { name: "asset", displayName: "Asset" },
-  { name: "bungee-shade", displayName: "Bungee Shade" },
-  { name: "rye", displayName: "Rye" },
-  { name: "ultra", displayName: "Ultra" },
-  { name: "knewave", displayName: "Knewave" },
+  { name: "Arial", displayName: "Arial" },
+  { name: "Mono", displayName: "Mono" },
+  { name: "Asset", displayName: "Asset" },
+  { name: "Bungee Shade", displayName: "Bungee Shade" },
+  { name: "Rye", displayName: "Rye" },
+  { name: "Ultra", displayName: "Ultra" },
+  { name: "Knewave", displayName: "Knewave" },
+  { name: "Pixelify Sans", displayName: "Pixelify Sans" },
+  { name: "Leckerli One", displayName: "Leckerli One" },
+  { name: "Oi", displayName: "Oi" },
+  { name: "Pinyon Script", displayName: "Pinyon Script" },
 ];

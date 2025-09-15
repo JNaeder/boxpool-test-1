@@ -14,6 +14,10 @@ export default function ScoringPlays({
 }) {
   if (!gameSummary.scoringPlays) return <></>;
 
+  // console.log(gameSummary.scoringPlays);
+  // TODO: Also Check if game has started, but there are no scoring plays
+  // TODO: Make it so it scrolling if it's too long
+
   const scoringPlays = gameSummary.scoringPlays;
   const teams = gameSummary.header.competitions[0].competitors.reduce(
     (acc, team) => ({
@@ -24,7 +28,8 @@ export default function ScoringPlays({
   );
 
   const allQuarterPlays = [];
-  for (let i = 0; i < 4; i++) {
+  const periodLength = gameSummary.header.competitions[0].status.period ?? 4;
+  for (let i = 0; i < periodLength; i++) {
     const quarterPlays = scoringPlays.filter(
       (scoringPlay) => scoringPlay.period.number === i + 1
     );
