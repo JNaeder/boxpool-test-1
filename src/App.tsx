@@ -5,8 +5,13 @@ import BoxPoolPage from "./components/BoxpoolPage/BoxPoolPage";
 import HomePage from "./components/HomePage";
 import DashboardPage from "./components/Dashboard/DashboardPage";
 // import { blankBoxpoolData } from "./fakeDB";
+import { getAnalytics, setUserId, logEvent } from "firebase/analytics";
 import { initializeApp } from "firebase/app";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import {
+  getAuth,
+  onAuthStateChanged,
+  sendEmailVerification,
+} from "firebase/auth";
 import {
   getFirestore,
   collection,
@@ -34,6 +39,7 @@ function App() {
   const auth = getAuth(app);
   const db = getFirestore(app);
   const storage = getStorage(app);
+  const analytics = getAnalytics(app);
 
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [allBoxPools, setAllBoxPools] = useState<Boxpool[]>([]);
@@ -50,12 +56,20 @@ function App() {
       const boxpoolsArray = querySnapshot.docs.map((doc) => {
         return { id: doc.id, ...doc.data() } as Boxpool;
       });
+      logEvent(analytics, "box-amounts", {
+        amount: boxpoolsArray.length,
+        userId: currentUser.uid,
+      });
       setAllBoxPools(boxpoolsArray);
     };
 
     // Get Current Logged In User
     onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser && !currentUser.emailVerified) {
+        sendEmailVerification(currentUser, { url: "google.com" });
+      }
       setCurrentUser(currentUser);
+      setUserId(analytics, currentUser?.uid ?? null);
     });
 
     getAllUserBoxPoolData();

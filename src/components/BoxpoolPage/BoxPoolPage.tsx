@@ -89,8 +89,6 @@ export default function BoxPoolPage({
     // console.log("Wrote data to", paramsData.boxId);
   };
 
-  console.log(currentGameSummary);
-
   return (
     <>
       <div className="flex justify-center bg-neutral-100 w-screen h-[calc(100vh-50px)]">
