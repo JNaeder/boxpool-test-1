@@ -7,18 +7,20 @@ export default function BoxEditMenu({
   setIsEditing,
   writeBoxDataToDB,
   updateEventId,
+  setCurrentEventId,
 }: {
   isEditing: boolean;
   setIsEditing: Function;
   writeBoxDataToDB: Function;
   updateEventId: Function;
+  setCurrentEventId: Function;
 }) {
   const updateIsEditing = (newState: boolean) => {
     setIsEditing(newState);
   };
 
   return (
-    <div className="bg-neutral-400 w-full flex justify-center p-2 space-x-3">
+    <div className="w-full flex justify-center p-2 space-x-3">
       <div>
         {isEditing ? (
           <>
@@ -41,7 +43,10 @@ export default function BoxEditMenu({
           </>
         )}
       </div>
-      <ChooseGameMenu updateEventId={updateEventId} />
+      <ChooseGameMenu
+        updateEventId={updateEventId}
+        setCurrentEventId={setCurrentEventId}
+      />
     </div>
   );
 }

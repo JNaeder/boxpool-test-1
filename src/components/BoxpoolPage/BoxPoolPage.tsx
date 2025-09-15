@@ -28,12 +28,18 @@ export default function BoxPoolPage({
 }) {
   const paramsData = useParams() as BoxPoolParams;
 
+  const [currentEventId, setCurrentEventId] = useState<string | undefined>();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [currentGameSummary, setCurrentGameSummary] =
     useState<GameSummary | null>(null);
   const [currentBoxpoolData, setCurrentBoxpoolData] = useState<Boxpool | null>(
     null
   );
+
+  const updateGameSummaryData = async (eventId: string) => {
+    const gameSummary: GameSummary = await getGameSummary(eventId);
+    setCurrentGameSummary(gameSummary);
+  };
 
   useEffect(() => {
     const getData = async () => {
@@ -42,9 +48,8 @@ export default function BoxPoolPage({
       if (docData.exists()) {
         const data = docData.data() as Boxpool;
         setCurrentBoxpoolData(data);
-        const gameSummary: GameSummary = await getGameSummary(data.eventId);
-        setCurrentGameSummary(gameSummary);
-        // console.log(gameSummary);
+        setCurrentEventId(data.eventId);
+        updateGameSummaryData(data.eventId);
       }
     };
     getData();
@@ -69,9 +74,12 @@ export default function BoxPoolPage({
     setCurrentBoxpoolData(boxData);
   };
 
-  const updateEventId = async (newEventId: number) => {
+  const updateEventId = async () => {
     const docRef = doc(db, "boxpools", paramsData.boxId);
-    await updateDoc(docRef, { eventId: newEventId });
+    await updateDoc(docRef, { eventId: currentEventId });
+    if (currentEventId) {
+      updateGameSummaryData(currentEventId);
+    }
   };
 
   const writeBoxDataToDB = async () => {
@@ -84,6 +92,7 @@ export default function BoxPoolPage({
     <>
       <div className="flex justify-center bg-neutral-100 w-screen h-[calc(100vh-50px)]">
         <div className="flex flex-col w-[50%] p-2 border-r-4">
+          <div>{currentGameSummary.header.date}</div>
           <Prizeboard boxpoolData={currentBoxpoolData} />
           <Scoreboard game={currentGameSummary.header} />
           <ScoringPlays gameSummary={currentGameSummary} />
@@ -94,6 +103,7 @@ export default function BoxPoolPage({
             setIsEditing={setIsEditing}
             writeBoxDataToDB={writeBoxDataToDB}
             updateEventId={updateEventId}
+            setCurrentEventId={setCurrentEventId}
           />
           <Box
             storage={storage}

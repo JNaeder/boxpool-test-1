@@ -17,12 +17,14 @@ import GameIcon from "./GameIcon";
 
 export default function ChooseGameMenu({
   updateEventId,
+  setCurrentEventId,
 }: {
   updateEventId: Function;
+  setCurrentEventId: Function;
 }) {
   const [currentWeek, setCurrentWeek] = useState<number>(2);
   const [weekGames, setWeekGames] = useState<Game[]>([]);
-  const [currentEventId, setCurrentEventId] = useState<number | null>(null);
+  // const [currentEventId, setCurrentEventId] = useState<number | null>(null);
 
   useEffect(() => {
     const getData = async () => {
@@ -64,7 +66,7 @@ export default function ChooseGameMenu({
           <DialogClose asChild>
             <Button
               onClick={() => {
-                updateEventId(currentEventId);
+                updateEventId();
               }}
             >
               Choose

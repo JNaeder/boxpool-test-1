@@ -20,12 +20,11 @@ export default function GameIcon({ game }: { game: Game }) {
     return formatted;
   };
 
-  //   console.log(formatDate(game.date));
-
-  //   console.log(game);
   return (
     <div className="bg-white text-black flex justify-center items-center rounded-lg">
-      <div></div>
+      <div>
+        <RadioGroupItem value={game.id} id={game.id} />
+      </div>
       <div className="flex flex-col items-center">
         <div className="flex items-center space-x-2">
           <img src={awayTeam?.team.logo} width={40} />
@@ -33,9 +32,6 @@ export default function GameIcon({ game }: { game: Game }) {
           <img src={homeTeam?.team.logo} width={40} />
         </div>
         <div>{formatDate(game.date)}</div>
-      </div>
-      <div>
-        <RadioGroupItem value={game.id} id={game.id} />
       </div>
     </div>
   );
