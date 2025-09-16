@@ -53,13 +53,23 @@ export default function ScoringPlays({
                   <AccordionTrigger className="text-xl  justify-center">
                     {quaterNames[i + 1]}
                   </AccordionTrigger>
-                  {quarterPlay.map((play, i) => {
-                    return (
-                      <AccordionContent key={i}>
-                        <ScoringPlayItem scoringPlay={play} teams={teams} />
+                  {quarterPlay.length > 0 ? (
+                    <>
+                      {quarterPlay.map((play, i) => {
+                        return (
+                          <AccordionContent key={i}>
+                            <ScoringPlayItem scoringPlay={play} teams={teams} />
+                          </AccordionContent>
+                        );
+                      })}
+                    </>
+                  ) : (
+                    <>
+                      <AccordionContent>
+                        <div>None</div>
                       </AccordionContent>
-                    );
-                  })}
+                    </>
+                  )}
                 </AccordionItem>
               );
             })}
