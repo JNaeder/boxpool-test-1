@@ -57,7 +57,7 @@ export default function Box({
 
   return (
     <>
-      <div className="flex ml-10">
+      <div className="flex">
         <div className="flex flex-col items-end">
           <div className="flex justify-center items-center 300 w-[calc(10*var(--spacing-box))]">
             <img src={homeTeam?.team.logos[0].href} className="h-20" />

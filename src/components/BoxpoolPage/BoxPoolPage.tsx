@@ -92,16 +92,15 @@ export default function BoxPoolPage({
 
   return (
     <>
-      {/* Everything */}
       <div className="bg-neutral-200 flex justify-start  w-screen h-[calc(100vh-50px)]">
-        <div className=" flex flex-col w-1/4 p-2 border-r-4">
+        <div className="flex flex-col w-1/4 p-2">
           <div className="bg-black text-white text-center mb-3 w-fit mx-auto py-1 px-5 rounded-lg">
             {formatDate(currentGameSummary.header.competitions[0].date)}
           </div>
           <Scoreboard game={currentGameSummary.header} />
           <ScoringPlays gameSummary={currentGameSummary} />
         </div>
-        <div className=" w-3/4 flex m-6 items-start">
+        <div className=" w-3/4 flex items-start ">
           <Box
             storage={storage}
             isEditing={isEditing}
@@ -109,7 +108,7 @@ export default function BoxPoolPage({
             boxpoolData={currentBoxpoolData}
             editBoxData={editBoxData}
           />
-          <div className="flex flex-col w-full">
+          <div className="flex flex-col w-full m-2">
             <BoxEditMenu
               isEditing={isEditing}
               setIsEditing={setIsEditing}

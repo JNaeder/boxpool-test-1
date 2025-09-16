@@ -45,7 +45,7 @@ export default function ScoringPlays({
         <div className="w-full text-center text-xl p-1 px-5 rounded-lg">
           Scoring Plays
         </div>
-        <div className=" flex flex-col items-center w-full m-auto justify-start mt-1 border-2 p-1 rounded-lg bg-white max-h-150 overflow-auto">
+        <div className=" flex flex-col items-center w-full m-auto justify-start mt-1 border-2 p-1 rounded-lg bg-white max-h-120 overflow-auto">
           <Accordion type="multiple" className="w-full text-center">
             {allQuarterPlays.map((quarterPlay, i) => {
               return (

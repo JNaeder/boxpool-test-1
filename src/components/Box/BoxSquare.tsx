@@ -39,25 +39,25 @@ export default function BoxSquare({
   const [boxImageURL, setBoxImageURL] = useState<string>("");
   const [popoverOpen, setPopoverOpen] = useState<boolean>(false);
 
-  const BG: Record<string, string> = {
-    red: "!bg-red-400",
-    blue: "!bg-blue-400",
-    green: "!bg-green-400",
-    yellow: "!bg-yellow-400",
-  };
+  // const BG: Record<string, string> = {
+  //   red: "!bg-red-400",
+  //   blue: "!bg-blue-400",
+  //   green: "!bg-green-400",
+  //   yellow: "!bg-yellow-400",
+  // };
 
-  const FROM: Record<string, string> = {
-    red: "from-red-400",
-    blue: "from-blue-400",
-    green: "from-green-400",
-    yellow: "from-yellow-400",
-  };
-  const TO: Record<string, string> = {
-    red: "to-red-400",
-    blue: "to-blue-400",
-    green: "to-green-400",
-    yellow: "to-yellow-400",
-  };
+  // const FROM: Record<string, string> = {
+  //   red: "from-red-400",
+  //   blue: "from-blue-400",
+  //   green: "from-green-400",
+  //   yellow: "from-yellow-400",
+  // };
+  // const TO: Record<string, string> = {
+  //   red: "to-red-400",
+  //   blue: "to-blue-400",
+  //   green: "to-green-400",
+  //   yellow: "to-yellow-400",
+  // };
 
   type ColorState = {
     color: string;
@@ -100,30 +100,28 @@ export default function BoxSquare({
 
   const winners = winColorStates.filter((state) => state.state);
 
-  const getColorString = (): string => {
-    if (winners.length === 1) {
-      return [BG[winners[0].color], "font-bold"].filter(Boolean).join(" ");
-    } else if (winners.length === 2) {
-      return [
-        "bg-gradient-to-br",
-        FROM[winners[0].color],
-        "from-[50%]",
-        TO[winners[1].color],
-        "to-[50%]",
-        "font-bold",
-      ]
-        .filter(Boolean)
-        .join(" ");
-    } else if (winners.length === 3) {
-      return "font-bold";
-    } else {
-      return "";
-    }
-  };
+  // const getColorString = (): string => {
+  //   if (winners.length === 1) {
+  //     return [BG[winners[0].color], "font-bold"].filter(Boolean).join(" ");
+  //   } else if (winners.length === 2) {
+  //     return [
+  //       "bg-gradient-to-br",
+  //       FROM[winners[0].color],
+  //       "from-[50%]",
+  //       TO[winners[1].color],
+  //       "to-[50%]",
+  //       "font-bold",
+  //     ]
+  //       .filter(Boolean)
+  //       .join(" ");
+  //   } else if (winners.length === 3) {
+  //     return "font-bold";
+  //   } else {
+  //     return "";
+  //   }
+  // };
 
-  const getThreeColorGradientStyle = (): React.CSSProperties | undefined => {
-    if (winners.length !== 3) return undefined;
-
+  const getColorGradient = (): React.CSSProperties | undefined => {
     const colorMap: Record<string, string> = {
       red: "#f87171",
       blue: "#60a5fa",
@@ -131,13 +129,23 @@ export default function BoxSquare({
       yellow: "#facc15",
     };
 
-    return {
-      background: `linear-gradient(to bottom right, ${
-        colorMap[winners[0].color]
-      } 0% 33.33%, ${colorMap[winners[1].color]} 33.33% 66.66%, ${
-        colorMap[winners[2].color]
-      } 66.66% 100%)`,
-    };
+    if (winners.length === 1) {
+      return { backgroundColor: colorMap[winners[0].color] };
+    } else if (winners.length === 2) {
+      return {
+        background: `linear-gradient(to bottom right, ${
+          colorMap[winners[0].color]
+        } 0% 50%, ${colorMap[winners[1].color]} 50% 100%`,
+      };
+    } else if (winners.length === 3) {
+      return {
+        background: `linear-gradient(to bottom right, ${
+          colorMap[winners[0].color]
+        } 0% 33.33%, ${colorMap[winners[1].color]} 33.33% 66.66%, ${
+          colorMap[winners[2].color]
+        } 66.66% 100%)`,
+      };
+    }
   };
 
   const uploadImage = async () => {
@@ -179,14 +187,13 @@ export default function BoxSquare({
       <PopoverTrigger asChild>
         <div
           className={[
-            "w-box h-box border-1 bg-box-bg flex flex-col relative",
+            "w-box h-box border-1 bg-box-bg flex flex-col relative overflow-hidden",
             isEditing ? "hover:bg-amber-200" : "",
             popoverOpen ? " !bg-amber-200" : "",
-            getColorString(),
           ]
             .filter(Boolean)
             .join(" ")}
-          style={getThreeColorGradientStyle()}
+          style={getColorGradient()}
         >
           <div className="absolute top-0  right-0.5 text-[9px] z-10">
             {boxNumber}

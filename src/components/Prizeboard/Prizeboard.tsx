@@ -10,7 +10,8 @@ export default function Prizeboard({ boxpoolData }: { boxpoolData: Boxpool }) {
   // const reverse = true;
 
   return (
-    <div className="flex mx-auto p-2 w-3/4 justify-center">
+    // Max Width??
+    <div className="flex p-2 justify-center mx-5">
       <div className="flex-1">
         <PrizeboardSquareBox text="" title rowTitle />
         <PrizeboardSquareBox text="1st Quarter" color="blue" rowTitle />
