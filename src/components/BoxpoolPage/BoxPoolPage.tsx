@@ -100,7 +100,7 @@ export default function BoxPoolPage({
           <Scoreboard game={currentGameSummary.header} />
           <ScoringPlays gameSummary={currentGameSummary} />
         </div>
-        <div className=" w-3/4 flex items-start mr-">
+        <div className="flex items-start min-w-0">
           <Box
             storage={storage}
             isEditing={isEditing}
@@ -108,7 +108,7 @@ export default function BoxPoolPage({
             boxpoolData={currentBoxpoolData}
             editBoxData={editBoxData}
           />
-          <div className="flex-1 flex-col w-full">
+          <div className="flex flex-col w-full ml-4">
             <BoxEditMenu
               isEditing={isEditing}
               setIsEditing={setIsEditing}

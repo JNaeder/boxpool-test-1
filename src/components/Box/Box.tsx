@@ -57,16 +57,16 @@ export default function Box({
 
   return (
     <>
-      <div className="flex-1">
-        <div className="flex flex-col items-end">
-          <div className="flex justify-center items-center 300 w-[calc(10*var(--spacing-box))]">
+      <div className="w-full">
+        <div className="flex flex-col items-end bg-red-500">
+          <div className="flex justify-center items-center w-[calc(10*var(--spacing-box))] bg-blue-500">
             <img src={homeTeam?.team.logos[0].href} className="h-20" />
             <div className="font-bold text-4xl">
               {homeTeam?.team.displayName}
             </div>
           </div>
           <div className="flex items-end">
-            <div className="flex justify-center items-center [writing-mode:sideways-lr] h-[calc(10*var(--spacing-box))]">
+            <div className="flex justify-center items-center [writing-mode:sideways-lr] h-[calc(10*var(--spacing-box))] bg-blue-500">
               <img src={awayTeam?.team.logos[0].href} className="h-20" />
               <div className="font-bold text-4xl">
                 {awayTeam?.team.displayName}
