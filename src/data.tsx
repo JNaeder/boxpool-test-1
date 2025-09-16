@@ -15,4 +15,5 @@ export const fontVariables: Font[] = [
   { name: "Leckerli One", displayName: "Leckerli One" },
   { name: "Oi", displayName: "Oi" },
   { name: "Pinyon Script", displayName: "Pinyon Script" },
+  { name: "Monoton", displayName: "Monoton" },
 ];

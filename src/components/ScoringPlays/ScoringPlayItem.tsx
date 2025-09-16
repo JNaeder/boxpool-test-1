@@ -13,7 +13,7 @@ export default function ScoringPlayItem({
     <>
       <div>
         <div
-          className={`flex justify-center items-center gap-2 rounded-2xl mb-2`}
+          className={`flex justify-center items-center w-3/4 mx-auto rounded-2xl gap-2 mb-2`}
           style={{ backgroundColor: `#${scoringTeam.color}`, color: "white" }}
         >
           <img src={scoringPlay.team.logo} width={30} />

@@ -49,6 +49,7 @@ export default function BoxPoolPage({
       if (docData.exists()) {
         const data = docData.data() as Boxpool;
         setCurrentBoxpoolData(data);
+        console.log(data);
         setCurrentEventId(data.eventId);
         updateGameSummaryData(data.eventId);
       }
@@ -91,25 +92,16 @@ export default function BoxPoolPage({
 
   return (
     <>
-      <div className="flex justify-center bg-neutral-100 w-screen h-[calc(100vh-50px)]">
-        <div className="flex flex-col w-[50%] p-2 border-r-4">
+      {/* Everything */}
+      <div className="bg-neutral-200 flex justify-start  w-screen h-[calc(100vh-50px)]">
+        <div className=" flex flex-col w-1/4 p-2 border-r-4">
           <div className="bg-black text-white text-center mb-3 w-fit mx-auto py-1 px-5 rounded-lg">
             {formatDate(currentGameSummary.header.competitions[0].date)}
           </div>
           <Scoreboard game={currentGameSummary.header} />
           <ScoringPlays gameSummary={currentGameSummary} />
         </div>
-        <div className="w-full flex flex-col  items-center">
-          <div className="flex mt-2">
-            <Prizeboard boxpoolData={currentBoxpoolData} />
-            <BoxEditMenu
-              isEditing={isEditing}
-              setIsEditing={setIsEditing}
-              writeBoxDataToDB={writeBoxDataToDB}
-              updateEventId={updateEventId}
-              setCurrentEventId={setCurrentEventId}
-            />
-          </div>
+        <div className=" w-3/4 flex m-6 items-start">
           <Box
             storage={storage}
             isEditing={isEditing}
@@ -117,6 +109,16 @@ export default function BoxPoolPage({
             boxpoolData={currentBoxpoolData}
             editBoxData={editBoxData}
           />
+          <div className="flex flex-col w-full">
+            <BoxEditMenu
+              isEditing={isEditing}
+              setIsEditing={setIsEditing}
+              writeBoxDataToDB={writeBoxDataToDB}
+              updateEventId={updateEventId}
+              setCurrentEventId={setCurrentEventId}
+            />
+            <Prizeboard boxpoolData={currentBoxpoolData} />
+          </div>
         </div>
       </div>
     </>

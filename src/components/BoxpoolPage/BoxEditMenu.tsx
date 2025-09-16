@@ -20,7 +20,7 @@ export default function BoxEditMenu({
   };
 
   return (
-    <div className="w-full flex justify-center p-2 space-x-3">
+    <div className="w-full flex justify-center p-2 space-x-3 mb-10">
       <div>
         {isEditing ? (
           <>

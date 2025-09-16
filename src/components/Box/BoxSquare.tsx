@@ -58,12 +58,6 @@ export default function BoxSquare({
     green: "to-green-400",
     yellow: "to-yellow-400",
   };
-  const VIA: Record<string, string> = {
-    red: "via-red-400",
-    blue: "via-blue-400",
-    green: "via-green-400",
-    yellow: "via-yellow-400",
-  };
 
   type ColorState = {
     color: string;
@@ -121,25 +115,29 @@ export default function BoxSquare({
         .filter(Boolean)
         .join(" ");
     } else if (winners.length === 3) {
-      return [
-        "bg-gradient-to-br",
-        FROM[winners[0].color],
-        "from-[33%]",
-        VIA[winners[0].color],
-        "via-[50%]",
-        VIA[winners[1].color],
-        "via-[50%]",
-        VIA[winners[1].color],
-        "via-[80%]",
-        TO[winners[2].color],
-        "to-[80%]",
-        "font-bold",
-      ]
-        .filter(Boolean)
-        .join(" ");
+      return "font-bold";
     } else {
       return "";
     }
+  };
+
+  const getThreeColorGradientStyle = (): React.CSSProperties | undefined => {
+    if (winners.length !== 3) return undefined;
+
+    const colorMap: Record<string, string> = {
+      red: "#f87171",
+      blue: "#60a5fa",
+      green: "#4ade80",
+      yellow: "#facc15",
+    };
+
+    return {
+      background: `linear-gradient(to bottom right, ${
+        colorMap[winners[0].color]
+      } 0% 33.33%, ${colorMap[winners[1].color]} 33.33% 66.66%, ${
+        colorMap[winners[2].color]
+      } 66.66% 100%)`,
+    };
   };
 
   const uploadImage = async () => {
@@ -188,6 +186,7 @@ export default function BoxSquare({
           ]
             .filter(Boolean)
             .join(" ")}
+          style={getThreeColorGradientStyle()}
         >
           <div className="absolute top-0  right-0.5 text-[9px] z-10">
             {boxNumber}
