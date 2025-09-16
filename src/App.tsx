@@ -5,7 +5,7 @@ import BoxPoolPage from "./components/BoxpoolPage/BoxPoolPage";
 import HomePage from "./components/HomePage";
 import DashboardPage from "./components/Dashboard/DashboardPage";
 // import { blankBoxpoolData } from "./fakeDB";
-import { getAnalytics, setUserId, logEvent } from "firebase/analytics";
+import { getAnalytics } from "firebase/analytics";
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {
@@ -35,7 +35,7 @@ function App() {
   const auth = getAuth(app);
   const db = getFirestore(app);
   const storage = getStorage(app);
-  const analytics = getAnalytics(app);
+  getAnalytics(app);
 
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [allBoxPools, setAllBoxPools] = useState<Boxpool[]>([]);
@@ -52,10 +52,6 @@ function App() {
       const boxpoolsArray = querySnapshot.docs.map((doc) => {
         return { id: doc.id, ...doc.data() } as Boxpool;
       });
-      logEvent(analytics, "box-amounts", {
-        amount: boxpoolsArray.length,
-        userId: currentUser.uid,
-      });
       setAllBoxPools(boxpoolsArray);
     };
 
@@ -64,7 +60,6 @@ function App() {
       if (currentUser && !currentUser.emailVerified) {
       }
       setCurrentUser(currentUser);
-      setUserId(analytics, currentUser?.uid ?? null);
     });
 
     getAllUserBoxPoolData();
