@@ -1,23 +1,31 @@
+// React and external libraries
 import { useState, useEffect } from "react";
-import { getGameSummary } from "../../apiFunctions";
-import { formatDate } from "@/helperFunctions";
-import Scoreboard from "../Scoreboard/Scoreboard";
-import Prizeboard from "../Prizeboard/Prizeboard";
-import ScoringPlays from "../ScoringPlays/ScoringPlays";
-import { Spinner } from "../ui/shadcn-io/spinner";
-import type { GameSummary } from "../../types/gameTypes";
-import type { Boxpool } from "@/types/boxpoolTypes";
 import { useParams } from "react-router";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-import BoxEditMenu from "./BoxEditMenu";
-import Box from "../Box/Box";
-import { db, storage } from "@/lib/firebase";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+
+// Redux hooks
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import {
-  setCurrentEventId,
   setCurrentGameSummary,
   setCurrentBoxpoolData,
 } from "../../slices/gameSlice";
+
+// Components
+import Scoreboard from "../Scoreboard/Scoreboard";
+import Prizeboard from "../Prizeboard/Prizeboard";
+import ScoringPlays from "../ScoringPlays/ScoringPlays";
+import BoxEditMenu from "./BoxEditMenu";
+import Box from "../Box/Box";
+import { Spinner } from "../ui/shadcn-io/spinner";
+
+// Types
+import type { GameSummary } from "../../types/gameTypes";
+import type { Boxpool } from "@/types/boxpoolTypes";
+
+// Utils and services
+import { getGameSummary } from "../../apiFunctions";
+import { formatDate } from "@/helperFunctions";
+import { db } from "@/lib/firebase";
 
 type BoxPoolParams = { boxId: string };
 
@@ -25,8 +33,9 @@ export default function BoxPoolPage() {
   const paramsData = useParams() as BoxPoolParams;
   const dispatch = useAppDispatch();
 
-  const { currentEventId, currentGameSummary, currentBoxpoolData } =
-    useAppSelector((store) => store.game);
+  const { currentGameSummary, currentBoxpoolData } = useAppSelector(
+    (store) => store.game
+  );
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
@@ -44,13 +53,18 @@ export default function BoxPoolPage() {
       const docData = await getDoc(docRef);
       if (docData.exists()) {
         const data = docData.data() as Boxpool;
+        data.id = paramsData.boxId;
         dispatch(setCurrentBoxpoolData(data));
-        dispatch(setCurrentEventId(data.eventId));
-        updateGameSummaryData(data.eventId);
       }
     };
     getData();
   }, []);
+
+  useEffect(() => {
+    if (currentBoxpoolData) {
+      updateGameSummaryData(currentBoxpoolData?.eventId);
+    }
+  }, [currentBoxpoolData]);
 
   if (!currentGameSummary || !currentBoxpoolData)
     return (
@@ -62,20 +76,12 @@ export default function BoxPoolPage() {
     );
 
   const editBoxData = (boxNumber: number, newData: Object) => {
-    const boxData = { ...currentBoxpoolData };
+    const boxData = structuredClone(currentBoxpoolData);
     boxData.boxes[boxNumber] = {
       ...boxData.boxes[boxNumber],
       ...newData,
     };
-    setCurrentBoxpoolData(boxData);
-  };
-
-  const updateEventId = async () => {
-    const docRef = doc(db, "boxpools", paramsData.boxId);
-    await updateDoc(docRef, { eventId: currentEventId });
-    if (currentEventId) {
-      updateGameSummaryData(currentEventId);
-    }
+    dispatch(setCurrentBoxpoolData(boxData));
   };
 
   const writeBoxDataToDB = async () => {
@@ -94,20 +100,13 @@ export default function BoxPoolPage() {
           <ScoringPlays gameSummary={currentGameSummary} />
         </div>
         <div className="flex w-1/2">
-          <Box
-            storage={storage}
-            isEditing={isEditing}
-            game={currentGameSummary.header}
-            boxpoolData={currentBoxpoolData}
-            editBoxData={editBoxData}
-          />
+          <Box isEditing={isEditing} editBoxData={editBoxData} />
         </div>
         <div className="flex flex-col w-1/4 ">
           <BoxEditMenu
             isEditing={isEditing}
             setIsEditing={setIsEditing}
             writeBoxDataToDB={writeBoxDataToDB}
-            updateEventId={updateEventId}
           />
           <Prizeboard boxpoolData={currentBoxpoolData} />
         </div>

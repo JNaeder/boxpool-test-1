@@ -6,12 +6,10 @@ export default function BoxEditMenu({
   isEditing,
   setIsEditing,
   writeBoxDataToDB,
-  updateEventId,
 }: {
   isEditing: boolean;
   setIsEditing: Function;
   writeBoxDataToDB: Function;
-  updateEventId: Function;
 }) {
   const updateIsEditing = (newState: boolean) => {
     setIsEditing(newState);
@@ -41,7 +39,7 @@ export default function BoxEditMenu({
           </>
         )}
       </div>
-      <ChooseGameMenu updateEventId={updateEventId} />
+      <ChooseGameMenu />
     </div>
   );
 }

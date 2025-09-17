@@ -1,34 +1,26 @@
 import BoxSquare from "./BoxSquare";
 import NumberSquare from "./NumberSquare";
-import type {
-  Game,
-  WinningScore,
-  Competition,
-  Competitor,
-  Boxpool,
-} from "../../types";
-import type { FirebaseStorage } from "firebase/storage";
+import type { Competition, Competitor } from "../../types/gameTypes";
+import type { WinningScore } from "../../types/boxpoolTypes";
+import { useAppSelector } from "@/hooks";
 
 export default function Box({
-  storage,
   isEditing,
-  game,
-  boxpoolData,
   editBoxData,
 }: {
-  storage: FirebaseStorage;
   isEditing: boolean;
-  game: Game;
-  boxpoolData: Boxpool;
   editBoxData: Function;
 }) {
+  const { currentBoxpoolData, currentGameSummary } = useAppSelector(
+    (store) => store.game
+  );
+  if (!currentGameSummary) return <>No Game Summary</>;
+  if (!currentBoxpoolData) return <>No Box Pool Data</>;
+
+  const game = currentGameSummary?.header;
   const competition: Competition = game.competitions[0];
   const competitors: Competitor[] = competition.competitors;
-  const rowNumbers = {
-    homeBoxNumbers: boxpoolData.boxNumbers.homeBoxNumbers,
-    awayBoxNumbers: boxpoolData.boxNumbers.awayBoxNumbers,
-  };
-  const boxes = boxpoolData.boxes;
+  const { boxes, boxNumbers, userId } = currentBoxpoolData;
 
   const homeTeam: Competitor | undefined = competitors.find(
     (competitor) => competitor.homeAway === "home"
@@ -88,7 +80,7 @@ export default function Box({
               color: "white",
             }}
           >
-            {rowNumbers.homeBoxNumbers.map((number, i) => (
+            {boxNumbers.homeBoxNumbers.map((number, i) => (
               <NumberSquare key={i} option="top" number={number} />
             ))}
           </div>
@@ -100,7 +92,7 @@ export default function Box({
               color: "white",
             }}
           >
-            {rowNumbers.awayBoxNumbers.map((number, i) => (
+            {boxNumbers.awayBoxNumbers.map((number, i) => (
               <NumberSquare key={i} option="side" number={number} />
             ))}
           </div>
@@ -109,20 +101,19 @@ export default function Box({
             {[...Array(100)].map((_, j) => {
               return (
                 <BoxSquare
-                  storage={storage}
                   key={j}
                   box={boxes[j + 1] ?? ""}
                   boxNumber={j + 1}
                   winningNumbers={{
-                    homeScore: rowNumbers.homeBoxNumbers[j % 10],
-                    awayScore: rowNumbers.awayBoxNumbers[Math.floor(j / 10)],
+                    homeScore: boxNumbers.homeBoxNumbers[j % 10],
+                    awayScore: boxNumbers.awayBoxNumbers[Math.floor(j / 10)],
                   }}
                   quarterScores={quarterScores}
                   period={competition.status.period}
                   completed={competition.status.type.completed}
                   isEditing={isEditing}
                   editBoxData={editBoxData}
-                  userId={boxpoolData.userId}
+                  userId={userId}
                 />
               );
             })}
