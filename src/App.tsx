@@ -1,45 +1,42 @@
-import { useEffect, useState } from "react";
-import type { Boxpool, User } from "./types";
+import { useEffect } from "react";
+import type { Boxpool } from "./types/boxpoolTypes";
+import type { User } from "./types/userTypes";
 import TopMenuBar from "./components/TopMenuBar";
 import BoxPoolPage from "./components/BoxpoolPage/BoxPoolPage";
 import HomePage from "./components/HomePage";
 import DashboardPage from "./components/Dashboard/DashboardPage";
-// import { blankBoxpoolData } from "./fakeDB";
 import { getAnalytics } from "firebase/analytics";
-import { initializeApp } from "firebase/app";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import {
-  getFirestore,
-  collection,
-  getDocs,
-  query,
-  where,
-  // addDoc,
-} from "firebase/firestore";
-import { getStorage } from "firebase/storage";
-
+import { onAuthStateChanged } from "firebase/auth";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { useAppDispatch, useAppSelector } from "./hooks";
+import { setCurrentUser, setBoxPools } from "./slices/userSlice";
 import { BrowserRouter, Routes, Route } from "react-router";
+import { app, auth, db } from "./lib/firebase";
 
 function App() {
-  const firebaseConfig = {
-    apiKey: "AIzaSyABQ0sYuFtyyryx_Tt0vENSiBJomHdpPEo",
-    authDomain: "boxpool-cf6d8.firebaseapp.com",
-    projectId: "boxpool-cf6d8",
-    storageBucket: "boxpool-cf6d8.firebasestorage.app",
-    messagingSenderId: "710308673241",
-    appId: "1:710308673241:web:67e9269630da76f9b2b0c8",
-    measurementId: "G-S4R1S19RGZ",
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-  const storage = getStorage(app);
+  const dispatch = useAppDispatch();
   getAnalytics(app);
 
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [allBoxPools, setAllBoxPools] = useState<Boxpool[]>([]);
+  const { user: currentUser } = useAppSelector((store) => store.user);
 
+  // Get Current Logged In User
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        const user: User = {
+          uid: currentUser.uid,
+          displayName: currentUser.displayName,
+          email: currentUser.email,
+          emailVerified: currentUser.emailVerified,
+          photoURL: currentUser.photoURL,
+        };
+        dispatch(setCurrentUser(user));
+      }
+    });
+    return () => unsubscribe();
+  }, [auth, dispatch]);
+
+  // Get User Boxpools
   useEffect(() => {
     const getAllUserBoxPoolData = async () => {
       if (!currentUser) return;
@@ -52,45 +49,21 @@ function App() {
       const boxpoolsArray = querySnapshot.docs.map((doc) => {
         return { id: doc.id, ...doc.data() } as Boxpool;
       });
-      setAllBoxPools(boxpoolsArray);
+
+      dispatch(setBoxPools(boxpoolsArray));
     };
 
-    // Get Current Logged In User
-    onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser && !currentUser.emailVerified) {
-      }
-      setCurrentUser(currentUser);
-    });
-
     getAllUserBoxPoolData();
-
-    // const addData = async () => {
-    //   const boxpoolDB = collection(db, "boxpools");
-    //   const docRef = await addDoc(boxpoolDB, blankBoxpoolData);
-    //   console.log(docRef);
-    // };
-
-    // addData();
   }, [currentUser]);
 
   return (
     <>
       <BrowserRouter>
-        <TopMenuBar
-          currentUser={currentUser}
-          setCurrentUser={setCurrentUser}
-          auth={auth}
-        />
+        <TopMenuBar />
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route
-            path="/dashboard"
-            element={<DashboardPage allBoxpools={allBoxPools} />}
-          />
-          <Route
-            path="box/:boxId"
-            element={<BoxPoolPage db={db} storage={storage} />}
-          />
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="box/:boxId" element={<BoxPoolPage />} />
         </Routes>
       </BrowserRouter>
     </>

@@ -1,5 +1,5 @@
 import { getWeekScoreboard } from "../../apiFunctions";
-import type { Game } from "@/types";
+import type { Game } from "../../types/gameTypes";
 import { useEffect, useState } from "react";
 import {
   Dialog,
@@ -14,17 +14,17 @@ import {
 import { RadioGroup } from "@/components/ui/radio-group";
 import { Button } from "../ui/button";
 import GameIcon from "./GameIcon";
+import { useAppDispatch } from "@/hooks";
+import { setCurrentEventId } from "@/slices/gameSlice";
 
 export default function ChooseGameMenu({
   updateEventId,
-  setCurrentEventId,
 }: {
   updateEventId: Function;
-  setCurrentEventId: Function;
 }) {
+  const dispatch = useAppDispatch();
   const [currentWeek, setCurrentWeek] = useState<number>(2);
   const [weekGames, setWeekGames] = useState<Game[]>([]);
-  // const [currentEventId, setCurrentEventId] = useState<number | null>(null);
 
   useEffect(() => {
     const getData = async () => {
@@ -55,7 +55,7 @@ export default function ChooseGameMenu({
             </Button>
           </div>
         </DialogHeader>
-        <RadioGroup onValueChange={(e) => setCurrentEventId(Number(e))}>
+        <RadioGroup onValueChange={(e) => dispatch(setCurrentEventId(e))}>
           <div className="grid grid-cols-3 gap-2">
             {weekGames.map((game, i) => {
               return <GameIcon key={i} game={game} />;

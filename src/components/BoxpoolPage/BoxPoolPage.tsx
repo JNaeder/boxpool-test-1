@@ -5,41 +5,34 @@ import Scoreboard from "../Scoreboard/Scoreboard";
 import Prizeboard from "../Prizeboard/Prizeboard";
 import ScoringPlays from "../ScoringPlays/ScoringPlays";
 import { Spinner } from "../ui/shadcn-io/spinner";
-import type { Boxpool, GameSummary } from "@/types";
+import type { GameSummary } from "../../types/gameTypes";
+import type { Boxpool } from "@/types/boxpoolTypes";
 import { useParams } from "react-router";
-import {
-  type Firestore,
-  doc,
-  getDoc,
-  setDoc,
-  updateDoc,
-} from "firebase/firestore";
-import { type FirebaseStorage } from "firebase/storage";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import BoxEditMenu from "./BoxEditMenu";
 import Box from "../Box/Box";
+import { db, storage } from "@/lib/firebase";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import {
+  setCurrentEventId,
+  setCurrentGameSummary,
+  setCurrentBoxpoolData,
+} from "../../slices/gameSlice";
 
 type BoxPoolParams = { boxId: string };
 
-export default function BoxPoolPage({
-  db,
-  storage,
-}: {
-  db: Firestore;
-  storage: FirebaseStorage;
-}) {
+export default function BoxPoolPage() {
   const paramsData = useParams() as BoxPoolParams;
+  const dispatch = useAppDispatch();
 
-  const [currentEventId, setCurrentEventId] = useState<string | undefined>();
+  const { currentEventId, currentGameSummary, currentBoxpoolData } =
+    useAppSelector((store) => store.game);
+
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [currentGameSummary, setCurrentGameSummary] =
-    useState<GameSummary | null>(null);
-  const [currentBoxpoolData, setCurrentBoxpoolData] = useState<Boxpool | null>(
-    null
-  );
 
   const updateGameSummaryData = async (eventId: string) => {
     const gameSummary: GameSummary = await getGameSummary(eventId);
-    setCurrentGameSummary(gameSummary);
+    dispatch(setCurrentGameSummary(gameSummary));
     // If You need to import fake data
     // VVVVVVVVVV
     // setCurrentGameSummary(structuredClone(testData) as unknown as GameSummary);
@@ -51,9 +44,8 @@ export default function BoxPoolPage({
       const docData = await getDoc(docRef);
       if (docData.exists()) {
         const data = docData.data() as Boxpool;
-        setCurrentBoxpoolData(data);
-        // console.log(data);
-        setCurrentEventId(data.eventId);
+        dispatch(setCurrentBoxpoolData(data));
+        dispatch(setCurrentEventId(data.eventId));
         updateGameSummaryData(data.eventId);
       }
     };
@@ -75,7 +67,6 @@ export default function BoxPoolPage({
       ...boxData.boxes[boxNumber],
       ...newData,
     };
-    // console.log(boxData);
     setCurrentBoxpoolData(boxData);
   };
 
@@ -90,7 +81,6 @@ export default function BoxPoolPage({
   const writeBoxDataToDB = async () => {
     const docRef = doc(db, "boxpools", paramsData.boxId);
     await setDoc(docRef, currentBoxpoolData);
-    // console.log("Wrote data to", paramsData.boxId);
   };
 
   return (
@@ -100,7 +90,7 @@ export default function BoxPoolPage({
           <div className="bg-black text-white text-center mb-3 w-fit mx-auto py-1 px-5 rounded-lg">
             {formatDate(currentGameSummary.header.competitions[0].date)}
           </div>
-          <Scoreboard game={currentGameSummary.header} />
+          <Scoreboard />
           <ScoringPlays gameSummary={currentGameSummary} />
         </div>
         <div className="flex w-1/2">
@@ -118,7 +108,6 @@ export default function BoxPoolPage({
             setIsEditing={setIsEditing}
             writeBoxDataToDB={writeBoxDataToDB}
             updateEventId={updateEventId}
-            setCurrentEventId={setCurrentEventId}
           />
           <Prizeboard boxpoolData={currentBoxpoolData} />
         </div>

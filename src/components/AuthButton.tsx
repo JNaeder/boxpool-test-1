@@ -1,21 +1,17 @@
 import { Button } from "./ui/button";
-import type { User } from "@/types";
 import { type Auth, signOut, signInWithEmailAndPassword } from "firebase/auth";
+import { useAppSelector, useAppDispatch } from "@/hooks";
+import { setCurrentUser } from "@/slices/userSlice";
 
-export default function AuthButton({
-  auth,
-  currentUser,
-  setCurrentUser,
-}: {
-  auth: Auth;
-  currentUser: User | null;
-  setCurrentUser: Function;
-}) {
+export default function AuthButton({ auth }: { auth: Auth }) {
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((s) => s.user);
+
   const signOutUser = () => {
     signOut(auth)
       .then(() => {
         console.log("Sign Out Successful");
-        setCurrentUser(null);
+        dispatch(setCurrentUser(null));
       })
       .catch((error) => console.error(error));
   };
@@ -35,9 +31,9 @@ export default function AuthButton({
 
   return (
     <>
-      {currentUser ? (
+      {user ? (
         <div className="flex items-center gap-2">
-          <div>{currentUser.email}</div>
+          <div>{user.email}</div>
           <Button onClick={signOutUser}>Sign Out</Button>
         </div>
       ) : (
