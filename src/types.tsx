@@ -39,6 +39,8 @@ export type TeamLogo = {
   height: number;
   width: number;
   alt: string;
+  rel: string[];
+  lastUpdated: string;
 };
 
 export type Team = {

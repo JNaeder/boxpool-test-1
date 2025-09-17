@@ -57,76 +57,75 @@ export default function Box({
 
   return (
     <>
-      <div className="w-full">
-        <div className="flex flex-col items-end bg-red-500">
-          <div className="flex justify-center items-center w-[calc(10*var(--spacing-box))] bg-blue-500">
-            <img src={homeTeam?.team.logos[0].href} className="h-20" />
-            <div className="font-bold text-4xl">
-              {homeTeam?.team.displayName}
+      <div className="mx-auto">
+        <div className="grid grid-cols-13 grid-rows-13">
+          {/* Home Team Sign */}
+          <div className="col-span-10 row-span-2 col-start-4 row-start-1">
+            <div className="flex items-center justify-center h-full">
+              <img src={homeTeam?.team.logos[0].href} width={100} />
+              <div className="font-bold text-4xl">
+                {homeTeam?.team.displayName}
+              </div>
             </div>
           </div>
-          <div className="flex items-end">
-            <div className="flex justify-center items-center [writing-mode:sideways-lr] h-[calc(10*var(--spacing-box))] bg-blue-500">
-              <img src={awayTeam?.team.logos[0].href} className="h-20" />
+          {/* Away Team Sign */}
+          <div className="row-span-10 row-start-4 col-span-2 grid grid-cols-1">
+            <div
+              style={{ writingMode: "sideways-lr" }}
+              className="flex items-center justify-center w-full"
+            >
+              <img src={awayTeam?.team.logos[0].href} width={100} />
               <div className="font-bold text-4xl">
                 {awayTeam?.team.displayName}
               </div>
             </div>
-            <div>
-              <div className="flex flex-col">
-                <div
-                  className="flex ml-number-box text-xl"
-                  style={{
-                    backgroundColor: `#${homeTeam?.team.color}`,
-                    color: "white",
+          </div>
+          {/* Home Team Numbers */}
+          <div
+            className="col-span-10 col-start-4 row-start-3 grid grid-cols-10 border-r-1"
+            style={{
+              backgroundColor: `#${homeTeam?.team.color}`,
+              color: "white",
+            }}
+          >
+            {rowNumbers.homeBoxNumbers.map((number, i) => (
+              <NumberSquare key={i} option="top" number={number} />
+            ))}
+          </div>
+          {/* Away Team Numbers */}
+          <div
+            className="col-span-1 row-span-10 row-start-4 col-start-3 grid grid-cols-1 border-b-1"
+            style={{
+              backgroundColor: `#${awayTeam?.team.color}`,
+              color: "white",
+            }}
+          >
+            {rowNumbers.awayBoxNumbers.map((number, i) => (
+              <NumberSquare key={i} option="side" number={number} />
+            ))}
+          </div>
+          {/* Box Numbers */}
+          <div className="col-span-10 row-span-10 col-start-4 grid grid-cols-10 grid-rows-10 border-b-1 border-r-1">
+            {[...Array(100)].map((_, j) => {
+              return (
+                <BoxSquare
+                  storage={storage}
+                  key={j}
+                  box={boxes[j + 1] ?? ""}
+                  boxNumber={j + 1}
+                  winningNumbers={{
+                    homeScore: rowNumbers.homeBoxNumbers[j % 10],
+                    awayScore: rowNumbers.awayBoxNumbers[Math.floor(j / 10)],
                   }}
-                >
-                  {rowNumbers.homeBoxNumbers.map((number, i) => (
-                    <NumberSquare key={i} option="top" number={number} />
-                  ))}
-                </div>
-                <div className="flex">
-                  <div
-                    className="flex flex-col text-xl"
-                    style={{
-                      backgroundColor: `#${awayTeam?.team.color}`,
-                      color: "white",
-                    }}
-                  >
-                    {rowNumbers.awayBoxNumbers.map((number, i) => (
-                      <NumberSquare key={i} option="side" number={number} />
-                    ))}
-                  </div>
-                  <div className="flex flex-col">
-                    {[...Array(10)].map((_, i) => (
-                      <div className="flex" key={i}>
-                        {[...Array(10)].map((_, j) => {
-                          const boxNumber = 10 * i + j + 1;
-                          return (
-                            <BoxSquare
-                              storage={storage}
-                              key={boxNumber}
-                              box={boxes[boxNumber] ?? ""}
-                              boxNumber={boxNumber}
-                              winningNumbers={{
-                                homeScore: rowNumbers.homeBoxNumbers[j],
-                                awayScore: rowNumbers.awayBoxNumbers[i],
-                              }}
-                              quarterScores={quarterScores}
-                              period={competition.status.period}
-                              completed={competition.status.type.completed}
-                              isEditing={isEditing}
-                              editBoxData={editBoxData}
-                              userId={boxpoolData.userId}
-                            />
-                          );
-                        })}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
+                  quarterScores={quarterScores}
+                  period={competition.status.period}
+                  completed={competition.status.type.completed}
+                  isEditing={isEditing}
+                  editBoxData={editBoxData}
+                  userId={boxpoolData.userId}
+                />
+              );
+            })}
           </div>
         </div>
       </div>

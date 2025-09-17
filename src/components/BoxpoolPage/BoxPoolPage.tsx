@@ -16,7 +16,7 @@ import {
 } from "firebase/firestore";
 import { type FirebaseStorage } from "firebase/storage";
 import BoxEditMenu from "./BoxEditMenu";
-import BoxGrid from "../Box/BoxGrid";
+import Box from "../Box/Box";
 
 type BoxPoolParams = { boxId: string };
 
@@ -40,6 +40,9 @@ export default function BoxPoolPage({
   const updateGameSummaryData = async (eventId: string) => {
     const gameSummary: GameSummary = await getGameSummary(eventId);
     setCurrentGameSummary(gameSummary);
+    // If You need to import fake data
+    // VVVVVVVVVV
+    // setCurrentGameSummary(structuredClone(testData) as unknown as GameSummary);
   };
 
   useEffect(() => {
@@ -101,7 +104,7 @@ export default function BoxPoolPage({
           <ScoringPlays gameSummary={currentGameSummary} />
         </div>
         <div className="flex w-1/2">
-          <BoxGrid
+          <Box
             storage={storage}
             isEditing={isEditing}
             game={currentGameSummary.header}

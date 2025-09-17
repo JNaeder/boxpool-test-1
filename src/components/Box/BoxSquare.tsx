@@ -145,6 +145,14 @@ export default function BoxSquare({
           colorMap[winners[2].color]
         } 66.66% 100%)`,
       };
+    } else if (winners.length === 4) {
+      return {
+        background: `linear-gradient(to bottom right, ${
+          colorMap[winners[0].color]
+        } 0% 25%, ${colorMap[winners[1].color]} 25% 50%, ${
+          colorMap[winners[2].color]
+        } 50% 75%, ${colorMap[winners[3].color]} 75% 100%)`,
+      };
     }
   };
 
