@@ -4,7 +4,6 @@ import { formatDate } from "@/helperFunctions";
 import Scoreboard from "../Scoreboard/Scoreboard";
 import Prizeboard from "../Prizeboard/Prizeboard";
 import ScoringPlays from "../ScoringPlays/ScoringPlays";
-import Box from "../Box/Box";
 import { Spinner } from "../ui/shadcn-io/spinner";
 import type { Boxpool, GameSummary } from "@/types";
 import { useParams } from "react-router";
@@ -17,6 +16,7 @@ import {
 } from "firebase/firestore";
 import { type FirebaseStorage } from "firebase/storage";
 import BoxEditMenu from "./BoxEditMenu";
+import BoxGrid from "../Box/BoxGrid";
 
 type BoxPoolParams = { boxId: string };
 
@@ -49,7 +49,7 @@ export default function BoxPoolPage({
       if (docData.exists()) {
         const data = docData.data() as Boxpool;
         setCurrentBoxpoolData(data);
-        console.log(data);
+        // console.log(data);
         setCurrentEventId(data.eventId);
         updateGameSummaryData(data.eventId);
       }
@@ -93,31 +93,31 @@ export default function BoxPoolPage({
   return (
     <>
       <div className="bg-neutral-200 flex justify-start  w-screen h-[calc(100vh-50px)]">
-        <div className="flex flex-col w-1/4 p-2">
+        <div className="flex flex-col w-1/4 p-2 ">
           <div className="bg-black text-white text-center mb-3 w-fit mx-auto py-1 px-5 rounded-lg">
             {formatDate(currentGameSummary.header.competitions[0].date)}
           </div>
           <Scoreboard game={currentGameSummary.header} />
           <ScoringPlays gameSummary={currentGameSummary} />
         </div>
-        <div className="flex items-start min-w-0">
-          <Box
+        <div className="flex w-1/2">
+          <BoxGrid
             storage={storage}
             isEditing={isEditing}
             game={currentGameSummary.header}
             boxpoolData={currentBoxpoolData}
             editBoxData={editBoxData}
           />
-          <div className="flex flex-col w-full ml-4">
-            <BoxEditMenu
-              isEditing={isEditing}
-              setIsEditing={setIsEditing}
-              writeBoxDataToDB={writeBoxDataToDB}
-              updateEventId={updateEventId}
-              setCurrentEventId={setCurrentEventId}
-            />
-            <Prizeboard boxpoolData={currentBoxpoolData} />
-          </div>
+        </div>
+        <div className="flex flex-col w-1/4 ">
+          <BoxEditMenu
+            isEditing={isEditing}
+            setIsEditing={setIsEditing}
+            writeBoxDataToDB={writeBoxDataToDB}
+            updateEventId={updateEventId}
+            setCurrentEventId={setCurrentEventId}
+          />
+          <Prizeboard boxpoolData={currentBoxpoolData} />
         </div>
       </div>
     </>
