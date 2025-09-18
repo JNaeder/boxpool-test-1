@@ -1,4 +1,4 @@
-import type { Boxpool } from "@/types/boxpoolTypes";
+import type { Boxpool, PrizeTypes, TeamSmall } from "@/types/boxpoolTypes";
 import type { GameSummary } from "@/types/gameTypes";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { generateRandom10Numbers } from "@/helperFunctions";
@@ -27,10 +27,11 @@ const gameSlice = createSlice({
         newData: Record<string, unknown>;
       }>
     ) {
+      const { boxNumber, newData } = action.payload;
       if (state.currentBoxpoolData) {
-        state.currentBoxpoolData.boxes[action.payload.boxNumber] = {
-          ...state.currentBoxpoolData.boxes[action.payload.boxNumber],
-          ...action.payload.newData,
+        state.currentBoxpoolData.boxes[boxNumber] = {
+          ...state.currentBoxpoolData.boxes[boxNumber],
+          ...newData,
         };
       }
     },
@@ -47,7 +48,7 @@ const gameSlice = createSlice({
         if (homeAway === "away") {
           state.currentBoxpoolData.boxNumbers.awayBoxNumbers[boxNumber] =
             newValue;
-        } else if (homeAway === "home") {
+        } else {
           state.currentBoxpoolData.boxNumbers.homeBoxNumbers[boxNumber] =
             newValue;
         }
@@ -61,6 +62,32 @@ const gameSlice = createSlice({
           generateRandom10Numbers();
       }
     },
+    editPrizeboard(
+      state,
+      action: PayloadAction<{
+        newValue: string;
+        prizeType: PrizeTypes;
+      }>
+    ) {
+      const { newValue, prizeType } = action.payload;
+      if (state.currentBoxpoolData) {
+        if (prizeType.winType === "gameScore") {
+          state.currentBoxpoolData.prizeNumbers.gameScore[prizeType.quarter] =
+            newValue;
+        }
+      }
+    },
+    addGameInfoToBoxpoolData(
+      state,
+      action: PayloadAction<{
+        date: string;
+        teams: { awayTeam: TeamSmall; homeTeam: TeamSmall };
+      }>
+    ) {
+      if (state.currentBoxpoolData) {
+        state.currentBoxpoolData.gameInfo = action.payload;
+      }
+    },
   },
 });
 
@@ -71,5 +98,7 @@ export const {
   editBoxData,
   editNumberBoxData,
   generateRandomNumberBoxes,
+  editPrizeboard,
+  addGameInfoToBoxpoolData,
 } = gameSlice.actions;
 export default gameSlice.reducer;

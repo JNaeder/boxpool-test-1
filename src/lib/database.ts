@@ -3,6 +3,14 @@ import { db, storage } from "./firebase";
 import { updateDoc, doc, setDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
+export const updateBoxpoolDataInDB = async (
+  boxId: string,
+  boxpoolData: Boxpool
+) => {
+  const docRef = doc(db, "boxpools", boxId);
+  await updateDoc(docRef, boxpoolData);
+};
+
 export const updateEventIdInDB = async (boxId: string, newEventId: string) => {
   const docRef = doc(db, "boxpools", boxId);
   await updateDoc(docRef, { eventId: newEventId });

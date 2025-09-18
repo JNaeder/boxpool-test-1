@@ -97,7 +97,7 @@ export default function BoxPoolPage() {
             setIsEditing={setIsEditing}
             boxId={paramsData.boxId}
           />
-          <Prizeboard boxpoolData={currentBoxpoolData} />
+          <Prizeboard boxpoolData={currentBoxpoolData} isEditing={isEditing} />
         </div>
       </div>
     </>

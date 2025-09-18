@@ -4,6 +4,7 @@ import { NavLink } from "react-router";
 import { useAppSelector, useAppDispatch } from "@/hooks";
 import { auth } from "@/lib/firebase";
 import { clearGameAndBoxPoolData } from "@/slices/gameSlice";
+import AddGameInfoButton from "./AddGameInfoButton";
 
 export default function TopMenuBar() {
   const dispatch = useAppDispatch();
@@ -21,6 +22,7 @@ export default function TopMenuBar() {
             <div className="text-4xl w-full ">boxpool.live</div>
           </div>
         </NavLink>
+        <AddGameInfoButton />
 
         <AuthButton auth={auth} />
       </div>

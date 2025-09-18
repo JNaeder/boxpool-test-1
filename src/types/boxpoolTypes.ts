@@ -1,3 +1,5 @@
+import type { TeamLogo } from "./gameTypes";
+
 export type WinningScore = {
   homeScore: number;
   awayScore: number;
@@ -10,11 +12,23 @@ export type Winners = {
   gameScoreFinal: WinningScore | null;
 };
 
+export type PrizeTypes = {
+  winType: keyof Boxpool["prizeNumbers"];
+  quarter: keyof PrizeAmount;
+};
+
 export type PrizeAmount = {
   firstQuarter: string;
   secondQuarter: string;
   thirdQuarter: string;
   final: string;
+};
+
+export type TeamSmall = {
+  name: string;
+  abbreviation: string;
+  primaryColor: string;
+  logo: TeamLogo;
 };
 
 export type Boxpool = {
@@ -33,6 +47,13 @@ export type Boxpool = {
     reverse: PrizeAmount | null;
   };
   boxes: Boxes;
+  gameInfo: {
+    date: string;
+    teams: {
+      awayTeam: TeamSmall;
+      homeTeam: TeamSmall;
+    };
+  };
 };
 
 export type Box = {
