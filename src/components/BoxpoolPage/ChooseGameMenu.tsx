@@ -1,5 +1,5 @@
 import { getWeekScoreboard } from "../../apiFunctions";
-import type { Game } from "@/types";
+import type { Game } from "../../types/gameTypes";
 import { useEffect, useState } from "react";
 import {
   Dialog,
@@ -14,17 +14,18 @@ import {
 import { RadioGroup } from "@/components/ui/radio-group";
 import { Button } from "../ui/button";
 import GameIcon from "./GameIcon";
+import { updateEventIdInDB } from "@/lib/database";
+import { useAppSelector, useAppDispatch } from "@/hooks";
+import { setCurrentBoxpoolData } from "@/slices/gameSlice";
 
-export default function ChooseGameMenu({
-  updateEventId,
-  setCurrentEventId,
-}: {
-  updateEventId: Function;
-  setCurrentEventId: Function;
-}) {
+export default function ChooseGameMenu({}: {}) {
+  const dispatch = useAppDispatch();
+
+  const { currentBoxpoolData } = useAppSelector((store) => store.game);
+
   const [currentWeek, setCurrentWeek] = useState<number>(2);
   const [weekGames, setWeekGames] = useState<Game[]>([]);
-  // const [currentEventId, setCurrentEventId] = useState<number | null>(null);
+  const [selectedEventId, setSelectedEventId] = useState<string>("");
 
   useEffect(() => {
     const getData = async () => {
@@ -55,7 +56,7 @@ export default function ChooseGameMenu({
             </Button>
           </div>
         </DialogHeader>
-        <RadioGroup onValueChange={(e) => setCurrentEventId(Number(e))}>
+        <RadioGroup onValueChange={(e) => setSelectedEventId(e)}>
           <div className="grid grid-cols-3 gap-2">
             {weekGames.map((game, i) => {
               return <GameIcon key={i} game={game} />;
@@ -65,8 +66,19 @@ export default function ChooseGameMenu({
         <DialogFooter>
           <DialogClose asChild>
             <Button
-              onClick={() => {
-                updateEventId();
+              onClick={async () => {
+                if (currentBoxpoolData) {
+                  await updateEventIdInDB(
+                    currentBoxpoolData.id,
+                    selectedEventId
+                  );
+                  dispatch(
+                    setCurrentBoxpoolData({
+                      ...currentBoxpoolData,
+                      eventId: selectedEventId,
+                    })
+                  );
+                }
               }}
             >
               Choose

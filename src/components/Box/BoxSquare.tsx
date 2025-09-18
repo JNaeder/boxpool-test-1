@@ -1,16 +1,15 @@
+// React
 import { useState } from "react";
-import type { WinningScore, Box } from "../../types";
+
+// Redux
+import { useAppDispatch } from "@/hooks";
+import { editBoxData } from "@/slices/gameSlice";
 import { Popover, PopoverTrigger } from "@/components/ui/popover";
 import BoxEditPopUp from "./BoxEditPopUp";
-import {
-  type FirebaseStorage,
-  ref,
-  uploadBytes,
-  getDownloadURL,
-} from "firebase/storage";
+import { uploadImageToStorage } from "@/lib/database";
+import type { WinningScore, Box } from "../../types/boxpoolTypes";
 
 export default function BoxSquare({
-  storage,
   box,
   boxNumber,
   winningNumbers,
@@ -18,10 +17,8 @@ export default function BoxSquare({
   period,
   completed,
   isEditing,
-  editBoxData,
   userId,
 }: {
-  storage: FirebaseStorage;
   box: Box;
   boxNumber: number;
   winningNumbers: WinningScore;
@@ -29,35 +26,16 @@ export default function BoxSquare({
   period: number | undefined;
   completed: boolean;
   isEditing: boolean;
-  editBoxData: Function;
   userId: string;
 }) {
+  const dispatch = useAppDispatch();
+
   const [boxName, setBoxName] = useState<string>(box.name ?? "");
   const [boxFont, setBoxFont] = useState<string>(box.font ?? "Arial");
   const [boxFontSize, setBoxFontSize] = useState<number>(box.fontSize ?? 14);
   const [boxImage, setBoxImage] = useState<File | undefined>();
   const [boxImageURL, setBoxImageURL] = useState<string>("");
   const [popoverOpen, setPopoverOpen] = useState<boolean>(false);
-
-  // const BG: Record<string, string> = {
-  //   red: "!bg-red-400",
-  //   blue: "!bg-blue-400",
-  //   green: "!bg-green-400",
-  //   yellow: "!bg-yellow-400",
-  // };
-
-  // const FROM: Record<string, string> = {
-  //   red: "from-red-400",
-  //   blue: "from-blue-400",
-  //   green: "from-green-400",
-  //   yellow: "from-yellow-400",
-  // };
-  // const TO: Record<string, string> = {
-  //   red: "to-red-400",
-  //   blue: "to-blue-400",
-  //   green: "to-green-400",
-  //   yellow: "to-yellow-400",
-  // };
 
   type ColorState = {
     color: string;
@@ -100,27 +78,6 @@ export default function BoxSquare({
 
   const winners = winColorStates.filter((state) => state.state);
 
-  // const getColorString = (): string => {
-  //   if (winners.length === 1) {
-  //     return [BG[winners[0].color], "font-bold"].filter(Boolean).join(" ");
-  //   } else if (winners.length === 2) {
-  //     return [
-  //       "bg-gradient-to-br",
-  //       FROM[winners[0].color],
-  //       "from-[50%]",
-  //       TO[winners[1].color],
-  //       "to-[50%]",
-  //       "font-bold",
-  //     ]
-  //       .filter(Boolean)
-  //       .join(" ");
-  //   } else if (winners.length === 3) {
-  //     return "font-bold";
-  //   } else {
-  //     return "";
-  //   }
-  // };
-
   const getColorGradient = (): React.CSSProperties | undefined => {
     const colorMap: Record<string, string> = {
       red: "#f87171",
@@ -158,20 +115,10 @@ export default function BoxSquare({
 
   const uploadImage = async () => {
     if (!boxImage) return;
-    try {
-      const imageRef = ref(
-        storage,
-        `boxesImages/${userId}/${boxImage.name}-${crypto.randomUUID()}`
-      );
-      const snapshot = await uploadBytes(imageRef, boxImage);
-      const imageURL = await getDownloadURL(snapshot.ref);
-      console.log(imageURL);
-      setBoxImageURL(imageURL);
-      setPopoverOpen(false);
-      writeBoxData(imageURL);
-    } catch (error) {
-      console.error("Error uploading image:", error);
-    }
+    const imageURL = await uploadImageToStorage(boxImage, userId);
+    setBoxImageURL(imageURL);
+    setPopoverOpen(false);
+    writeBoxData(imageURL);
   };
 
   const writeBoxData = (imageURL?: string) => {
@@ -182,7 +129,7 @@ export default function BoxSquare({
       ...((boxImageURL || imageURL) && { image: boxImageURL || imageURL }),
     };
     console.log("Editing Box", boxNumber, newData);
-    editBoxData(boxNumber, newData);
+    dispatch(editBoxData({ boxNumber: boxNumber, newData: newData }));
   };
 
   return (

@@ -1,11 +1,15 @@
-import type { Game, Competition, Competitor } from "../../types";
+import type { Competition, Competitor } from "../../types/gameTypes";
 import CountdownTimer from "./CountdownTimer";
 import ScoreboardTitleBox from "./ScoreboardTitleBox";
 import ScoreboardSquareBox from "./ScoreboardSquareBox";
 import footballSVG from "../../assets/football-1b.svg";
+import { useAppSelector } from "@/hooks";
 
-export default function Scoreboard({ game }: { game: Game }) {
-  const competition: Competition = game.competitions[0];
+export default function Scoreboard() {
+  const { currentGameSummary } = useAppSelector((store) => store.game);
+  if (!currentGameSummary) return <></>;
+
+  const competition: Competition = currentGameSummary.header.competitions[0];
   const competitors: Competitor[] = competition.competitors;
 
   const homeTeam: Competitor | undefined = competitors.find(
@@ -20,11 +24,9 @@ export default function Scoreboard({ game }: { game: Game }) {
     if (competition.status.type.name === "STATUS_SCHEDULED") {
       return (
         <div className="flex flex-col justify-center items-center">
-          <div className="text-xl">
-            {game.competitions[0].status.type.detail}
-          </div>
+          <div className="text-xl">{competition.status.type.detail}</div>
           <div className="text-2xl font-bold">
-            <CountdownTimer targetDate={game.competitions[0].date} />
+            <CountdownTimer targetDate={competition.date} />
           </div>
         </div>
       );
