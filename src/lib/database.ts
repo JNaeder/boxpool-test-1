@@ -1,13 +1,20 @@
+import type { Boxpool } from "../types/boxpoolTypes";
 import { db, storage } from "./firebase";
-import { updateDoc, doc } from "firebase/firestore";
+import { updateDoc, doc, setDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
-export const updateEventIdInFirebase = async (
-  boxId: string,
-  newEventId: string
-) => {
+export const updateEventIdInDB = async (boxId: string, newEventId: string) => {
   const docRef = doc(db, "boxpools", boxId);
   await updateDoc(docRef, { eventId: newEventId });
+};
+
+export const writeBoxDataToDB = async (
+  boxId: string,
+  boxpoolData: Boxpool | null
+) => {
+  if (!boxpoolData) return;
+  const docRef = doc(db, "boxpools", boxId);
+  await setDoc(docRef, boxpoolData);
 };
 
 export const uploadImageToStorage = async (

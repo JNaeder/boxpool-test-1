@@ -1,16 +1,25 @@
+// React and external libraries
 import { useEffect } from "react";
-import type { Boxpool } from "./types/boxpoolTypes";
-import type { User } from "./types/userTypes";
+import { BrowserRouter, Routes, Route } from "react-router";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
+import { getAnalytics } from "firebase/analytics";
+
+// Redux
+import { useAppDispatch, useAppSelector } from "./hooks";
+import { setCurrentUser, setBoxPools } from "./slices/userSlice";
+
+// Components
 import TopMenuBar from "./components/TopMenuBar";
 import BoxPoolPage from "./components/BoxpoolPage/BoxPoolPage";
 import HomePage from "./components/HomePage";
 import DashboardPage from "./components/Dashboard/DashboardPage";
-import { getAnalytics } from "firebase/analytics";
-import { onAuthStateChanged } from "firebase/auth";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import { useAppDispatch, useAppSelector } from "./hooks";
-import { setCurrentUser, setBoxPools } from "./slices/userSlice";
-import { BrowserRouter, Routes, Route } from "react-router";
+
+// Types
+import type { Boxpool } from "./types/boxpoolTypes";
+import type { User } from "./types/userTypes";
+
+// Utils
 import { app, auth, db } from "./lib/firebase";
 
 function App() {

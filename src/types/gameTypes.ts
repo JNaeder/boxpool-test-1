@@ -20,14 +20,14 @@ export type ScoringPlay = {
   team: Team;
   text: string;
   clock: { displayValue: String; value: number };
-  scoringType: {
+  scoringType?: {
     name: string;
     displayName: string;
     abbreviation: string;
   };
   awayScore: number;
   homeScore: number;
-  type: {
+  type?: {
     abbreviation: string;
     text: string;
   };

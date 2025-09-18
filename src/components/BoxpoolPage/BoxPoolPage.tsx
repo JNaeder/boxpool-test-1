@@ -1,7 +1,7 @@
 // React and external libraries
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 
 // Redux hooks
 import { useAppDispatch, useAppSelector } from "@/hooks";
@@ -19,13 +19,13 @@ import Box from "../Box/Box";
 import { Spinner } from "../ui/shadcn-io/spinner";
 
 // Types
-import type { GameSummary } from "../../types/gameTypes";
 import type { Boxpool } from "@/types/boxpoolTypes";
+import type { GameSummary } from "@/types/gameTypes";
 
 // Utils and services
-import { getGameSummary } from "../../apiFunctions";
 import { formatDate } from "@/helperFunctions";
 import { db } from "@/lib/firebase";
+import { getGameSummary } from "@/apiFunctions";
 
 type BoxPoolParams = { boxId: string };
 
@@ -47,6 +47,7 @@ export default function BoxPoolPage() {
     // setCurrentGameSummary(structuredClone(testData) as unknown as GameSummary);
   };
 
+  // Updates Once on page load
   useEffect(() => {
     const getData = async () => {
       const docRef = doc(db, "boxpools", paramsData.boxId);
@@ -60,12 +61,14 @@ export default function BoxPoolPage() {
     getData();
   }, []);
 
+  // Updates Game Summary when Boxpoo data changes
   useEffect(() => {
     if (currentBoxpoolData) {
       updateGameSummaryData(currentBoxpoolData?.eventId);
     }
   }, [currentBoxpoolData]);
 
+  // Checking - Load if doesn't exist
   if (!currentGameSummary || !currentBoxpoolData)
     return (
       <>
@@ -74,20 +77,6 @@ export default function BoxPoolPage() {
         </div>
       </>
     );
-
-  const editBoxData = (boxNumber: number, newData: Object) => {
-    const boxData = structuredClone(currentBoxpoolData);
-    boxData.boxes[boxNumber] = {
-      ...boxData.boxes[boxNumber],
-      ...newData,
-    };
-    dispatch(setCurrentBoxpoolData(boxData));
-  };
-
-  const writeBoxDataToDB = async () => {
-    const docRef = doc(db, "boxpools", paramsData.boxId);
-    await setDoc(docRef, currentBoxpoolData);
-  };
 
   return (
     <>
@@ -100,13 +89,13 @@ export default function BoxPoolPage() {
           <ScoringPlays gameSummary={currentGameSummary} />
         </div>
         <div className="flex w-1/2">
-          <Box isEditing={isEditing} editBoxData={editBoxData} />
+          <Box isEditing={isEditing} />
         </div>
         <div className="flex flex-col w-1/4 ">
           <BoxEditMenu
             isEditing={isEditing}
             setIsEditing={setIsEditing}
-            writeBoxDataToDB={writeBoxDataToDB}
+            boxId={paramsData.boxId}
           />
           <Prizeboard boxpoolData={currentBoxpoolData} />
         </div>

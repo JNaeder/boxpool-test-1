@@ -4,13 +4,7 @@ import type { Competition, Competitor } from "../../types/gameTypes";
 import type { WinningScore } from "../../types/boxpoolTypes";
 import { useAppSelector } from "@/hooks";
 
-export default function Box({
-  isEditing,
-  editBoxData,
-}: {
-  isEditing: boolean;
-  editBoxData: Function;
-}) {
+export default function Box({ isEditing }: { isEditing: boolean }) {
   const { currentBoxpoolData, currentGameSummary } = useAppSelector(
     (store) => store.game
   );
@@ -112,7 +106,6 @@ export default function Box({
                   period={competition.status.period}
                   completed={competition.status.type.completed}
                   isEditing={isEditing}
-                  editBoxData={editBoxData}
                   userId={userId}
                 />
               );

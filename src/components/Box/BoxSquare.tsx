@@ -1,8 +1,13 @@
+// React
 import { useState } from "react";
-import type { WinningScore, Box } from "../../types/boxpoolTypes";
+
+// Redux
+import { useAppDispatch } from "@/hooks";
+import { editBoxData } from "@/slices/gameSlice";
 import { Popover, PopoverTrigger } from "@/components/ui/popover";
 import BoxEditPopUp from "./BoxEditPopUp";
 import { uploadImageToStorage } from "@/lib/database";
+import type { WinningScore, Box } from "../../types/boxpoolTypes";
 
 export default function BoxSquare({
   box,
@@ -12,7 +17,6 @@ export default function BoxSquare({
   period,
   completed,
   isEditing,
-  editBoxData,
   userId,
 }: {
   box: Box;
@@ -22,9 +26,10 @@ export default function BoxSquare({
   period: number | undefined;
   completed: boolean;
   isEditing: boolean;
-  editBoxData: Function;
   userId: string;
 }) {
+  const dispatch = useAppDispatch();
+
   const [boxName, setBoxName] = useState<string>(box.name ?? "");
   const [boxFont, setBoxFont] = useState<string>(box.font ?? "Arial");
   const [boxFontSize, setBoxFontSize] = useState<number>(box.fontSize ?? 14);
@@ -124,7 +129,7 @@ export default function BoxSquare({
       ...((boxImageURL || imageURL) && { image: boxImageURL || imageURL }),
     };
     console.log("Editing Box", boxNumber, newData);
-    editBoxData(boxNumber, newData);
+    dispatch(editBoxData({ boxNumber: boxNumber, newData: newData }));
   };
 
   return (

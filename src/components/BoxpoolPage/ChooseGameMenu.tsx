@@ -14,7 +14,7 @@ import {
 import { RadioGroup } from "@/components/ui/radio-group";
 import { Button } from "../ui/button";
 import GameIcon from "./GameIcon";
-import { updateEventIdInFirebase } from "@/lib/database";
+import { updateEventIdInDB } from "@/lib/database";
 import { useAppSelector, useAppDispatch } from "@/hooks";
 import { setCurrentBoxpoolData } from "@/slices/gameSlice";
 
@@ -68,7 +68,7 @@ export default function ChooseGameMenu({}: {}) {
             <Button
               onClick={async () => {
                 if (currentBoxpoolData) {
-                  await updateEventIdInFirebase(
+                  await updateEventIdInDB(
                     currentBoxpoolData.id,
                     selectedEventId
                   );

@@ -1,16 +1,20 @@
 import { Button } from "../ui/button";
 import { Pencil, Save } from "lucide-react";
 import ChooseGameMenu from "./ChooseGameMenu";
+import { writeBoxDataToDB } from "@/lib/database";
+import { useAppSelector } from "@/hooks";
 
 export default function BoxEditMenu({
   isEditing,
   setIsEditing,
-  writeBoxDataToDB,
+  boxId,
 }: {
   isEditing: boolean;
   setIsEditing: Function;
-  writeBoxDataToDB: Function;
+  boxId: string;
 }) {
+  const { currentBoxpoolData } = useAppSelector((store) => store.game);
+
   const updateIsEditing = (newState: boolean) => {
     setIsEditing(newState);
   };
@@ -22,7 +26,7 @@ export default function BoxEditMenu({
           <>
             <Button
               onClick={() => {
-                writeBoxDataToDB();
+                writeBoxDataToDB(boxId, currentBoxpoolData);
                 updateIsEditing(false);
               }}
             >
