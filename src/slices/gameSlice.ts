@@ -1,6 +1,7 @@
 import type { Boxpool } from "@/types/boxpoolTypes";
 import type { GameSummary } from "@/types/gameTypes";
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { generateRandom10Numbers } from "@/helperFunctions";
 
 const gameSlice = createSlice({
   name: "game",
@@ -33,6 +34,33 @@ const gameSlice = createSlice({
         };
       }
     },
+    editNumberBoxData(
+      state,
+      action: PayloadAction<{
+        boxNumber: number;
+        newValue: number;
+        homeAway: "home" | "away";
+      }>
+    ) {
+      const { boxNumber, newValue, homeAway } = action.payload;
+      if (state.currentBoxpoolData) {
+        if (homeAway === "away") {
+          state.currentBoxpoolData.boxNumbers.awayBoxNumbers[boxNumber] =
+            newValue;
+        } else if (homeAway === "home") {
+          state.currentBoxpoolData.boxNumbers.homeBoxNumbers[boxNumber] =
+            newValue;
+        }
+      }
+    },
+    generateRandomNumberBoxes(state) {
+      if (state.currentBoxpoolData) {
+        state.currentBoxpoolData.boxNumbers.homeBoxNumbers =
+          generateRandom10Numbers();
+        state.currentBoxpoolData.boxNumbers.awayBoxNumbers =
+          generateRandom10Numbers();
+      }
+    },
   },
 });
 
@@ -41,5 +69,7 @@ export const {
   setCurrentBoxpoolData,
   clearGameAndBoxPoolData,
   editBoxData,
+  editNumberBoxData,
+  generateRandomNumberBoxes,
 } = gameSlice.actions;
 export default gameSlice.reducer;

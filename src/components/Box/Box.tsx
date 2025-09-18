@@ -2,9 +2,13 @@ import BoxSquare from "./BoxSquare";
 import NumberSquare from "./NumberSquare";
 import type { Competition, Competitor } from "../../types/gameTypes";
 import type { WinningScore } from "../../types/boxpoolTypes";
-import { useAppSelector } from "@/hooks";
+import { useAppSelector, useAppDispatch } from "@/hooks";
+import { Shuffle } from "lucide-react";
+import { Button } from "../ui/button";
+import { generateRandomNumberBoxes } from "@/slices/gameSlice";
 
 export default function Box({ isEditing }: { isEditing: boolean }) {
+  const dispatch = useAppDispatch();
   const { currentBoxpoolData, currentGameSummary } = useAppSelector(
     (store) => store.game
   );
@@ -66,6 +70,17 @@ export default function Box({ isEditing }: { isEditing: boolean }) {
               </div>
             </div>
           </div>
+          {/* Random Number Box Button */}
+          {isEditing && (
+            <div className="col-start-3 row-start-3 m-auto">
+              <Button
+                variant="outline"
+                onClick={() => dispatch(generateRandomNumberBoxes())}
+              >
+                <Shuffle />
+              </Button>
+            </div>
+          )}
           {/* Home Team Numbers */}
           <div
             className="col-span-10 col-start-4 row-start-3 grid grid-cols-10 border-r-1"
@@ -75,7 +90,13 @@ export default function Box({ isEditing }: { isEditing: boolean }) {
             }}
           >
             {boxNumbers.homeBoxNumbers.map((number, i) => (
-              <NumberSquare key={i} option="top" number={number} />
+              <NumberSquare
+                key={i}
+                boxNumber={i}
+                number={number}
+                isEditing={isEditing}
+                homeAway="home"
+              />
             ))}
           </div>
           {/* Away Team Numbers */}
@@ -87,7 +108,13 @@ export default function Box({ isEditing }: { isEditing: boolean }) {
             }}
           >
             {boxNumbers.awayBoxNumbers.map((number, i) => (
-              <NumberSquare key={i} option="side" number={number} />
+              <NumberSquare
+                key={i}
+                boxNumber={i}
+                number={number}
+                isEditing={isEditing}
+                homeAway="away"
+              />
             ))}
           </div>
           {/* Box Numbers */}
