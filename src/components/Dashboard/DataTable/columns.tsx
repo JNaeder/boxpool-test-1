@@ -3,13 +3,20 @@ import type { Boxpool } from "@/types/boxpoolTypes";
 import { Button } from "@/components/ui/button";
 import { NavLink } from "react-router";
 import { formatDate } from "@/helperFunctions";
+import { Progress } from "@/components/ui/progress";
 
 export const columns: ColumnDef<Boxpool>[] = [
   { accessorKey: "name", header: "Boxpool Name" },
   {
     header: "Boxes",
     cell: ({ row }) => {
-      return <div>{Object.keys(row.original.boxes).length}/100</div>;
+      const boxesLength = Object.keys(row.original.boxes).length;
+      return (
+        <div className="flex flex-col items-center">
+          <Progress value={boxesLength} className="" />
+          <div>{boxesLength}/100</div>
+        </div>
+      );
     },
   },
   {
