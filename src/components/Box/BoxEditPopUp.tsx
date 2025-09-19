@@ -12,8 +12,10 @@ import {
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { fontVariables } from "@/data";
+import type { Box } from "@/types/boxpoolTypes";
 
 export default function BoxEditPopUp({
+  box,
   boxNumber,
   boxName,
   setBoxName,
@@ -22,9 +24,11 @@ export default function BoxEditPopUp({
   boxFontSize,
   setBoxFontSize,
   setBoxImage,
+  setBoxImageURL,
   uploadImage,
   writeBoxData,
 }: {
+  box: Box;
   boxNumber: number;
   boxName: string;
   setBoxName: Function;
@@ -33,12 +37,21 @@ export default function BoxEditPopUp({
   boxFontSize: number;
   setBoxFontSize: Function;
   setBoxImage: Function;
+  setBoxImageURL: Function;
   uploadImage: Function;
   writeBoxData: Function;
 }) {
+  const clearBoxContents = () => {
+    setBoxName("");
+    setBoxImageURL("");
+    setBoxFont("Arial");
+    setBoxFontSize(14);
+    console.log("Clear Box:", boxNumber);
+  };
+
   return (
     <PopoverContent onInteractOutside={() => writeBoxData()}>
-      <Tabs defaultValue="text">
+      <Tabs defaultValue={box.image ? "image" : "text"}>
         <TabsList>
           <TabsTrigger value="text">Text</TabsTrigger>
           <TabsTrigger value="image">Image</TabsTrigger>
@@ -100,7 +113,7 @@ export default function BoxEditPopUp({
                 setBoxFontSize(Number(e.target.value));
               }}
             />
-            <Button variant={"destructive"}>
+            <Button variant={"destructive"} onClick={clearBoxContents}>
               <Trash2 />
               Clear
             </Button>
@@ -117,6 +130,10 @@ export default function BoxEditPopUp({
               onChange={(e) => setBoxImage(e.target.files?.[0])}
             />
             <Button onClick={() => uploadImage()}>Upload</Button>
+            <Button variant={"destructive"} onClick={clearBoxContents}>
+              <Trash2 />
+              Clear
+            </Button>
           </div>
         </TabsContent>
       </Tabs>

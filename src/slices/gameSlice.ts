@@ -28,11 +28,23 @@ const gameSlice = createSlice({
       }>
     ) {
       const { boxNumber, newData } = action.payload;
+      console.log(action.payload);
       if (state.currentBoxpoolData) {
-        state.currentBoxpoolData.boxes[boxNumber] = {
-          ...state.currentBoxpoolData.boxes[boxNumber],
-          ...newData,
-        };
+        // state.currentBoxpoolData.boxes[boxNumber] = {
+        //   ...state.currentBoxpoolData.boxes[boxNumber],
+        //   ...newData,
+        // };
+        state.currentBoxpoolData.boxes[boxNumber] = newData;
+      }
+    },
+    deleteBoxData(
+      state,
+      actions: PayloadAction<{
+        boxNumber: number;
+      }>
+    ) {
+      if (state.currentBoxpoolData) {
+        delete state.currentBoxpoolData.boxes[actions.payload.boxNumber];
       }
     },
     editNumberBoxData(
@@ -96,6 +108,7 @@ export const {
   setCurrentBoxpoolData,
   clearGameAndBoxPoolData,
   editBoxData,
+  deleteBoxData,
   editNumberBoxData,
   generateRandomNumberBoxes,
   editPrizeboard,

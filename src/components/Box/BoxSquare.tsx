@@ -3,7 +3,7 @@ import { useState } from "react";
 
 // Redux
 import { useAppDispatch } from "@/hooks";
-import { editBoxData } from "@/slices/gameSlice";
+import { editBoxData, deleteBoxData } from "@/slices/gameSlice";
 import { Popover, PopoverTrigger } from "@/components/ui/popover";
 import BoxEditPopUp from "./BoxEditPopUp";
 import { uploadImageToStorage } from "@/lib/database";
@@ -34,7 +34,7 @@ export default function BoxSquare({
   const [boxFont, setBoxFont] = useState<string>(box.font ?? "Arial");
   const [boxFontSize, setBoxFontSize] = useState<number>(box.fontSize ?? 14);
   const [boxImage, setBoxImage] = useState<File | undefined>();
-  const [boxImageURL, setBoxImageURL] = useState<string>("");
+  const [boxImageURL, setBoxImageURL] = useState<string>(box.image ?? "");
   const [popoverOpen, setPopoverOpen] = useState<boolean>(false);
 
   type ColorState = {
@@ -126,10 +126,16 @@ export default function BoxSquare({
       ...(boxName && { name: boxName }),
       ...(boxFont && { font: boxFont }),
       ...(boxFontSize && { fontSize: boxFontSize }),
-      ...((boxImageURL || imageURL) && { image: boxImageURL || imageURL }),
+      ...(imageURL && { image: imageURL }),
     };
-    console.log("Editing Box", boxNumber, newData);
-    dispatch(editBoxData({ boxNumber: boxNumber, newData: newData }));
+    console.log(boxNumber, "Box Name:", boxName, "Box Image URL:", imageURL);
+    if (!boxName && !imageURL) {
+      // console.log("There ain't nothing here yo. Delete this.");
+      dispatch(deleteBoxData({ boxNumber: boxNumber }));
+    } else {
+      console.log("Editing Box", boxNumber, newData);
+      dispatch(editBoxData({ boxNumber: boxNumber, newData: newData }));
+    }
   };
 
   return (
@@ -153,9 +159,9 @@ export default function BoxSquare({
           <div className="absolute top-0  right-0.5 text-[9px] z-10">
             {boxNumber}
           </div>
-          {box.image || boxImageURL ? (
+          {boxImageURL ? (
             <img
-              src={box.image ?? boxImageURL}
+              src={boxImageURL}
               className="flex justify-center items-center m-auto w-box"
             />
           ) : (
@@ -174,6 +180,7 @@ export default function BoxSquare({
         </div>
       </PopoverTrigger>
       <BoxEditPopUp
+        box={box}
         boxNumber={boxNumber}
         boxFont={boxFont}
         setBoxFont={setBoxFont}
@@ -182,6 +189,7 @@ export default function BoxSquare({
         boxFontSize={boxFontSize}
         setBoxFontSize={setBoxFontSize}
         setBoxImage={setBoxImage}
+        setBoxImageURL={setBoxImageURL}
         uploadImage={uploadImage}
         writeBoxData={writeBoxData}
       />

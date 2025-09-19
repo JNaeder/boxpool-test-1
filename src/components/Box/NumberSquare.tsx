@@ -18,7 +18,7 @@ export default function NumberSquare({
 
   return (
     <div
-      className={`content-center text-center border-black border-1 text-2xl`}
+      className={`w-box h-box content-center text-center border-black border-1 text-2xl`}
     >
       {isEditing ? (
         <Input
