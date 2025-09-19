@@ -1,5 +1,6 @@
 import { getWeekScoreboard } from "../../apiFunctions";
 import type { Game } from "../../types/gameTypes";
+import type { GameInfo } from "@/types/boxpoolTypes";
 import { useEffect, useState } from "react";
 import {
   Dialog,
@@ -17,6 +18,7 @@ import GameIcon from "./GameIcon";
 import { updateEventIdInDB } from "@/lib/database";
 import { useAppSelector, useAppDispatch } from "@/hooks";
 import { setCurrentBoxpoolData } from "@/slices/gameSlice";
+import { gameToGameInfo } from "@/helperFunctions";
 
 export default function ChooseGameMenu({}: {}) {
   const dispatch = useAppDispatch();
@@ -26,6 +28,7 @@ export default function ChooseGameMenu({}: {}) {
   const [currentWeek, setCurrentWeek] = useState<number>(2);
   const [weekGames, setWeekGames] = useState<Game[]>([]);
   const [selectedEventId, setSelectedEventId] = useState<string>("");
+  const [selectedGameInfo, setSelectedGameInfo] = useState<GameInfo>();
 
   useEffect(() => {
     const getData = async () => {
@@ -56,7 +59,16 @@ export default function ChooseGameMenu({}: {}) {
             </Button>
           </div>
         </DialogHeader>
-        <RadioGroup onValueChange={(e) => setSelectedEventId(e)}>
+        <RadioGroup
+          onValueChange={(e) => {
+            const selectedGame = weekGames.filter(
+              (weekGame) => weekGame.id === e
+            );
+            if (!selectedGame) return;
+            setSelectedGameInfo(gameToGameInfo(selectedGame[0]));
+            setSelectedEventId(e);
+          }}
+        >
           <div className="grid grid-cols-3 gap-2">
             {weekGames.map((game, i) => {
               return <GameIcon key={i} game={game} />;
@@ -76,6 +88,7 @@ export default function ChooseGameMenu({}: {}) {
                     setCurrentBoxpoolData({
                       ...currentBoxpoolData,
                       eventId: selectedEventId,
+                      gameInfo: selectedGameInfo,
                     })
                   );
                 }

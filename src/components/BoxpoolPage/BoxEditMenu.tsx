@@ -43,7 +43,7 @@ export default function BoxEditMenu({
           </>
         )}
       </div>
-      <ChooseGameMenu />
+      {isEditing && <ChooseGameMenu />}
     </div>
   );
 }

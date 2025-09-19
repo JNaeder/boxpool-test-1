@@ -74,7 +74,7 @@ export default function Box({ isEditing }: { isEditing: boolean }) {
           {isEditing && (
             <div className="col-start-3 row-start-3 m-auto">
               <Button
-                variant="outline"
+                className="bg-blue-500 border-2 border-white"
                 onClick={() => dispatch(generateRandomNumberBoxes())}
               >
                 <Shuffle />

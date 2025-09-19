@@ -24,7 +24,7 @@ export default function NumberSquare({
         <Input
           type="number"
           value={number}
-          className="text-center"
+          className=""
           onChange={(e) =>
             dispatch(
               editNumberBoxData({

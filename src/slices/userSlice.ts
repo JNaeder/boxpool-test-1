@@ -15,8 +15,11 @@ const userSlice = createSlice({
     setBoxPools(state, actions: PayloadAction<Boxpool[]>) {
       state.boxpools = actions.payload;
     },
+    clearBoxPools(state) {
+      state.boxpools = [];
+    },
   },
 });
 
-export const { setCurrentUser, setBoxPools } = userSlice.actions;
+export const { setCurrentUser, setBoxPools, clearBoxPools } = userSlice.actions;
 export default userSlice.reducer;

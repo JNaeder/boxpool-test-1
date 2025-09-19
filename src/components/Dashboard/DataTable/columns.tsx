@@ -16,6 +16,7 @@ export const columns: ColumnDef<Boxpool>[] = [
     header: "Game Date",
     cell: ({ row }) => {
       const boxpoolData: Boxpool = row.original;
+      if (!boxpoolData.gameInfo) return;
       return <div>{formatDate(boxpoolData.gameInfo.date)}</div>;
     },
   },
@@ -23,13 +24,14 @@ export const columns: ColumnDef<Boxpool>[] = [
     header: "Matchup",
     cell: ({ row }) => {
       const boxpoolData: Boxpool = row.original;
+      if (!boxpoolData.gameInfo) return;
       const { awayTeam, homeTeam } = boxpoolData.gameInfo.teams;
 
       return (
-        <div className="flex justify-between items-center">
-          <img src={awayTeam.logo.href} width={40} />
+        <div className="flex justify-start items-center gap-3">
+          <img src={awayTeam.logo} width={40} />
           <div className="font-bold text-xl">@</div>
-          <img src={homeTeam.logo.href} width={40} />
+          <img src={homeTeam.logo} width={40} />
         </div>
       );
     },

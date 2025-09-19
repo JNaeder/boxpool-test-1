@@ -39,12 +39,13 @@ export default function BoxPoolPage() {
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
-  const updateGameSummaryData = async (eventId: string) => {
-    const gameSummary: GameSummary = await getGameSummary(eventId);
-    dispatch(setCurrentGameSummary(gameSummary));
-    // If You need to import fake data
-    // VVVVVVVVVV
-    // setCurrentGameSummary(structuredClone(testData) as unknown as GameSummary);
+  const getGameData = async () => {
+    if (currentBoxpoolData) {
+      const gameSummary: GameSummary = await getGameSummary(
+        currentBoxpoolData.eventId
+      );
+      dispatch(setCurrentGameSummary(gameSummary));
+    }
   };
 
   // Updates Once on page load
@@ -63,10 +64,8 @@ export default function BoxPoolPage() {
 
   // Updates Game Summary when Boxpoo data changes
   useEffect(() => {
-    if (currentBoxpoolData) {
-      updateGameSummaryData(currentBoxpoolData?.eventId);
-    }
-  }, [currentBoxpoolData]);
+    getGameData();
+  }, [currentBoxpoolData?.eventId]);
 
   // Checking - Load if doesn't exist
   if (!currentGameSummary || !currentBoxpoolData)
