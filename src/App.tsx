@@ -13,6 +13,7 @@ import TopMenuBar from "./components/TopMenuBar";
 import BoxPoolPage from "./components/BoxpoolPage/BoxPoolPage";
 import HomePage from "./components/HomePage";
 import DashboardPage from "./components/Dashboard/DashboardPage";
+import LoginSignUpPage from "./components/LoginSignupPage/LoginSignUpPage";
 
 // Types
 import type { User } from "./types/userTypes";
@@ -49,6 +50,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="box/:boxId" element={<BoxPoolPage />} />
+          <Route path="/login" element={<LoginSignUpPage />} />
         </Routes>
       </BrowserRouter>
     </>

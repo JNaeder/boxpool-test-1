@@ -23,7 +23,7 @@ export default function DashboardPage({}: {}) {
     getData();
   }, [currentUser]);
 
-  if (boxpools.length === 0)
+  if (!currentUser)
     return (
       <>
         <div className="b h-[calc(100vh-50px)] flex flex-col justify-center items-center">

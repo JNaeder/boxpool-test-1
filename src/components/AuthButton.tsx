@@ -1,33 +1,29 @@
 import { Button } from "./ui/button";
-import { type Auth, signOut, signInWithEmailAndPassword } from "firebase/auth";
+import { type Auth, signOut } from "firebase/auth";
 import { useAppSelector, useAppDispatch } from "@/hooks";
 import { setCurrentUser } from "@/slices/userSlice";
+import { NavLink, useNavigate } from "react-router";
 
 export default function AuthButton({ auth }: { auth: Auth }) {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const { user } = useAppSelector((s) => s.user);
 
   const signOutUser = () => {
     signOut(auth)
       .then(() => {
-        console.log("Sign Out Successful");
         dispatch(setCurrentUser(null));
+        navigate("/");
       })
       .catch((error) => console.error(error));
   };
 
-  const email = "madhead324@gmail.com";
-  const password = "test123";
+  // const email = "madhead324@gmail.com";
+  // const password = "test123";
 
   // const email = "john@gmail.com";
   // const password = "123456";
-
-  const loginUser = () => {
-    signInWithEmailAndPassword(auth, email, password).then((userCreds) => {
-      // console.log(userCreds.user);
-      setCurrentUser(userCreds.user);
-    });
-  };
 
   return (
     <>
@@ -38,7 +34,9 @@ export default function AuthButton({ auth }: { auth: Auth }) {
         </div>
       ) : (
         <div>
-          <Button onClick={loginUser}>Login</Button>
+          <Button asChild>
+            <NavLink to="/login">Login</NavLink>
+          </Button>
         </div>
       )}
     </>
