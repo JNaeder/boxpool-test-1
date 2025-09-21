@@ -28,7 +28,7 @@ const gameSlice = createSlice({
       }>
     ) {
       const { boxNumber, newData } = action.payload;
-      console.log(action.payload);
+      // console.log(action.payload);
       if (state.currentBoxpoolData) {
         // state.currentBoxpoolData.boxes[boxNumber] = {
         //   ...state.currentBoxpoolData.boxes[boxNumber],

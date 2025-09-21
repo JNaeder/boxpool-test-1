@@ -18,12 +18,12 @@ export default function BoxEditPopUp({
   box,
   boxNumber,
   boxName,
-  setBoxName,
   boxFont,
-  setBoxFont,
   boxFontSize,
-  setBoxFontSize,
   setBoxImage,
+  setBoxName,
+  setBoxFont,
+  setBoxFontSize,
   setBoxImageURL,
   uploadImage,
   writeBoxData,
@@ -31,22 +31,21 @@ export default function BoxEditPopUp({
   box: Box;
   boxNumber: number;
   boxName: string;
-  setBoxName: Function;
   boxFont: string;
-  setBoxFont: Function;
   boxFontSize: number;
-  setBoxFontSize: Function;
-  setBoxImage: Function;
-  setBoxImageURL: Function;
-  uploadImage: Function;
-  writeBoxData: Function;
+  setBoxImage: (value: File | undefined) => void;
+  setBoxName: (value: string) => void;
+  setBoxFont: (value: string) => void;
+  setBoxFontSize: (value: number) => void;
+  setBoxImageURL: (value: string) => void;
+  uploadImage: () => void;
+  writeBoxData: (imageURL?: string) => void;
 }) {
   const clearBoxContents = () => {
     setBoxName("");
     setBoxImageURL("");
     setBoxFont("Arial");
     setBoxFontSize(14);
-    console.log("Clear Box:", boxNumber);
   };
 
   return (

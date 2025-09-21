@@ -19,7 +19,7 @@ export type ScoringPlay = {
   period: { number: number };
   team: Team;
   text: string;
-  clock: { displayValue: String; value: number };
+  clock: { displayValue: string; value: number };
   scoringType?: {
     name: string;
     displayName: string;

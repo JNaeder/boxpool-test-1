@@ -24,8 +24,8 @@ export default function Signup() {
 
   const signup = () => {
     createUserWithEmailAndPassword(auth, email, password)
-      .then((userCreds) => {
-        console.log("Sign Up Successful", userCreds.user);
+      .then(() => {
+        // console.log("Sign Up Successful", userCreds.user);
         // sendEmailVerification(userCreds.user).then(() => {
         //   console.log("Verification email sent");
         // });

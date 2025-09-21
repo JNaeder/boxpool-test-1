@@ -10,7 +10,6 @@ type TimeLeft = {
 
 export default function CountdownTimer({ targetDate }: { targetDate: string }) {
   // const [timeDifference, setTimeDifference] = useState<number>(999);
-
   const calcTimeLeft = (): TimeLeft => {
     const difference = +new Date(targetDate) - +new Date();
     if (difference <= 0) return { message: "Starting Soon" };

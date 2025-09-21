@@ -41,18 +41,6 @@ export default function BoxPoolPage() {
   const [isLoadingGameSummary, setIsLoadingGameSummary] =
     useState<boolean>(true);
 
-  const getGameData = async () => {
-    if (currentBoxpoolData) {
-      if (currentBoxpoolData.eventId) {
-        const gameSummary: GameSummary = await getGameSummary(
-          currentBoxpoolData.eventId
-        );
-        dispatch(setCurrentGameSummary(gameSummary));
-      }
-      setIsLoadingGameSummary(false);
-    }
-  };
-
   // Updates Once on page load
   useEffect(() => {
     const getData = async () => {
@@ -65,10 +53,21 @@ export default function BoxPoolPage() {
       }
     };
     getData();
-  }, []);
+  }, [dispatch, paramsData.boxId]);
 
   // Updates Game Summary when Boxpool EventID changes
   useEffect(() => {
+    const getGameData = async () => {
+      if (currentBoxpoolData) {
+        if (currentBoxpoolData.eventId) {
+          const gameSummary: GameSummary = await getGameSummary(
+            currentBoxpoolData.eventId
+          );
+          dispatch(setCurrentGameSummary(gameSummary));
+        }
+        setIsLoadingGameSummary(false);
+      }
+    };
     getGameData();
   }, [currentBoxpoolData?.eventId]);
 

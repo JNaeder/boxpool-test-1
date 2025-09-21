@@ -1,4 +1,4 @@
-import type { GameSummary, Team } from "@/types";
+import type { GameSummary, Team } from "../../types/gameTypes";
 import {
   Accordion,
   AccordionContent,

@@ -11,7 +11,7 @@ import { Spinner } from "../ui/shadcn-io/spinner";
 import { createNewBoxpoolInDB } from "@/lib/database";
 import { useNavigate } from "react-router";
 
-export default function DashboardPage({}: {}) {
+export default function DashboardPage() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -33,7 +33,7 @@ export default function DashboardPage({}: {}) {
   const createNewBoxpool = async () => {
     if (currentUser) {
       const boxpoolId = await createNewBoxpoolInDB(currentUser.uid);
-      console.log("Create New Boxpool", boxpoolId);
+      // console.log("Create New Boxpool", boxpoolId);
       navigate(`/box/${boxpoolId}`);
     }
   };

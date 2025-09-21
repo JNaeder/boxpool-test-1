@@ -39,9 +39,14 @@ export const updateBoxpoolDataInDB = async (
   await updateDoc(docRef, boxpoolData);
 };
 
-export const updateEventIdInDB = async (boxId: string, newEventId: string) => {
-  const docRef = doc(db, "boxpools", boxId);
-  await updateDoc(docRef, { eventId: newEventId });
+export const updateEventIdInDB = async (
+  boxId: string | undefined,
+  newEventId: string
+) => {
+  if (boxId) {
+    const docRef = doc(db, "boxpools", boxId);
+    await updateDoc(docRef, { eventId: newEventId });
+  }
 };
 
 export const writeBoxDataToDB = async (
@@ -49,7 +54,7 @@ export const writeBoxDataToDB = async (
   boxpoolData: Boxpool | null
 ) => {
   if (!boxpoolData) return;
-  console.log(boxpoolData);
+  // console.log(boxpoolData);
   const docRef = doc(db, "boxpools", boxId);
   await setDoc(docRef, boxpoolData);
 };

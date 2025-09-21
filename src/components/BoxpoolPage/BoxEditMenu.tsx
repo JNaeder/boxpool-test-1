@@ -10,7 +10,7 @@ export default function BoxEditMenu({
   boxId,
 }: {
   isEditing: boolean;
-  setIsEditing: Function;
+  setIsEditing: (value: boolean) => void;
   boxId: string;
 }) {
   const { currentBoxpoolData } = useAppSelector((store) => store.game);

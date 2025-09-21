@@ -69,8 +69,8 @@ export default function Login() {
         <Button
           variant="outline"
           onClick={() => {
-            signInWithPopup(auth, googleProvider).then((result) => {
-              console.log(result.user);
+            signInWithPopup(auth, googleProvider).then(() => {
+              // console.log(result.user);
               navigate("/dashboard");
             });
           }}

@@ -128,12 +128,12 @@ export default function BoxSquare({
       ...(boxFontSize && { fontSize: boxFontSize }),
       ...(imageURL && { image: imageURL }),
     };
-    console.log(boxNumber, "Box Name:", boxName, "Box Image URL:", imageURL);
+    // console.log(boxNumber, "Box Name:", boxName, "Box Image URL:", imageURL);
     if (!boxName && !imageURL) {
       // console.log("There ain't nothing here yo. Delete this.");
       dispatch(deleteBoxData({ boxNumber: boxNumber }));
     } else {
-      console.log("Editing Box", boxNumber, newData);
+      // console.log("Editing Box", boxNumber, newData);
       dispatch(editBoxData({ boxNumber: boxNumber, newData: newData }));
     }
   };

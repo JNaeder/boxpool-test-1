@@ -20,7 +20,7 @@ import { useAppSelector, useAppDispatch } from "@/hooks";
 import { setCurrentBoxpoolData } from "@/slices/gameSlice";
 import { gameToGameInfo } from "@/helperFunctions";
 
-export default function ChooseGameMenu({}: {}) {
+export default function ChooseGameMenu() {
   const dispatch = useAppDispatch();
 
   const { currentBoxpoolData } = useAppSelector((store) => store.game);
