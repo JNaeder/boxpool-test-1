@@ -9,7 +9,7 @@ export default function NumberSquare({
   boxNumber,
   homeAway,
 }: {
-  number: number;
+  number: string;
   isEditing: boolean;
   boxNumber: number;
   homeAway: "home" | "away";
@@ -24,7 +24,7 @@ export default function NumberSquare({
         <Input
           type="number"
           value={number}
-          className=""
+          className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
           onChange={(e) =>
             dispatch(
               editNumberBoxData({

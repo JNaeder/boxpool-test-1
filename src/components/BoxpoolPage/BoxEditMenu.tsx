@@ -14,6 +14,7 @@ export default function BoxEditMenu({
   boxId: string;
 }) {
   const { currentBoxpoolData } = useAppSelector((store) => store.game);
+  const { user } = useAppSelector((store) => store.user);
 
   const updateIsEditing = (newState: boolean) => {
     setIsEditing(newState);
@@ -21,28 +22,34 @@ export default function BoxEditMenu({
 
   return (
     <div className="w-full flex justify-center p-2 space-x-3 mb-10">
-      <div>
-        {isEditing ? (
-          <>
-            <Button
-              onClick={() => {
-                writeBoxDataToDB(boxId, currentBoxpoolData);
-                updateIsEditing(false);
-              }}
-            >
-              <Save />
-              Save
-            </Button>
-          </>
-        ) : (
-          <>
-            <Button onClick={() => updateIsEditing(true)}>
-              <Pencil />
-              Edit
-            </Button>
-          </>
-        )}
-      </div>
+      {user && user.uid === currentBoxpoolData?.userId ? (
+        <>
+          <div>
+            {isEditing ? (
+              <>
+                <Button
+                  onClick={() => {
+                    writeBoxDataToDB(boxId, currentBoxpoolData);
+                    updateIsEditing(false);
+                  }}
+                >
+                  <Save />
+                  Save
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button onClick={() => updateIsEditing(true)}>
+                  <Pencil />
+                  Edit
+                </Button>
+              </>
+            )}
+          </div>
+        </>
+      ) : (
+        <></>
+      )}
       {isEditing && <ChooseGameMenu />}
     </div>
   );

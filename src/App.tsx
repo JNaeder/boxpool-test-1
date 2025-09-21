@@ -36,6 +36,7 @@ function App() {
           emailVerified: currentUser.emailVerified,
           photoURL: currentUser.photoURL,
         };
+        console.log(user);
         dispatch(setCurrentUser(user));
       }
     });

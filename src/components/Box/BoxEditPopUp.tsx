@@ -68,7 +68,7 @@ export default function BoxEditPopUp({
               id="boxName"
               type="text"
               value={boxName}
-              maxLength={20}
+              autoFocus
               onChange={(e) => {
                 setBoxName(e.target.value);
               }}

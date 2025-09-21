@@ -38,13 +38,18 @@ export default function BoxPoolPage() {
   );
 
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [isLoadingGameSummary, setIsLoadingGameSummary] =
+    useState<boolean>(true);
 
   const getGameData = async () => {
     if (currentBoxpoolData) {
-      const gameSummary: GameSummary = await getGameSummary(
-        currentBoxpoolData.eventId
-      );
-      dispatch(setCurrentGameSummary(gameSummary));
+      if (currentBoxpoolData.eventId) {
+        const gameSummary: GameSummary = await getGameSummary(
+          currentBoxpoolData.eventId
+        );
+        dispatch(setCurrentGameSummary(gameSummary));
+      }
+      setIsLoadingGameSummary(false);
     }
   };
 
@@ -62,13 +67,13 @@ export default function BoxPoolPage() {
     getData();
   }, []);
 
-  // Updates Game Summary when Boxpoo data changes
+  // Updates Game Summary when Boxpool EventID changes
   useEffect(() => {
     getGameData();
   }, [currentBoxpoolData?.eventId]);
 
   // Checking - Load if doesn't exist
-  if (!currentGameSummary || !currentBoxpoolData)
+  if (!currentBoxpoolData || isLoadingGameSummary)
     return (
       <>
         <div className="b h-[calc(100vh-50px)] flex flex-col justify-center items-center">
@@ -80,13 +85,23 @@ export default function BoxPoolPage() {
   return (
     <>
       <div className="bg-neutral-200 flex justify-start  w-screen h-[calc(100vh-50px)]">
-        <div className="flex flex-col w-1/4 p-2 ">
-          <div className="bg-black text-white text-center mb-3 w-fit mx-auto py-1 px-5 rounded-lg">
-            {formatDate(currentGameSummary.header.competitions[0].date)}
+        {currentGameSummary ? (
+          <>
+            <div className="flex flex-col w-1/4 p-2 ">
+              <div className="bg-black text-white text-center mb-3 w-fit mx-auto py-1 px-5 rounded-lg">
+                {formatDate(currentGameSummary.header.competitions[0].date)}
+              </div>
+              <Scoreboard />
+              <ScoringPlays gameSummary={currentGameSummary} />
+            </div>
+          </>
+        ) : (
+          <div className="flex flex-col w-1/4 p-2">
+            <div className="bg-black text-white text-center p-2 rounded-xl">
+              No Game Selected
+            </div>
           </div>
-          <Scoreboard />
-          <ScoringPlays gameSummary={currentGameSummary} />
-        </div>
+        )}
         <div className="flex w-1/2">
           <Box isEditing={isEditing} />
         </div>

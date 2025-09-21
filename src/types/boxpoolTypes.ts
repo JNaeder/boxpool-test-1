@@ -38,7 +38,7 @@ export type GameInfo = {
 };
 
 export type Boxpool = {
-  id: string;
+  id?: string;
   name: string;
   userId: string;
   eventId: string;

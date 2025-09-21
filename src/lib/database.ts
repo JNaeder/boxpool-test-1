@@ -1,7 +1,35 @@
 import type { Boxpool } from "../types/boxpoolTypes";
 import { db, storage } from "./firebase";
-import { updateDoc, doc, setDoc } from "firebase/firestore";
+import { updateDoc, doc, setDoc, collection, addDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
+export const createNewBoxpoolInDB = async (userId: string): Promise<string> => {
+  const boxpoolCollection = collection(db, "boxpools");
+  const newBoxpool: Boxpool = {
+    name: "",
+    userId: userId,
+    eventId: "",
+    boxNumbers: {
+      homeBoxNumbers: [],
+      awayBoxNumbers: [],
+    },
+    prizeNumbers: {
+      gameScore: {
+        firstQuarter: "",
+        secondQuarter: "",
+        thirdQuarter: "",
+        final: "",
+      },
+      plusTwo: null,
+      plusFive: null,
+      reverse: null,
+    },
+    boxes: {},
+  };
+
+  const docRef = await addDoc(boxpoolCollection, newBoxpool);
+  return docRef.id;
+};
 
 export const updateBoxpoolDataInDB = async (
   boxId: string,
@@ -21,6 +49,7 @@ export const writeBoxDataToDB = async (
   boxpoolData: Boxpool | null
 ) => {
   if (!boxpoolData) return;
+  console.log(boxpoolData);
   const docRef = doc(db, "boxpools", boxId);
   await setDoc(docRef, boxpoolData);
 };

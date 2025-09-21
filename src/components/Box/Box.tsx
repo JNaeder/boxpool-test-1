@@ -12,12 +12,12 @@ export default function Box({ isEditing }: { isEditing: boolean }) {
   const { currentBoxpoolData, currentGameSummary } = useAppSelector(
     (store) => store.game
   );
-  if (!currentGameSummary) return <>No Game Summary</>;
+  // if (!currentGameSummary) return <>No Game Summary</>;
   if (!currentBoxpoolData) return <>No Box Pool Data</>;
 
   const game = currentGameSummary?.header;
-  const competition: Competition = game.competitions[0];
-  const competitors: Competitor[] = competition.competitors;
+  const competition: Competition | undefined = game?.competitions[0];
+  const competitors: Competitor[] = competition?.competitors ?? [];
   const { boxes, boxNumbers, userId } = currentBoxpoolData;
 
   const homeTeam: Competitor | undefined = competitors.find(
@@ -30,7 +30,7 @@ export default function Box({ isEditing }: { isEditing: boolean }) {
 
   const quarterScores: WinningScore[] = [];
 
-  const periodLength: number = competition.status.period ?? 4;
+  const periodLength: number = competition?.status.period ?? 4;
 
   for (let i = 0; i < periodLength; i++) {
     const homeScore = homeTeam?.linescores
@@ -85,37 +85,49 @@ export default function Box({ isEditing }: { isEditing: boolean }) {
           <div
             className="col-span-10 col-start-4 row-start-3 grid grid-cols-10 border-r-1"
             style={{
-              backgroundColor: `#${homeTeam?.team.color}`,
+              backgroundColor: `#${homeTeam?.team.color ?? "777777"}`,
               color: "white",
             }}
           >
-            {boxNumbers.homeBoxNumbers.map((number, i) => (
-              <NumberSquare
-                key={i}
-                boxNumber={i}
-                number={number}
-                isEditing={isEditing}
-                homeAway="home"
-              />
-            ))}
+            {[...Array(10)].map((_, i) => {
+              const squareNumber =
+                boxNumbers.homeBoxNumbers[i] !== undefined
+                  ? boxNumbers.homeBoxNumbers[i]
+                  : "";
+              return (
+                <NumberSquare
+                  key={i}
+                  boxNumber={i}
+                  number={String(squareNumber)}
+                  isEditing={isEditing}
+                  homeAway="home"
+                />
+              );
+            })}
           </div>
           {/* Away Team Numbers */}
           <div
             className="col-span-1 row-span-10 row-start-4 col-start-3 grid grid-cols-1 border-b-1"
             style={{
-              backgroundColor: `#${awayTeam?.team.color}`,
+              backgroundColor: `#${awayTeam?.team.color ?? "777777"}`,
               color: "white",
             }}
           >
-            {boxNumbers.awayBoxNumbers.map((number, i) => (
-              <NumberSquare
-                key={i}
-                boxNumber={i}
-                number={number}
-                isEditing={isEditing}
-                homeAway="away"
-              />
-            ))}
+            {[...Array(10)].map((_, i) => {
+              const squareNumber =
+                boxNumbers.awayBoxNumbers[i] !== undefined
+                  ? boxNumbers.awayBoxNumbers[i]
+                  : "";
+              return (
+                <NumberSquare
+                  key={i}
+                  boxNumber={i}
+                  number={String(squareNumber)}
+                  isEditing={isEditing}
+                  homeAway="away"
+                />
+              );
+            })}
           </div>
           {/* Box Numbers */}
           <div className="col-span-10 row-span-10 col-start-4 grid grid-cols-10 grid-rows-10 border-b-1 border-r-1">
@@ -130,8 +142,8 @@ export default function Box({ isEditing }: { isEditing: boolean }) {
                     awayScore: boxNumbers.awayBoxNumbers[Math.floor(j / 10)],
                   }}
                   quarterScores={quarterScores}
-                  period={competition.status.period}
-                  completed={competition.status.type.completed}
+                  period={competition?.status.period}
+                  completed={competition?.status.type.completed ?? false}
                   isEditing={isEditing}
                   userId={userId}
                 />
