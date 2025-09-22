@@ -4,11 +4,15 @@ import { updateDoc, doc, setDoc, collection, addDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export const createNewBoxpoolInDB = async (userId: string): Promise<string> => {
+  const createdAt = new Date().toISOString();
+  const lastUpdated = createdAt;
   const boxpoolCollection = collection(db, "boxpools");
   const newBoxpool: Boxpool = {
     name: "",
     userId: userId,
     eventId: "",
+    lastUpdated,
+    createdAt,
     boxNumbers: {
       homeBoxNumbers: [],
       awayBoxNumbers: [],
@@ -35,8 +39,9 @@ export const updateBoxpoolDataInDB = async (
   boxId: string,
   boxpoolData: Boxpool
 ) => {
+  const lastUpdated = new Date().toISOString();
   const docRef = doc(db, "boxpools", boxId);
-  await updateDoc(docRef, boxpoolData);
+  await updateDoc(docRef, { ...boxpoolData, lastUpdated });
 };
 
 export const updateEventIdInDB = async (
@@ -44,8 +49,9 @@ export const updateEventIdInDB = async (
   newEventId: string
 ) => {
   if (boxId) {
+    const lastUpdated = new Date().toISOString();
     const docRef = doc(db, "boxpools", boxId);
-    await updateDoc(docRef, { eventId: newEventId });
+    await updateDoc(docRef, { eventId: newEventId, lastUpdated });
   }
 };
 
@@ -55,8 +61,9 @@ export const writeBoxDataToDB = async (
 ) => {
   if (!boxpoolData) return;
   // console.log(boxpoolData);
+  const lastUpdated = new Date().toISOString();
   const docRef = doc(db, "boxpools", boxId);
-  await setDoc(docRef, boxpoolData);
+  await setDoc(docRef, { ...boxpoolData, lastUpdated });
 };
 
 export const uploadImageToStorage = async (

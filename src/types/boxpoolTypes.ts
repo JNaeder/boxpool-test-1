@@ -42,6 +42,8 @@ export type Boxpool = {
   name: string;
   userId: string;
   eventId: string;
+  lastUpdated?: string;
+  createdAt?: string;
   boxNumbers: {
     homeBoxNumbers: number[];
     awayBoxNumbers: number[];

@@ -110,6 +110,11 @@ export default function BoxPoolPage() {
             setIsEditing={setIsEditing}
             boxId={paramsData.boxId}
           />
+          <div className="bg-black text-white text-centerrounded-xl m-2 flex flex-col p-2 justify-center items-center">
+            <div>{currentBoxpoolData?.name}</div>
+            <div>Created: {currentBoxpoolData?.createdAt}</div>
+            <div>Last Updated: {currentBoxpoolData?.lastUpdated}</div>
+          </div>
           <Prizeboard boxpoolData={currentBoxpoolData} isEditing={isEditing} />
         </div>
       </div>
