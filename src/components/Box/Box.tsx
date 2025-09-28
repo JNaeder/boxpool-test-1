@@ -52,7 +52,13 @@ export default function Box({ isEditing }: { isEditing: boolean }) {
           {/* Home Team Sign */}
           <div className="col-span-10 row-span-2 col-start-4 row-start-1">
             <div className="flex items-center justify-center h-full">
-              <img src={homeTeam?.team.logos?.[0].href ?? ""} width={100} />
+              {homeTeam?.team.logos?.[0]?.href ? (
+                <>
+                  <img src={homeTeam?.team.logos?.[0].href} width={100} />
+                </>
+              ) : (
+                <></>
+              )}
               <div className="font-bold text-4xl">
                 {homeTeam?.team.displayName}
               </div>
@@ -64,7 +70,14 @@ export default function Box({ isEditing }: { isEditing: boolean }) {
               style={{ writingMode: "sideways-lr" }}
               className="flex items-center justify-center w-full"
             >
-              <img src={awayTeam?.team.logos?.[0]?.href ?? ""} width={100} />
+              {awayTeam?.team.logos?.[0]?.href ? (
+                <>
+                  <img src={awayTeam?.team.logos?.[0]?.href} width={100} />
+                </>
+              ) : (
+                <></>
+              )}
+
               <div className="font-bold text-4xl">
                 {awayTeam?.team.displayName}
               </div>

@@ -39,7 +39,7 @@ export type GameInfo = {
 
 export type Boxpool = {
   id?: string;
-  name: string;
+  name?: string;
   userId: string;
   eventId: string;
   lastUpdated?: string;

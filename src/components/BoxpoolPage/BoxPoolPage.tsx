@@ -14,6 +14,7 @@ import {
 import Scoreboard from "../Scoreboard/Scoreboard";
 import Prizeboard from "../Prizeboard/Prizeboard";
 import ScoringPlays from "../ScoringPlays/ScoringPlays";
+import BoxpoolData from "./BoxPooldata";
 import BoxEditMenu from "./BoxEditMenu";
 import Box from "../Box/Box";
 import { Spinner } from "../ui/shadcn-io/spinner";
@@ -69,7 +70,7 @@ export default function BoxPoolPage() {
       }
     };
     getGameData();
-  }, [currentBoxpoolData?.eventId]);
+  }, [currentBoxpoolData?.eventId, currentBoxpoolData?.lastUpdated]);
 
   // Checking - Load if doesn't exist
   if (!currentBoxpoolData || isLoadingGameSummary)
@@ -104,17 +105,13 @@ export default function BoxPoolPage() {
         <div className="flex w-1/2">
           <Box isEditing={isEditing} />
         </div>
-        <div className="flex flex-col w-1/4 ">
+        <div className="flex flex-col w-1/4">
           <BoxEditMenu
             isEditing={isEditing}
             setIsEditing={setIsEditing}
             boxId={paramsData.boxId}
           />
-          <div className="bg-black text-white text-centerrounded-xl m-2 flex flex-col p-2 justify-center items-center">
-            <div>{currentBoxpoolData?.name}</div>
-            <div>Created: {currentBoxpoolData?.createdAt}</div>
-            <div>Last Updated: {currentBoxpoolData?.lastUpdated}</div>
-          </div>
+          <BoxpoolData isEditing={isEditing} />
           <Prizeboard boxpoolData={currentBoxpoolData} isEditing={isEditing} />
         </div>
       </div>
